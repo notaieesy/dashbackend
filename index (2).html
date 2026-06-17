@@ -1,0 +1,1614 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aisy · Performance Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Merriweather+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+:root{
+  --l50:#F7F4FF;--l100:#EDE8FD;--l200:#D9D0FA;--l300:#C0B0F7;
+  --l400:#A68DF3;--l500:#8B6EE8;--l600:#7355D0;--l700:#5A3EB8;
+  --p50:#FFF0F7;--p100:#FFE0EF;--p200:#FFBCD6;--p300:#FF9DC4;--p400:#F472B6;
+  --bg:#FEFCFF;--sf:#FFFFFF;--bd:#EAE2F8;
+  --t1:#1E1B2E;--t2:#6B6080;--t3:#A09AB0;
+  --ok:#059669;--ok-bg:#D1FAE5;
+  --wn:#D97706;--wn-bg:#FEF3C7;
+  --er:#DC2626;--er-bg:#FEE2E2;
+  --sbw:220px;--hh:56px;
+  --serif:'Merriweather',Georgia,serif;
+  --sans:'Merriweather Sans',system-ui,sans-serif;
+  --rad:10px;--rsm:6px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--bg);color:var(--t1);font-size:14px;min-height:100vh;line-height:1.5}
+button{cursor:pointer;border:none;background:none;font-family:inherit;font-size:14px}
+input,select,textarea{font-family:inherit;font-size:13px;outline:none}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-thumb{background:var(--l200);border-radius:3px}
+
+/* ── AUTH ── */
+#auth{display:none;align-items:center;justify-content:center;min-height:100vh;
+  background:linear-gradient(135deg,var(--l50) 0%,var(--p50) 70%,#FFF8F8 100%)}
+.ac{background:var(--sf);border-radius:18px;padding:40px 36px;width:360px;
+  box-shadow:0 10px 36px rgba(139,110,232,.14)}
+.ab{text-align:center;margin-bottom:28px}
+.ab-logo{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,var(--l200),var(--p200));
+  margin:0 auto 14px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.ab h1{font-family:var(--serif);font-size:19px;font-style:italic;color:var(--l700);margin-bottom:4px}
+.ab p{font-size:12px;color:var(--t3)}
+.fg{margin-bottom:14px}
+.fg label{display:block;font-size:11px;font-weight:700;color:var(--t2);margin-bottom:5px;letter-spacing:.2px}
+.fg input{width:100%;padding:10px 12px;border:1.5px solid var(--bd);border-radius:var(--rsm);
+  background:var(--bg);color:var(--t1);transition:border-color .2s}
+.fg input:focus{border-color:var(--l400)}
+.a-btn{width:100%;padding:11px;background:var(--l600);color:#fff;border-radius:var(--rsm);
+  font-weight:700;font-size:14px;font-family:var(--sans);transition:background .2s;margin-top:6px}
+.a-btn:hover{background:var(--l700)}
+.a-err{font-size:12px;color:var(--er);margin-top:10px;text-align:center;min-height:18px}
+
+/* ── APP LAYOUT ── */
+#app{display:none;height:100vh;overflow:hidden}
+.layout{display:flex;height:100vh}
+
+/* ── SIDEBAR ── */
+.sb{width:var(--sbw);flex-shrink:0;background:var(--sf);border-right:1px solid var(--bd);
+  display:flex;flex-direction:column;height:100vh;overflow-y:auto}
+.sb-brand{padding:18px 16px 14px;border-bottom:1px solid var(--bd)}
+.sb-pip{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--l300),var(--p300));
+  display:flex;align-items:center;justify-content:center;font-size:13px;margin-bottom:9px}
+.sb-name{font-family:var(--serif);font-size:15px;font-weight:700;font-style:italic;color:var(--l700)}
+.sb-role{font-size:10px;color:var(--t3);margin-top:2px;line-height:1.5}
+.sb-nav{flex:1;padding:8px 8px 0}
+.sb-a{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:var(--rsm);
+  font-size:13px;color:var(--t2);font-weight:500;margin-bottom:1px;cursor:pointer;transition:all .15s}
+.sb-a:hover{background:var(--l50);color:var(--l700)}
+.sb-a.active{background:var(--l100);color:var(--l700);font-weight:700}
+.sb-a .ni{font-size:15px;width:18px;text-align:center;flex-shrink:0}
+.sb-foot{padding:10px 8px 16px;border-top:1px solid var(--bd);display:flex;flex-direction:column;gap:3px;margin-top:auto}
+.sfb{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:var(--rsm);
+  font-size:12px;color:var(--t3);width:100%;transition:all .15s}
+.sfb:hover{background:var(--l50);color:var(--t2)}
+.sfb.danger:hover{background:var(--er-bg);color:var(--er)}
+
+/* ── MAIN ── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+.topbar{height:var(--hh);background:var(--sf);border-bottom:1px solid var(--bd);
+  display:flex;align-items:center;padding:0 22px;gap:12px;flex-shrink:0}
+.tb-title{font-family:var(--serif);font-size:14px;font-style:italic;color:var(--t1);flex:1;font-weight:700}
+.m-sel{padding:5px 10px;border:1.5px solid var(--bd);border-radius:20px;font-size:12px;
+  color:var(--t2);background:var(--sf);font-family:var(--sans)}
+.m-sel:focus{border-color:var(--l400);outline:none}
+.content{flex:1;overflow-y:auto;padding:18px 22px 32px}
+
+/* ── PAGES ── */
+.page{display:none}.page.active{display:block}
+.phead{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;gap:12px}
+.pht{font-family:var(--serif);font-size:16px;font-style:italic;font-weight:700;color:var(--t1)}
+.phs{font-size:11px;color:var(--t3);margin-top:2px}
+
+/* ── CONTRACT TIMELINE ── */
+.tl{display:flex;align-items:center;gap:10px;background:var(--sf);border:1px solid var(--bd);
+  border-radius:var(--rad);padding:12px 16px;margin-bottom:16px}
+.tl-lbl{font-size:10px;color:var(--t3);white-space:nowrap;font-weight:600}
+.tl-ms{display:flex;gap:3px;flex:1}
+.tl-m{flex:1}
+.tl-trk{height:4px;background:var(--l50);border-radius:2px;overflow:hidden;margin-bottom:3px}
+.tl-fill{height:100%;border-radius:2px}
+.tl-fill.s{background:var(--l500)}
+.tl-fill.n{background:var(--p300)}
+.tl-ml{font-size:9px;color:var(--t3);text-align:center}
+.tl-ml.cur{color:var(--l600);font-weight:700}
+.tl-info{font-size:9px;color:var(--t3);white-space:nowrap;line-height:1.7;text-align:right}
+
+/* ── KPI CARDS ── */
+.kg{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-bottom:16px}
+.kc{background:var(--sf);border:1px solid var(--bd);border-radius:var(--rad);padding:13px 15px}
+.kl{font-size:10px;color:var(--t3);margin-bottom:6px;font-weight:600;letter-spacing:.1px}
+.kv{font-family:var(--serif);font-size:22px;font-weight:700;line-height:1;color:var(--t1)}
+.kv.ok{color:var(--ok)}.kv.lav{color:var(--l600)}.kv.pk{color:#BE185D}
+.ks{font-size:11px;color:var(--t3);margin-top:4px}
+.ks.ok{color:var(--ok)}
+
+/* ── TWO-COL GRID ── */
+.tc{display:grid;gap:14px;margin-bottom:16px}
+.tc.a{grid-template-columns:50% minmax(0,1fr)}
+.tc.b{grid-template-columns:1fr 1fr}
+.card{background:var(--sf);border:1px solid var(--bd);border-radius:var(--rad);padding:16px 18px}
+.ct{font-family:var(--serif);font-size:13px;font-style:italic;font-weight:700;color:var(--t1);margin-bottom:2px}
+.cs{font-size:11px;color:var(--t3);margin-bottom:12px}
+
+/* ── FUNNEL ── */
+.fn{display:flex;flex-direction:column;gap:7px}
+.fr{display:flex;align-items:center;gap:7px}
+.fl{font-size:11px;color:var(--t2);width:90px;text-align:right;flex-shrink:0}
+.fw{flex:1;height:22px;background:var(--l50);border-radius:4px;overflow:hidden}
+.fbar{height:100%;border-radius:4px}
+.fc{font-size:13px;font-weight:700;color:var(--t1);width:22px;text-align:right;flex-shrink:0}
+
+/* ── CHART ── */
+.cw{position:relative;width:100%;height:195px}
+
+/* ── SECTION BAR ── */
+.sbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:8px}
+.sh{font-size:13px;font-weight:700;color:var(--t1)}
+.ss{font-size:11px;color:var(--t3)}
+.add-btn{display:inline-flex;align-items:center;gap:5px;padding:7px 13px;
+  background:var(--l600);color:#fff;border-radius:var(--rsm);font-size:12px;
+  font-weight:700;font-family:var(--sans);transition:background .15s;flex-shrink:0;white-space:nowrap}
+.add-btn:hover{background:var(--l700)}
+
+/* ── TABS ── */
+.tabs{display:flex;gap:3px;background:var(--l50);padding:3px;border-radius:var(--rsm);
+  width:fit-content;margin-bottom:12px}
+.tab{padding:5px 13px;border-radius:4px;font-size:12px;font-weight:500;color:var(--t2);
+  cursor:pointer;transition:all .15s;font-family:var(--sans)}
+.tab.active{background:var(--sf);color:var(--l700);font-weight:700;
+  box-shadow:0 1px 4px rgba(139,110,232,.12)}
+
+/* ── TABLE ── */
+.tw{overflow-x:auto}
+.tbl{width:100%;border-collapse:collapse;font-size:12px}
+.tbl th{font-size:10px;color:var(--t3);font-weight:700;text-align:left;
+  padding:5px 9px 7px;border-bottom:1px solid var(--bd);white-space:nowrap;letter-spacing:.2px}
+.tbl td{padding:9px 9px;border-bottom:1px solid var(--bd);color:var(--t1);vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:var(--l50)}
+
+/* ── BADGES ── */
+.badge{display:inline-flex;align-items:center;font-size:10px;font-weight:700;
+  padding:2px 7px;border-radius:9px;white-space:nowrap}
+.b-p0{background:#FEE2E2;color:#991B1B}
+.b-p1{background:#FEF3C7;color:#92400E}
+.b-p2{background:#D1FAE5;color:#065F46}
+.b-sl{background:var(--l50);color:var(--l600)}
+.b-hr{background:var(--p50);color:#9D174D}
+.b-ui{background:#EEF2FF;color:#3730A3}
+.b-sc{background:#FFF7ED;color:#9A3412}
+.b-of{background:var(--ok-bg);color:var(--ok)}
+.b-active{background:var(--ok-bg);color:var(--ok)}
+.b-resigned{background:var(--er-bg);color:var(--er)}
+.b-ended{background:#F3F4F6;color:#374151}
+.b-extended{background:#EEF2FF;color:#3730A3}
+.b-done{background:var(--ok-bg);color:var(--ok)}
+.b-prog{background:var(--l100);color:var(--l700)}
+.b-plan{background:#F3F4F6;color:#374151}
+
+/* ── ACTION BUTTONS ── */
+.ae{padding:3px 8px;border-radius:4px;font-size:11px;font-weight:600;
+  cursor:pointer;border:1px solid;font-family:var(--sans);transition:all .15s}
+.ae-e{background:var(--l50);border-color:var(--l200);color:var(--l700)}
+.ae-e:hover{background:var(--l100)}
+.ae-d{background:var(--er-bg);border-color:#FECACA;color:var(--er)}
+.ae-d:hover{background:#FEE2E2}
+
+/* ── PROCESS HEALTH ── */
+.hs{display:flex;align-items:center;gap:14px;padding:14px 16px;
+  background:linear-gradient(135deg,var(--l50),var(--p50));
+  border-radius:var(--rsm);margin-bottom:14px;border:1px solid var(--bd)}
+.gc{width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:20px;font-weight:700;flex-shrink:0}
+.gA{background:var(--ok-bg);color:var(--ok);border:2px solid #A7F3D0}
+.gB{background:var(--wn-bg);color:var(--wn);border:2px solid #FDE68A}
+.gC{background:var(--er-bg);color:var(--er);border:2px solid #FECACA}
+.ph-row{display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid var(--bd)}
+.ph-row:last-child{border-bottom:none}
+.phi{width:16px;height:16px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:9px;flex-shrink:0}
+.phi-ok{background:var(--ok-bg);color:var(--ok)}
+.phi-wn{background:var(--wn-bg);color:var(--wn)}
+.phi-er{background:var(--er-bg);color:var(--er)}
+.ph-lbl{flex:1;font-size:13px}
+.ph-val{font-size:12px;font-weight:700;min-width:34px;text-align:right}
+.ph-ok{color:var(--ok)}.ph-wn{color:var(--wn)}.ph-er{color:var(--er)}
+
+/* ── PROJECTS ── */
+.pl{display:flex;flex-direction:column;gap:9px}
+.pi{background:var(--sf);border:1px solid var(--bd);border-radius:var(--rad);
+  padding:13px 16px;display:flex;gap:12px;align-items:flex-start}
+.pi-l{flex:1;min-width:0}
+.pi-n{font-size:13px;font-weight:700;color:var(--t1);margin-bottom:3px}
+.pi-d{font-size:12px;color:var(--t2);line-height:1.55;margin-bottom:3px}
+.pi-i{font-size:11px;color:var(--t3)}
+.pi-r{display:flex;flex-direction:column;align-items:flex-end;gap:7px;flex-shrink:0}
+
+/* ── SELF DEV ── */
+.skl-list{display:flex;flex-direction:column;gap:8px}
+.skl-item{background:var(--sf);border:1px solid var(--bd);border-radius:var(--rsm);
+  padding:11px 13px;display:flex;gap:10px;align-items:flex-start}
+.skl-l{flex:1;min-width:0}
+.skl-n{font-size:13px;font-weight:700;color:var(--t1);margin-bottom:3px}
+.skl-s{font-size:11.5px;color:var(--t2);line-height:1.5}
+.skl-s::before{content:"↳ ";color:var(--t3)}
+.skl-r{display:flex;gap:4px;flex-shrink:0;padding-top:1px}
+.td-list{display:flex;flex-direction:column;gap:5px}
+.td-item{display:flex;align-items:center;gap:9px;padding:9px 12px;
+  background:var(--sf);border:1px solid var(--bd);border-radius:var(--rsm)}
+.td-date{font-size:10px;font-weight:700;color:var(--l600);background:var(--l50);
+  border-radius:4px;padding:5px 6px;text-align:center;flex-shrink:0;min-width:38px;line-height:1.25}
+.td-txt{flex:1;font-size:13px}
+.td-txt.done{text-decoration:line-through;color:var(--t3)}
+.td-stsel{font-size:10px;font-weight:700;padding:4px 8px;border-radius:9px;
+  border:none;font-family:var(--sans);cursor:pointer;flex-shrink:0;appearance:none}
+.td-stsel.b-plan{background:#F3F4F6;color:#374151}
+.td-stsel.b-prog{background:var(--l100);color:var(--l700)}
+.td-stsel.b-done{background:var(--ok-bg);color:var(--ok)}
+
+/* ── TO-DO GROUPING ── */
+.tdg-year{font-family:var(--serif);font-size:14px;font-style:italic;font-weight:700;
+  color:var(--l700);margin:18px 0 9px;padding-bottom:6px;border-bottom:2px solid var(--l200)}
+.tdg-year:first-child{margin-top:0}
+.tdg-month{font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;
+  letter-spacing:.4px;margin:12px 0 7px}
+.tdg-month:first-of-type{margin-top:0}
+
+/* ── MODAL ── */
+#modal{display:none;position:fixed;inset:0;background:rgba(30,27,46,.42);
+  z-index:100;align-items:center;justify-content:center}
+#modal.show{display:flex}
+.mc{background:var(--sf);border-radius:14px;width:490px;max-width:93vw;
+  max-height:85vh;overflow:hidden;display:flex;flex-direction:column;
+  box-shadow:0 16px 52px rgba(139,110,232,.2)}
+.mh{padding:16px 20px;border-bottom:1px solid var(--bd);
+  display:flex;align-items:center;justify-content:space-between}
+.mh-t{font-family:var(--serif);font-size:14px;font-style:italic;font-weight:700;color:var(--t1)}
+.m-x{font-size:18px;color:var(--t3);cursor:pointer;padding:1px 6px;border-radius:4px}
+.m-x:hover{background:var(--l50)}
+.mb{padding:18px 20px;overflow-y:auto;flex:1}
+.mfg{margin-bottom:12px}
+.mfg label{display:block;font-size:11px;font-weight:700;color:var(--t2);margin-bottom:4px}
+.mfg input,.mfg select,.mfg textarea{width:100%;padding:8px 11px;
+  border:1.5px solid var(--bd);border-radius:var(--rsm);background:var(--bg);
+  color:var(--t1);font-family:var(--sans);font-size:13px}
+.mfg input:focus,.mfg select:focus,.mfg textarea:focus{border-color:var(--l400)}
+.mfg textarea{resize:vertical;min-height:66px}
+.mfr{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mf{padding:12px 20px;border-top:1px solid var(--bd);display:flex;justify-content:flex-end;gap:7px}
+.m-save{padding:8px 17px;background:var(--l600);color:#fff;border-radius:var(--rsm);
+  font-weight:700;font-size:13px;font-family:var(--sans)}
+.m-save:hover{background:var(--l700)}
+.m-cancel{padding:8px 17px;background:var(--sf);color:var(--t2);
+  border:1px solid var(--bd);border-radius:var(--rsm);font-size:13px;font-family:var(--sans)}
+.m-cancel:hover{background:var(--l50)}
+
+/* ── EMPTY STATE ── */
+.empty{text-align:center;padding:28px;color:var(--t3);font-size:13px}
+.empty span{font-size:26px;display:block;margin-bottom:7px}
+
+/* ── LEGEND ROW ── */
+.legend{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:9px}
+.leg-item{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--t3)}
+.leg-dot{width:9px;height:9px;border-radius:2px;flex-shrink:0}
+
+/* ── SYNC STATUS PILL ── */
+.sync-pill{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;
+  padding:5px 11px;border-radius:20px;cursor:pointer;white-space:nowrap;
+  font-family:var(--sans);border:1.5px solid;transition:all .2s}
+.sp-local{background:#F3F4F6;color:#4B5563;border-color:#D1D5DB}
+.sp-configured{background:var(--wn-bg);color:var(--wn);border-color:#FDE68A}
+.sp-synced{background:var(--ok-bg);color:var(--ok);border-color:#A7F3D0}
+.sp-syncing{background:var(--l100);color:var(--l600);border-color:var(--l200);animation:pulse 1.2s infinite}
+.sp-error{background:var(--er-bg);color:var(--er);border-color:#FECACA}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+.gear-btn{width:32px;height:32px;border-radius:50%;background:var(--l50);color:var(--l600);
+  display:flex;align-items:center;justify-content:center;font-size:16px;
+  border:1.5px solid var(--bd);transition:all .15s;flex-shrink:0}
+.gear-btn:hover{background:var(--l100);border-color:var(--l300)}
+
+/* ── INTEGRATION MODAL ── */
+#imodal{display:none;position:fixed;inset:0;background:rgba(30,27,46,.42);
+  z-index:200;align-items:center;justify-content:center}
+#imodal.show{display:flex}
+.im-card{background:var(--sf);border-radius:14px;width:520px;max-width:93vw;
+  max-height:88vh;overflow:hidden;display:flex;flex-direction:column;
+  box-shadow:0 16px 52px rgba(139,110,232,.2)}
+.im-body{padding:20px 22px;overflow-y:auto;flex:1}
+.im-section{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--bd)}
+.im-section:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none}
+.im-h{font-size:13px;font-weight:700;color:var(--t1);margin-bottom:3px}
+.im-s{font-size:11px;color:var(--t3);margin-bottom:12px;line-height:1.6}
+.im-url{width:100%;padding:9px 12px;border:1.5px solid var(--bd);border-radius:var(--rsm);
+  background:var(--bg);color:var(--t1);font-family:var(--sans);font-size:12px}
+.im-url:focus{border-color:var(--l400);outline:none}
+.im-actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.im-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;
+  border-radius:var(--rsm);font-size:13px;font-weight:600;font-family:var(--sans);
+  border:1.5px solid;transition:all .15s;cursor:pointer}
+.im-pull{background:var(--l100);color:var(--l700);border-color:var(--l300)}
+.im-pull:hover{background:var(--l200)}
+.im-push{background:var(--p50);color:#9D174D;border-color:var(--p200)}
+.im-push:hover{background:var(--p100)}
+.im-save{background:var(--l600);color:#fff;border-color:var(--l700)}
+.im-save:hover{background:var(--l700)}
+.im-status-row{display:flex;align-items:center;gap:8px;padding:10px 12px;
+  background:var(--bg);border-radius:var(--rsm);border:1px solid var(--bd);margin-top:10px}
+.im-status-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.im-note{background:var(--l50);border:1px solid var(--l200);border-radius:var(--rsm);
+  padding:12px 14px;font-size:12px;color:var(--t2);line-height:1.7}
+.im-note ol{padding-left:16px;margin-top:6px}
+.im-note li{margin-bottom:3px}
+.im-note code{background:var(--l100);color:var(--l700);padding:1px 5px;border-radius:3px;font-size:11px}
+/* ── TOAST ── */
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(14px);
+  padding:11px 22px;border-radius:var(--rad);font-size:13px;font-family:var(--sans);
+  font-weight:600;z-index:600;opacity:0;transition:all .25s ease;max-width:380px;
+  text-align:center;box-shadow:0 4px 18px rgba(0,0,0,.18);pointer-events:none;white-space:pre-line}
+.toast.in{opacity:1;transform:translateX(-50%) translateY(0)}
+.t-ok{background:#059669;color:#fff}
+.t-err{background:#DC2626;color:#fff}
+.t-info{background:var(--l600);color:#fff}
+.t-warn{background:#D97706;color:#fff}
+
+/* ── CONFIRM MODAL ── */
+#cmodal{display:none;position:fixed;inset:0;background:rgba(30,27,46,.44);
+  z-index:400;align-items:center;justify-content:center}
+#cmodal.show{display:flex}
+.cm-card{background:var(--sf);border-radius:14px;width:380px;max-width:90vw;
+  box-shadow:0 16px 52px rgba(139,110,232,.22);overflow:hidden}
+.cm-msg{padding:24px 24px 14px;font-size:14px;color:var(--t1);line-height:1.65;white-space:pre-line}
+.cm-foot{padding:10px 20px 18px;display:flex;justify-content:flex-end;gap:8px}
+.cm-yes-d{padding:8px 17px;border-radius:var(--rsm);font-weight:700;font-size:13px;
+  font-family:var(--sans);background:#DC2626;color:#fff;border:none}
+.cm-yes-d:hover{background:#B91C1C}
+
+/* ── PROMPT MODAL ── */
+#pmodal{display:none;position:fixed;inset:0;background:rgba(30,27,46,.44);
+  z-index:400;align-items:center;justify-content:center}
+#pmodal.show{display:flex}
+.pm-card{background:var(--sf);border-radius:14px;width:380px;max-width:90vw;
+  box-shadow:0 16px 52px rgba(139,110,232,.22);overflow:hidden}
+.pm-inner{padding:20px 22px 10px}
+.pm-lbl{font-size:12px;font-weight:700;color:var(--t2);margin-bottom:7px}
+.pm-inp{width:100%;padding:9px 12px;border:1.5px solid var(--bd);border-radius:var(--rsm);
+  background:var(--bg);color:var(--t1);font-size:13px;font-family:var(--sans)}
+.pm-inp:focus{border-color:var(--l400);outline:none}
+.pm-foot{padding:10px 20px 16px;display:flex;justify-content:flex-end;gap:8px}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════ AUTH PAGE ═══════════════════════ -->
+<div id="auth">
+  <div class="ac">
+    <div class="ab">
+      <div class="ab-logo">✦</div>
+      <h1>Aisy's performance dashboard</h1>
+      <p>WM Center · Talent Acquisition & HR Staff</p>
+    </div>
+    <div class="fg">
+      <label>Username</label>
+      <input type="text" id="inp-u" placeholder="Enter username" autocomplete="username">
+    </div>
+    <div class="fg">
+      <label>Password</label>
+      <input type="password" id="inp-p" placeholder="Enter password" autocomplete="current-password"
+        onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="a-btn" onclick="doLogin()">Sign in</button>
+    <p class="a-err" id="a-err"></p>
+  </div>
+</div>
+
+<!-- ═══════════════════════ APP ═══════════════════════ -->
+<div id="app">
+<div class="layout">
+
+<!-- SIDEBAR -->
+<nav class="sb">
+  <div class="sb-brand">
+    <div class="sb-pip">✦</div>
+    <div class="sb-name">Aisy</div>
+    <div class="sb-role">Talent Acquisition & HR Staff<br>WM Center · 2026</div>
+  </div>
+  <div class="sb-nav">
+    <div class="sb-a active" data-nav="recruitment" onclick="nav('recruitment')">
+      <span class="ni">📊</span>Recruitment</div>
+    <div class="sb-a" data-nav="hire" onclick="nav('hire')">
+      <span class="ni">👥</span>Hire tracker</div>
+    <div class="sb-a" data-nav="health" onclick="nav('health')">
+      <span class="ni">✅</span>Process health</div>
+    <div class="sb-a" data-nav="projects" onclick="nav('projects')">
+      <span class="ni">📋</span>Projects</div>
+    <div class="sb-a" data-nav="selfdev" onclick="nav('selfdev')">
+      <span class="ni">🌱</span>Self-development</div>
+    <div class="sb-a" data-nav="todo" onclick="nav('todo')">
+      <span class="ni">🗒️</span>To-do list</div>
+  </div>
+  <div class="sb-foot">
+    <button class="sfb" onclick="clearCache()">🗑️&nbsp; Clear cache</button>
+    <button class="sfb danger" onclick="doLogout()">🚪&nbsp; Sign out</button>
+  </div>
+</nav>
+
+<!-- MAIN AREA -->
+<div class="main">
+  <div class="topbar">
+    <div class="tb-title" id="tb-title">Recruitment</div>
+    <select class="m-sel" id="m-sel" onchange="changeMonth(+this.value)"></select>
+    <div id="sync-pill" class="sync-pill sp-local" onclick="showIntegration()" title="Google Sheets integration">⬤ Local only</div>
+    <button class="gear-btn" onclick="showIntegration()" title="Integration settings">⚙</button>
+  </div>
+
+  <div class="content">
+
+    <!-- ─── PAGE: RECRUITMENT ─── -->
+    <div class="page active" id="page-recruitment">
+      <div id="tl" class="tl"></div>
+      <div class="kg" id="kg"></div>
+      <div class="tc a">
+        <div class="card">
+          <div class="ct">Recruitment pipeline funnel</div>
+          <div class="cs">Stages across all non-closed positions</div>
+          <div class="fn" id="fn"></div>
+        </div>
+        <div class="card">
+          <div class="ct">Time-to-fill by hire</div>
+          <div class="cs">Days from offer date to join date</div>
+          <div class="legend">
+            <div class="leg-item"><div class="leg-dot" style="background:#059669"></div>Fast (≤7d)</div>
+            <div class="leg-item"><div class="leg-dot" style="background:#8B6EE8"></div>Normal (8–14d)</div>
+            <div class="leg-item"><div class="leg-dot" style="background:#DC2626"></div>Slow (&gt;14d)</div>
+          </div>
+          <div class="cw"><canvas id="ttf-c"></canvas></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="sbar">
+          <div>
+            <div class="sh">Pipeline tracker</div>
+            <div class="ss">Track positions by stage and urgency</div>
+          </div>
+          <button class="add-btn" onclick="showM('pipeline',null)">+ Add position</button>
+        </div>
+        <div class="tabs">
+          <div class="tab active" onclick="switchTab('Open',this)">Open</div>
+          <div class="tab" onclick="switchTab('On Hold',this)">On hold</div>
+          <div class="tab" onclick="switchTab('Closed',this)">Closed</div>
+        </div>
+        <div class="tw">
+          <table class="tbl">
+            <thead><tr>
+              <th>Posisi</th><th>Divisi</th><th>Urgensi</th>
+              <th>Stage</th><th>Bulan</th><th>Aksi</th>
+            </tr></thead>
+            <tbody id="p-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── PAGE: HIRE TRACKER ─── -->
+    <div class="page" id="page-hire">
+      <div class="phead">
+        <div>
+          <div class="pht">Hire & offer tracker</div>
+          <div class="phs">Track everyone you've offered and hired</div>
+        </div>
+        <button class="add-btn" onclick="showM('hire',null)">+ Add entry</button>
+      </div>
+      <div class="card">
+        <div class="tw">
+          <table class="tbl">
+            <thead><tr>
+              <th>Nama</th><th>Posisi</th><th>Divisi</th>
+              <th>Tgl offer</th><th>Join date</th><th>Akhir kontrak</th>
+              <th>Status</th><th>Aksi</th>
+            </tr></thead>
+            <tbody id="h-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── PAGE: PROCESS HEALTH ─── -->
+    <div class="page" id="page-health">
+      <div class="phead">
+        <div>
+          <div class="pht">Process health</div>
+          <div class="phs">Checklist kepatuhan terhadap SOP rekrutmen — bukan hasil hire-nya, tapi apakah prosesnya dijalankan dengan benar (MPR disubmit dulu, notes lengkap, SLA terpenuhi, dll)</div>
+        </div>
+        <button class="add-btn" onclick="showM('health',null)">+ Add check</button>
+      </div>
+      <div id="h-score"></div>
+      <div class="card">
+        <div id="ph-checks"></div>
+      </div>
+    </div>
+
+    <!-- ─── PAGE: PROJECTS ─── -->
+    <div class="page" id="page-projects">
+      <div class="phead">
+        <div>
+          <div class="pht">Projects & initiatives</div>
+          <div class="phs">Contributions beyond daily recruitment tasks</div>
+        </div>
+        <button class="add-btn" onclick="showM('project',null)">+ Add project</button>
+      </div>
+      <div class="pl" id="p-list"></div>
+    </div>
+
+    <!-- ─── PAGE: SELF-DEVELOPMENT ─── -->
+    <div class="page" id="page-selfdev">
+      <div class="phead">
+        <div>
+          <div class="pht">Self-development</div>
+          <div class="phs">Skills dan tools yang dipelajari selama kontrak</div>
+        </div>
+      </div>
+      <div class="tc b">
+        <div class="card">
+          <div class="sbar">
+            <div>
+              <div class="ct">Tools &amp; tech</div>
+              <div class="cs">Technical skills, dipelajari di mana</div>
+            </div>
+            <button class="add-btn" onclick="showM('tool',null)">+ Add</button>
+          </div>
+          <div class="skl-list" id="tg-tools"></div>
+        </div>
+        <div class="card">
+          <div class="sbar">
+            <div>
+              <div class="ct">HR knowledge</div>
+              <div class="cs">HR &amp; recruitment skills, dipelajari di mana</div>
+            </div>
+            <button class="add-btn" onclick="showM('hrskill',null)">+ Add</button>
+          </div>
+          <div class="skl-list" id="tg-hr"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── PAGE: TO-DO LIST ─── -->
+    <div class="page" id="page-todo">
+      <div class="phead">
+        <div>
+          <div class="pht">To-do list</div>
+          <div class="phs">Tugas dikelompokkan per tanggal, bulan, dan tahun</div>
+        </div>
+        <button class="add-btn" onclick="showM('todo',null)">+ Add task</button>
+      </div>
+      <div class="card">
+        <div class="tabs">
+          <div class="tab active" onclick="switchTodoTab('All',this)">All</div>
+          <div class="tab" onclick="switchTodoTab('Not started',this)">Belum mulai</div>
+          <div class="tab" onclick="switchTodoTab('On progress',this)">On progress</div>
+          <div class="tab" onclick="switchTodoTab('Done',this)">Done</div>
+        </div>
+        <div id="td-groups"></div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+</div><!-- /layout -->
+</div><!-- /app -->
+
+<!-- ═══════════════════════ INTEGRATION MODAL ═══════════════════════ -->
+<div id="imodal">
+  <div class="im-card">
+    <div class="mh">
+      <div class="mh-t">⚙ Google Sheets integration</div>
+      <button class="m-x" onclick="closeIntegration()">✕</button>
+    </div>
+    <div class="im-body">
+
+      <!-- URL + status -->
+      <div class="im-section">
+        <div class="im-h">Apps Script web app URL</div>
+        <div class="im-s">Paste URL dari Google Apps Script yang sudah di-deploy sebagai web app.</div>
+        <input type="url" id="im-url" class="im-url" placeholder="https://script.google.com/macros/s/.../exec">
+        <div class="im-actions">
+          <button class="im-btn im-save" onclick="saveSheetUrl()">💾 Save URL</button>
+        </div>
+        <div class="im-status-row" id="im-status-row">
+          <div class="im-status-dot" id="im-dot" style="background:#D1D5DB"></div>
+          <span id="im-status-txt" style="font-size:12px;color:var(--t2)">Belum dikonfigurasi</span>
+        </div>
+      </div>
+
+      <!-- Sync actions -->
+      <div class="im-section">
+        <div class="im-h">Sync data</div>
+        <div class="im-s">Pull mengambil data dari Sheets ke dashboard. Push mengirim data lokal ke Sheets.<br>
+          Data lokal di dashboard dan data di Sheets bisa berbeda — pilih arah sync yang kamu mau.</div>
+        <div class="im-actions">
+          <button class="im-btn im-pull" onclick="pullFromSheets()">↓ Pull from Sheets</button>
+          <button class="im-btn im-push" onclick="pushToSheets()">↑ Push to Sheets</button>
+        </div>
+      </div>
+
+      <!-- Clear cache -->
+      <div class="im-section">
+        <div class="im-h">Clear local cache</div>
+        <div class="im-s">Hapus semua data yang tersimpan di browser (localStorage). Data di Google Sheets tidak terpengaruh. Session login tetap aman.</div>
+        <div class="im-actions">
+          <button class="im-btn" style="background:var(--er-bg);color:var(--er);border-color:#FECACA"
+            onclick="clearCache()">🗑️ Clear cache</button>
+        </div>
+      </div>
+
+      <!-- Setup instructions -->
+      <div class="im-section">
+        <div class="im-h">Cara setup (pertama kali)</div>
+        <div class="im-note">
+          <ol>
+            <li>Buka <strong>Google Sheets</strong> baru → klik <strong>Extensions → Apps Script</strong></li>
+            <li>Copy-paste isi file <code>Code.gs</code> yang kamu download ke editor Apps Script</li>
+            <li>Jalankan fungsi <code>setup()</code> sekali untuk membuat semua sheet otomatis</li>
+            <li>Klik <strong>Deploy → New deployment → Web app</strong></li>
+            <li>Set <em>Execute as: Me</em> dan <em>Who has access: Anyone</em> → Deploy</li>
+            <li>Copy URL yang muncul, paste di field di atas, klik Save URL</li>
+            <li>Klik <strong>Push to Sheets</strong> untuk kirim data awal ke Sheets</li>
+          </ol>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div id="modal">
+  <div class="mc">
+    <div class="mh">
+      <div class="mh-t" id="m-title">Add entry</div>
+      <button class="m-x" onclick="closeM()">✕</button>
+    </div>
+    <div class="mb" id="m-body"></div>
+    <div class="mf">
+      <button class="m-cancel" onclick="closeM()">Cancel</button>
+      <button class="m-save" onclick="saveM()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRM MODAL -->
+<div id="cmodal">
+  <div class="cm-card">
+    <div class="cm-msg" id="cm-msg"></div>
+    <div class="cm-foot">
+      <button class="m-cancel" onclick="resolveC(false)">Batal</button>
+      <button class="cm-yes-d" id="cm-yes" onclick="resolveC(true)">Ya, lanjutkan</button>
+    </div>
+  </div>
+</div>
+
+<!-- PROMPT MODAL -->
+<div id="pmodal">
+  <div class="pm-card">
+    <div class="pm-inner">
+      <div class="pm-lbl" id="pm-lbl">Tambah skill</div>
+      <input class="pm-inp" id="pm-inp" placeholder=""
+        onkeydown="if(event.key==='Enter')resolveP(true);if(event.key==='Escape')resolveP(false)">
+    </div>
+    <div class="pm-foot">
+      <button class="m-cancel" onclick="resolveP(false)">Batal</button>
+      <button class="m-save" onclick="resolveP(true)">Tambah</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════
+// CUSTOM DIALOGS (replaces confirm/alert/prompt)
+// ═══════════════════════════════════
+let _cRes = null, _pRes = null;
+
+function showConfirm(msg, yesLabel, danger) {
+  return new Promise(res => {
+    _cRes = res;
+    document.getElementById('cm-msg').textContent = msg;
+    const yb = document.getElementById('cm-yes');
+    yb.textContent = yesLabel || 'Ya, lanjutkan';
+    yb.style.background = danger === false ? '#7355D0' : '#DC2626';
+    document.getElementById('cmodal').classList.add('show');
+  });
+}
+function resolveC(val) {
+  document.getElementById('cmodal').classList.remove('show');
+  if (_cRes) { _cRes(val); _cRes = null; }
+}
+
+function showPrompt(label, placeholder) {
+  return new Promise(res => {
+    _pRes = res;
+    document.getElementById('pm-lbl').textContent = label || 'Input';
+    const inp = document.getElementById('pm-inp');
+    inp.value = ''; inp.placeholder = placeholder || '';
+    document.getElementById('pmodal').classList.add('show');
+    setTimeout(() => inp.focus(), 60);
+  });
+}
+function resolveP(ok) {
+  const val = document.getElementById('pm-inp').value.trim();
+  document.getElementById('pmodal').classList.remove('show');
+  if (_pRes) { _pRes(ok && val ? val : null); _pRes = null; }
+}
+
+function toast(msg, type) {
+  const el = document.createElement('div');
+  el.className = 'toast t-' + (type || 'ok');
+  el.textContent = msg;
+  document.body.appendChild(el);
+  requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('in')));
+  setTimeout(() => { el.classList.remove('in'); setTimeout(() => el.remove(), 300); }, 3200);
+}
+// ═══════════════════════════════════
+// CONFIG — password stored as SHA-256
+// ═══════════════════════════════════
+const CFG = {
+  un: 'aisyshere',
+  ph: '0d71df9dbc4651f569125a22334dbaaec1301c0d75f1a3daf8bf83e8e6f61289'
+};
+const MS  = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const MF  = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const STG = ['Shortlisted','HR Interview','User Interview','Study Case','Offered'];
+
+// ═══════════════════════════════════
+// STATE
+// ═══════════════════════════════════
+const NOW = new Date();
+let ST = { page:'recruitment', month: NOW.getMonth()+1, tab:'Open', todoTab:'All' };
+let ttfChart = null;
+
+// ═══════════════════════════════════
+// STORAGE
+// ═══════════════════════════════════
+const ld = (k,d) => { try { const v=localStorage.getItem('aisy_'+k); return v ? JSON.parse(v) : d; } catch { return d; } };
+const sv = (k,v) => localStorage.setItem('aisy_'+k, JSON.stringify(v));
+
+// ═══════════════════════════════════
+// DEFAULT DATA
+// ═══════════════════════════════════
+const DEF = {
+  pipeline: [
+    {id:'p1',position:'Physiotherapist',division:'Clinical',urgency:'P0',stage:'HR Interview',category:'Open',month:6},
+    {id:'p2',position:'Admin staff',division:'Back Office',urgency:'P1',stage:'Shortlisted',category:'Open',month:6},
+    {id:'p3',position:'Receptionist',division:'Front Office',urgency:'P1',stage:'Offered',category:'Closed',month:6},
+    {id:'p4',position:'Cleaning staff',division:'Operations',urgency:'P2',stage:'Offered',category:'Closed',month:6},
+    {id:'p5',position:'Marketing staff',division:'Marketing',urgency:'P1',stage:'User Interview',category:'On Hold',month:6},
+  ],
+  hires: [
+    {id:'h1',name:'Budi S.',position:'Cleaning staff',division:'Operations',offerDate:'2026-06-01',joinDate:'2026-06-05',contractEnd:'2026-12-05',status:'Active'},
+    {id:'h2',name:'Tari K.',position:'Receptionist',division:'Front Office',offerDate:'2026-06-03',joinDate:'2026-06-07',contractEnd:'2026-12-07',status:'Active'},
+    {id:'h3',name:'Andi P.',position:'Back office staff',division:'Back Office',offerDate:'2026-05-28',joinDate:'2026-05-30',contractEnd:'2026-11-30',status:'Resigned'},
+  ],
+  health: { checks: [
+    {id:'c1',label:'MPR disubmit sebelum rekrutmen',num:5,den:5},
+    {id:'c2',label:'Interview notes lengkap',num:5,den:5},
+    {id:'c3',label:'Scorecard terisi',num:4,den:5},
+    {id:'c4',label:'SLA ≤ 21 hari terpenuhi',num:3,den:5},
+    {id:'c5',label:'Offer letter terkirim tepat waktu',num:5,den:5},
+  ]},
+  projects: [
+    {id:'j1',name:'MPR recruitment website',description:'React web app — public MPR form + admin pipeline dashboard dengan P0/P1/P2 prioritization',impact:'Formalized via IOC. Streamlined intake process untuk semua posisi.',status:'Completed',date:'2026-05'},
+    {id:'j2',name:'MPR IOC formalization',description:'Interoffice Correspondence mewajibkan MPR submission sebelum rekrutmen dimulai',impact:'Policy-level impact di WM Center.',status:'Completed',date:'2026-05'},
+    {id:'j3',name:'WFH schedule tracker',description:'Multi-sheet Excel dengan automated compliance tracking, dropdown validation, dan conditional formatting untuk Back Office',impact:'Covers May–Jul 2026.',status:'Completed',date:'2026-05'},
+    {id:'j4',name:'Campus Ambassador program support',description:'Employer branding — KPI framework, BEI/CBI question bank, 7-stage recruitment flow, SOP docs & onboarding materials',impact:'Ongoing 3-month program.',status:'In progress',date:'2026-06'},
+    {id:'j5',name:'Personal TA dashboard',description:'HTML website + Google Sheets via Apps Script, hosted on GitHub Pages',impact:'Self-monitoring & salary negotiation prep.',status:'In progress',date:'2026-06'},
+  ],
+  selfdev: {
+    tools: [
+      {id:'sk1',name:'React.js',source:'Self-taught sambil bangun recruitment dashboard & MPR website'},
+      {id:'sk2',name:'Google Apps Script',source:'Belajar saat develop dashboard — backend via Google Sheets'},
+      {id:'sk3',name:'Google Sheets (advanced)',source:'Dipakai sebagai database untuk semua tools internal'},
+      {id:'sk4',name:'Excel advanced',source:'Bikin WFH schedule tracker untuk Back Office'},
+      {id:'sk5',name:'GitHub & GitHub Pages',source:'Hosting semua web tools internal WM Center'},
+      {id:'sk6',name:'HTML/CSS/JS',source:'Self-taught untuk kebutuhan internal tooling'},
+    ],
+    hr: [
+      {id:'sk7',name:'KPI framework design',source:'Dipakai untuk Campus Ambassador program'},
+      {id:'sk8',name:'BEI/CBI interviewing',source:'Internal training + praktik langsung saat interview kandidat'},
+      {id:'sk9',name:'SOP writing',source:'Dokumentasi proses untuk Campus Ambassador & onboarding'},
+      {id:'sk10',name:'Talent pipeline management',source:'Praktik harian sebagai TA staff di WM Center'},
+      {id:'sk11',name:'Recruitment operations',source:'Day-to-day di WM Center'},
+    ]
+  },
+  todos: [
+    {id:'t1',text:'Set up Google Sheets data source untuk dashboard',date:'2026-06-18',status:'On progress'},
+    {id:'t2',text:'Configure Apps Script web app endpoint',date:'2026-06-19',status:'Not started'},
+    {id:'t3',text:'Follow up lamaran ke NielsenIQ',date:'2026-06-20',status:'Not started'},
+  ]
+};
+
+// ═══════════════════════════════════
+// AUTH
+// ═══════════════════════════════════
+async function sha(s) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s));
+  return Array.from(new Uint8Array(buf)).map(x => x.toString(16).padStart(2,'0')).join('');
+}
+async function doLogin() {
+  const u   = document.getElementById('inp-u').value.trim();
+  const p   = document.getElementById('inp-p').value;
+  const err = document.getElementById('a-err');
+  if (!u || !p) { err.textContent = 'Isi username dan password dulu.'; return; }
+  if (u !== CFG.un) { err.textContent = 'Username atau password salah.'; return; }
+  if (await sha(p) !== CFG.ph) { err.textContent = 'Username atau password salah.'; return; }
+  sv('auth','1');
+  document.getElementById('auth').style.display = 'none';
+  document.getElementById('app').style.display  = 'block';
+  initApp();
+}
+async function doLogout() {
+  const ok = await showConfirm('Sign out dari dashboard?', 'Sign out', true);
+  if (!ok) return;
+  localStorage.removeItem('aisy_auth');
+  document.getElementById('app').style.display  = 'none';
+  document.getElementById('auth').style.display = 'flex';
+}
+async function clearCache() {
+  const ok = await showConfirm(
+    'Hapus semua data lokal?\n\n· Data di Google Sheets TIDAK terpengaruh\n· Session login tetap aman\n· Dashboard kembali ke data default',
+    'Ya, hapus cache'
+  );
+  if (!ok) return;
+  Object.keys(localStorage)
+    .filter(k => k.startsWith('aisy_') && k !== 'aisy_auth' && k !== 'aisy_sheets_url')
+    .forEach(k => localStorage.removeItem(k));
+  updateSyncPill(); updateImStatus(); renderAll();
+  toast('✓ Cache berhasil dibersihkan', 'ok');
+}
+
+// ═══════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════
+const TITLES = {
+  recruitment: 'Recruitment',
+  hire:        'Hire & offer tracker',
+  health:      'Process health',
+  projects:    'Projects & initiatives',
+  selfdev:     'Self-development',
+  todo:        'To-do list'
+};
+function nav(page) {
+  ST.page = page;
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  document.querySelectorAll('[data-nav]').forEach(a => a.classList.remove('active'));
+  document.querySelector('[data-nav="'+page+'"]').classList.add('active');
+  document.getElementById('tb-title').textContent = TITLES[page];
+  renderAll();
+}
+function changeMonth(m) { ST.month = m; renderAll(); }
+function switchTab(tab, el) {
+  ST.tab = tab;
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  renderPipeline();
+}
+function switchTodoTab(tab, el) {
+  ST.todoTab = tab;
+  el.parentElement.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  renderTodos();
+}
+
+// ═══════════════════════════════════
+// RENDER ALL
+// ═══════════════════════════════════
+function renderAll() {
+  renderTL(); renderKPIs(); renderFunnel(); renderTTF();
+  renderPipeline(); renderHires(); renderHealth(); renderProjects(); renderSelfDev(); renderTodos();
+}
+
+// ═══════════════════════════════════
+// CONTRACT TIMELINE
+// ═══════════════════════════════════
+function renderTL() {
+  const el = document.getElementById('tl');
+  if (!el) return;
+  const curM     = NOW.getMonth()+1;
+  const curD     = NOW.getDate();
+  const daysInCur = new Date(2026, curM, 0).getDate();
+  const curPct   = Math.round(curD / daysInCur * 100);
+
+  let html = '<span class="tl-lbl">2026</span><div class="tl-ms">';
+  for (let m = 1; m <= 12; m++) {
+    let fp = 0, fc = '';
+    if (m >= 5 && m <= 11) { fc = 's'; fp = m < curM ? 100 : (m === curM ? curPct : 0); }
+    html += `<div class="tl-m">
+      <div class="tl-trk"><div class="tl-fill ${fc}" style="width:${fp}%"></div></div>
+      <div class="tl-ml${m === curM ? ' cur' : ''}">${MS[m-1]}</div>
+    </div>`;
+  }
+  html += '</div><div class="tl-info">Staff: May 25<br>Ends Nov 24</div>';
+  el.innerHTML = html;
+}
+
+// ═══════════════════════════════════
+// KPI CARDS
+// ═══════════════════════════════════
+function renderKPIs() {
+  const el = document.getElementById('kg');
+  if (!el) return;
+  const pipeline = ld('pipeline', DEF.pipeline);
+  const hires    = ld('hires',    DEF.hires);
+  const m        = ST.month;
+
+  const pm    = pipeline.filter(p => p.month == m);
+  const hm    = hires.filter(h => h.joinDate && +h.joinDate.split('-')[1] === m);
+  const filled = hm.filter(h => h.status !== 'Resigned').length;
+  const ttfs  = hm.filter(h => h.offerDate && h.joinDate)
+    .map(h => Math.round((new Date(h.joinDate) - new Date(h.offerDate)) / 86400000))
+    .filter(d => d > 0);
+  const avgTTF = ttfs.length ? Math.round(ttfs.reduce((a,b) => a+b, 0) / ttfs.length) : 0;
+  const acc    = hm.length  ? Math.round(filled / hm.length * 100) : 0;
+  const active = pipeline.filter(p => p.category === 'Open').length;
+  const fr     = pm.length  ? Math.round(filled / pm.length * 100) : 0;
+
+  el.innerHTML = `
+    <div class="kc"><div class="kl">Positions handled</div>
+      <div class="kv">${pm.length}</div><div class="ks">in ${MF[m-1]}</div></div>
+    <div class="kc"><div class="kl">Filled</div>
+      <div class="kv ok">${filled}</div><div class="ks ok">${fr}% fill rate</div></div>
+    <div class="kc"><div class="kl">Avg. time-to-fill</div>
+      <div class="kv">${avgTTF || '—'}<span style="font-size:13px;color:var(--t3)">${avgTTF ? ' d' : ''}</span></div>
+      <div class="ks">offer → join date</div></div>
+    <div class="kc"><div class="kl">Offer acceptance</div>
+      <div class="kv ok">${acc}%</div><div class="ks ok">${filled}/${hm.length} accepted</div></div>
+    <div class="kc"><div class="kl">Active positions</div>
+      <div class="kv lav">${active}</div><div class="ks">currently open</div></div>`;
+}
+
+// ═══════════════════════════════════
+// PIPELINE FUNNEL
+// ═══════════════════════════════════
+function renderFunnel() {
+  const el = document.getElementById('fn');
+  if (!el) return;
+  const open = ld('pipeline', DEF.pipeline).filter(p => p.category !== 'Closed');
+  const cols = ['#7355D0','#8B6EE8','#A68DF3','#C0B0F7','#059669'];
+  const stIdx = s => STG.indexOf(s);
+  const counts = STG.map((_, i) => open.filter(p => stIdx(p.stage) >= i).length);
+  const max = counts[0] || 1;
+
+  el.innerHTML = STG.map((st, i) => {
+    const pct = Math.round(counts[i] / max * 100);
+    return `<div class="fr">
+      <div class="fl">${st}</div>
+      <div class="fw"><div class="fbar" style="width:${pct}%;background:${cols[i]}25;border:0.5px solid ${cols[i]}90"></div></div>
+      <div class="fc">${counts[i]}</div>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════
+// TTF CHART
+// ═══════════════════════════════════
+function renderTTF() {
+  const canvas = document.getElementById('ttf-c');
+  if (!canvas) return;
+  const hires = ld('hires', DEF.hires).filter(h => h.joinDate && h.offerDate);
+  if (ttfChart) { ttfChart.destroy(); ttfChart = null; }
+  if (!hires.length) return;
+
+  const data   = hires.map(h => Math.max(1, Math.round((new Date(h.joinDate) - new Date(h.offerDate)) / 86400000)));
+  const colors = data.map(d => d <= 7 ? '#059669' : d <= 14 ? '#8B6EE8' : '#DC2626');
+
+  ttfChart = new Chart(canvas, {
+    type: 'bar',
+    data: {
+      labels: hires.map(h => h.name || h.position || ''),
+      datasets: [{ data, backgroundColor: colors.map(c => c+'30'), borderColor: colors, borderWidth: 1.5, borderRadius: 4 }]
+    },
+    options: {
+      indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ` ${c.raw} hari` } } },
+      scales: {
+        x: { beginAtZero: true, grid: { color: 'rgba(232,226,248,.4)' }, border: { display: false },
+             ticks: { color: '#A09AB0', font: { size: 10 }, callback: v => v+'d' } },
+        y: { grid: { display: false }, border: { display: false },
+             ticks: { color: '#6B6080', font: { size: 10 } } }
+      }
+    }
+  });
+}
+
+// ═══════════════════════════════════
+// PIPELINE TABLE
+// ═══════════════════════════════════
+const URC = { P0:'b-p0', P1:'b-p1', P2:'b-p2' };
+const STC = { 'Shortlisted':'b-sl','HR Interview':'b-hr','User Interview':'b-ui','Study Case':'b-sc','Offered':'b-of' };
+
+function renderPipeline() {
+  const tb = document.getElementById('p-body');
+  if (!tb) return;
+  const rows = ld('pipeline', DEF.pipeline).filter(p => p.category === ST.tab);
+  if (!rows.length) {
+    tb.innerHTML = '<tr><td colspan="6"><div class="empty"><span>📭</span>Tidak ada posisi di kategori ini.</div></td></tr>';
+    return;
+  }
+  tb.innerHTML = rows.map(p => `<tr>
+    <td><strong>${p.position}</strong></td>
+    <td style="color:var(--t2)">${p.division}</td>
+    <td><span class="badge ${URC[p.urgency]||''}">${p.urgency}</span></td>
+    <td><span class="badge ${STC[p.stage]||''}">${p.stage}</span></td>
+    <td style="color:var(--t2)">${MS[(p.month||1)-1]}</td>
+    <td><div style="display:flex;gap:4px">
+      <button class="ae ae-e" onclick="showM('pipeline','${p.id}')">Edit</button>
+      <button class="ae ae-d" onclick="delEntry('pipeline','${p.id}')">Del</button>
+    </div></td>
+  </tr>`).join('');
+}
+
+// ═══════════════════════════════════
+// HIRE TRACKER TABLE
+// ═══════════════════════════════════
+const HSC = { 'Active':'b-active','Resigned':'b-resigned','Contract ended':'b-ended','Extended':'b-extended' };
+
+function renderHires() {
+  const tb = document.getElementById('h-body');
+  if (!tb) return;
+  const rows = ld('hires', DEF.hires);
+  if (!rows.length) {
+    tb.innerHTML = '<tr><td colspan="8"><div class="empty"><span>👥</span>Belum ada hire entries.</div></td></tr>';
+    return;
+  }
+  tb.innerHTML = rows.map(h => `<tr>
+    <td><strong>${h.name}</strong></td>
+    <td style="color:var(--t2)">${h.position}</td>
+    <td style="color:var(--t2)">${h.division||'—'}</td>
+    <td style="color:var(--t2)">${fd(h.offerDate)}</td>
+    <td style="color:var(--t2)">${fd(h.joinDate)}</td>
+    <td style="color:var(--t2)">${fd(h.contractEnd)}</td>
+    <td><span class="badge ${HSC[h.status]||''}">${h.status}</span></td>
+    <td><div style="display:flex;gap:4px">
+      <button class="ae ae-e" onclick="showM('hire','${h.id}')">Edit</button>
+      <button class="ae ae-d" onclick="delEntry('hire','${h.id}')">Del</button>
+    </div></td>
+  </tr>`).join('');
+}
+
+// ═══════════════════════════════════
+// PROCESS HEALTH
+// ═══════════════════════════════════
+function renderHealth() {
+  const hd     = ld('health', DEF.health);
+  const checks = hd.checks || [];
+  const tot    = checks.reduce((s,c) => s + (c.den||0), 0);
+  const pass   = checks.reduce((s,c) => s + (c.num||0), 0);
+  const pct    = tot ? pass/tot : 0;
+  const grade  = pct >= 0.9 ? 'A' : pct >= 0.75 ? 'B' : 'C';
+  const msg    = { A:'Proses berjalan baik ✨', B:'Beberapa area perlu perhatian', C:'Perlu perbaikan segera' }[grade];
+
+  const se = document.getElementById('h-score');
+  if (se) se.innerHTML = `<div class="hs">
+    <div class="gc g${grade}">${grade}</div>
+    <div>
+      <div style="font-weight:700;font-size:13px;color:var(--t1);margin-bottom:2px">${msg}</div>
+      <div style="font-size:12px;color:var(--t2)">${pass} dari ${tot} checks terpenuhi · ${Math.round(pct*100)}%</div>
+    </div>
+  </div>`;
+
+  const ce = document.getElementById('ph-checks');
+  if (!ce) return;
+  if (!checks.length) { ce.innerHTML = '<div class="empty"><span>✅</span>Belum ada checklist items.</div>'; return; }
+  ce.innerHTML = checks.map(c => {
+    const r  = c.den ? c.num/c.den : 0;
+    const ic = r >= 1 ? 'phi-ok' : r >= 0.6 ? 'phi-wn' : 'phi-er';
+    const vc = r >= 1 ? 'ph-ok'  : r >= 0.6 ? 'ph-wn'  : 'ph-er';
+    const sym = r >= 1 ? '✓' : r >= 0.6 ? '!' : '✗';
+    return `<div class="ph-row">
+      <div class="phi ${ic}">${sym}</div>
+      <div class="ph-lbl">${c.label}</div>
+      <div class="ph-val ${vc}">${c.num}/${c.den}</div>
+      <div style="display:flex;gap:4px;margin-left:8px">
+        <button class="ae ae-e" onclick="showM('health','${c.id}')">Edit</button>
+        <button class="ae ae-d" onclick="delEntry('health','${c.id}')">Del</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════
+// PROJECTS
+// ═══════════════════════════════════
+const PSC = { 'Completed':'b-done','In progress':'b-prog','Planned':'b-plan' };
+
+function renderProjects() {
+  const el   = document.getElementById('p-list');
+  if (!el) return;
+  const rows = ld('projects', DEF.projects);
+  if (!rows.length) { el.innerHTML = '<div class="empty"><span>📋</span>Belum ada projects.</div>'; return; }
+  el.innerHTML = rows.map(p => `<div class="pi">
+    <div class="pi-l">
+      <div class="pi-n">${p.name}</div>
+      <div class="pi-d">${p.description}</div>
+      ${p.impact ? `<div class="pi-i">↳ ${p.impact}</div>` : ''}
+      <div style="margin-top:5px;font-size:10px;color:var(--t3)">${p.date||''}</div>
+    </div>
+    <div class="pi-r">
+      <span class="badge ${PSC[p.status]||'b-plan'}">${p.status}</span>
+      <div style="display:flex;gap:4px">
+        <button class="ae ae-e" onclick="showM('project','${p.id}')">Edit</button>
+        <button class="ae ae-d" onclick="delEntry('project','${p.id}')">Del</button>
+      </div>
+    </div>
+  </div>`).join('');
+}
+
+// ═══════════════════════════════════
+// SELF-DEVELOPMENT
+// ═══════════════════════════════════
+// Normalizes legacy string-array entries (old tag format) into {id,name,source} objects
+function normSkills(arr) {
+  return (arr||[]).map(s => typeof s === 'string' ? { id: uid(), name: s, source: '' } : s);
+}
+function renderSelfDev() {
+  const sd = ld('selfdev', DEF.selfdev);
+  const tools = normSkills(sd.tools);
+  const hr    = normSkills(sd.hr);
+
+  const te = document.getElementById('tg-tools');
+  if (te) {
+    if (!tools.length) te.innerHTML = '<div class="empty"><span>🛠️</span>Belum ada tools/tech yang dicatat.</div>';
+    else te.innerHTML = tools.map(s => `<div class="skl-item">
+      <div class="skl-l">
+        <div class="skl-n">${esc(s.name)}</div>
+        ${s.source ? `<div class="skl-s">${esc(s.source)}</div>` : ''}
+      </div>
+      <div class="skl-r">
+        <button class="ae ae-e" onclick="showM('tool','${s.id}')">Edit</button>
+        <button class="ae ae-d" onclick="delEntry('tool','${s.id}')">Del</button>
+      </div>
+    </div>`).join('');
+  }
+
+  const he = document.getElementById('tg-hr');
+  if (he) {
+    if (!hr.length) he.innerHTML = '<div class="empty"><span>🧠</span>Belum ada HR knowledge yang dicatat.</div>';
+    else he.innerHTML = hr.map(s => `<div class="skl-item">
+      <div class="skl-l">
+        <div class="skl-n">${esc(s.name)}</div>
+        ${s.source ? `<div class="skl-s">${esc(s.source)}</div>` : ''}
+      </div>
+      <div class="skl-r">
+        <button class="ae ae-e" onclick="showM('hrskill','${s.id}')">Edit</button>
+        <button class="ae ae-d" onclick="delEntry('hrskill','${s.id}')">Del</button>
+      </div>
+    </div>`).join('');
+  }
+}
+
+// ═══════════════════════════════════
+// TO-DO LIST (own page, grouped by year → month, with status)
+// ═══════════════════════════════════
+const TDC = { 'Not started':'b-plan', 'On progress':'b-prog', 'Done':'b-done' };
+const TD_LBL = { 'Not started':'Belum mulai', 'On progress':'On progress', 'Done':'Done' };
+
+function renderTodos() {
+  const host = document.getElementById('td-groups');
+  if (!host) return;
+  let todos = ld('todos', DEF.todos);
+  if (ST.todoTab !== 'All') todos = todos.filter(t => (t.status||'Not started') === ST.todoTab);
+
+  if (!todos.length) { host.innerHTML = '<div class="empty"><span>📝</span>Belum ada to-dos di kategori ini.</div>'; return; }
+
+  const undated = todos.filter(t => !t.date);
+  const dated   = todos.filter(t => t.date).sort((a,b) => a.date.localeCompare(b.date));
+
+  const renderItem = t => {
+    const status = t.status || 'Not started';
+    const dateChip = t.date
+      ? `<div class="td-date">${new Date(t.date+'T00:00:00').toLocaleDateString('id-ID',{day:'2-digit',month:'short'})}</div>`
+      : `<div class="td-date">—</div>`;
+    return `<div class="td-item">
+      ${dateChip}
+      <span class="td-txt${status==='Done'?' done':''}">${esc(t.text)}</span>
+      <select class="td-stsel ${TDC[status]}" onchange="updateTodoStatus('${t.id}',this.value)">
+        ${Object.keys(TDC).map(s => `<option value="${s}" ${s===status?'selected':''}>${TD_LBL[s]}</option>`).join('')}
+      </select>
+      <button class="ae ae-e" onclick="showM('todo','${t.id}')">Edit</button>
+      <button class="ae ae-d" onclick="delEntry('todo','${t.id}')">Del</button>
+    </div>`;
+  };
+
+  // Group dated todos by year → month (chronological)
+  const buckets = {};
+  dated.forEach(t => {
+    const d = new Date(t.date+'T00:00:00');
+    const key = d.getFullYear()+'-'+d.getMonth();
+    if (!buckets[key]) buckets[key] = [];
+    buckets[key].push(t);
+  });
+
+  let html = '';
+  if (undated.length) {
+    html += `<div class="tdg-month">Belum dijadwalkan</div><div class="td-list">${undated.map(renderItem).join('')}</div>`;
+  }
+  let curYear = null;
+  Object.keys(buckets).sort((a,b) => {
+    const [ya,ma] = a.split('-').map(Number), [yb,mb] = b.split('-').map(Number);
+    return ya - yb || ma - mb;
+  }).forEach(key => {
+    const [y,m] = key.split('-').map(Number);
+    if (y !== curYear) { html += `<div class="tdg-year">${y}</div>`; curYear = y; }
+    html += `<div class="tdg-month">${MF[m]}</div><div class="td-list">${buckets[key].map(renderItem).join('')}</div>`;
+  });
+
+  host.innerHTML = html;
+}
+function updateTodoStatus(id, status) {
+  const todos = ld('todos', DEF.todos);
+  const t = todos.find(x => x.id === id);
+  if (t) { t.status = status; sv('todos', todos); renderTodos(); }
+}
+
+// ═══════════════════════════════════
+// MODAL
+// ═══════════════════════════════════
+let MC = { type: null, id: null };
+const MTitles = { pipeline:'Pipeline position', hire:'Hire / offer entry', health:'Process check', project:'Project', todo:'To-do task', tool:'Tools & tech skill', hrskill:'HR knowledge skill' };
+const gv = sel => { const e = document.getElementById(sel); return e ? e.value.trim() : ''; };
+
+function showM(type, id) {
+  MC = { type, id };
+  document.getElementById('m-title').textContent = (id ? 'Edit ' : 'Add ') + MTitles[type];
+  let d = null;
+  if (id) {
+    if (type === 'pipeline') d = ld('pipeline', DEF.pipeline).find(x => x.id === id);
+    if (type === 'hire')     d = ld('hires',    DEF.hires).find(x => x.id === id);
+    if (type === 'health')   d = (ld('health',  DEF.health).checks||[]).find(x => x.id === id);
+    if (type === 'project')  d = ld('projects', DEF.projects).find(x => x.id === id);
+    if (type === 'todo')     d = ld('todos',    DEF.todos).find(x => x.id === id);
+    if (type === 'tool')     d = normSkills(ld('selfdev', DEF.selfdev).tools).find(x => x.id === id);
+    if (type === 'hrskill')  d = normSkills(ld('selfdev', DEF.selfdev).hr).find(x => x.id === id);
+  }
+  document.getElementById('m-body').innerHTML = buildForm(type, d);
+  document.getElementById('modal').classList.add('show');
+}
+function closeM() { document.getElementById('modal').classList.remove('show'); }
+
+function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function buildForm(type, d) {
+  const v = (val, def='') => val != null ? val : def;
+  if (type === 'pipeline') return `
+    <div class="mfg"><label>Posisi *</label><input id="mf-pos" value="${esc(v(d?.position))}"></div>
+    <div class="mfg"><label>Divisi *</label><input id="mf-div" value="${esc(v(d?.division))}"></div>
+    <div class="mfr">
+      <div class="mfg"><label>Urgensi</label><select id="mf-urg">${['P0','P1','P2'].map(u=>`<option ${d?.urgency===u?'selected':''}>${u}</option>`).join('')}</select></div>
+      <div class="mfg"><label>Kategori</label><select id="mf-cat">${['Open','On Hold','Closed'].map(c=>`<option ${d?.category===c?'selected':''}>${c}</option>`).join('')}</select></div>
+    </div>
+    <div class="mfr">
+      <div class="mfg"><label>Stage</label><select id="mf-stg">${STG.map(s=>`<option ${d?.stage===s?'selected':''}>${s}</option>`).join('')}</select></div>
+      <div class="mfg"><label>Bulan</label><select id="mf-mon">${MF.map((m,i)=>`<option value="${i+1}" ${d?.month==i+1?'selected':''}>${m}</option>`).join('')}</select></div>
+    </div>`;
+
+  if (type === 'hire') return `
+    <div class="mfr">
+      <div class="mfg"><label>Nama *</label><input id="mf-nm" value="${esc(v(d?.name))}"></div>
+      <div class="mfg"><label>Posisi *</label><input id="mf-pos" value="${esc(v(d?.position))}"></div>
+    </div>
+    <div class="mfg"><label>Divisi</label><input id="mf-div" value="${esc(v(d?.division))}"></div>
+    <div class="mfr">
+      <div class="mfg"><label>Tanggal offer</label><input type="date" id="mf-od" value="${v(d?.offerDate)}"></div>
+      <div class="mfg"><label>Join date</label><input type="date" id="mf-jd" value="${v(d?.joinDate)}"></div>
+    </div>
+    <div class="mfr">
+      <div class="mfg"><label>Akhir kontrak</label><input type="date" id="mf-ce" value="${v(d?.contractEnd)}"></div>
+      <div class="mfg"><label>Status</label><select id="mf-st">${['Active','Resigned','Contract ended','Extended'].map(s=>`<option ${d?.status===s?'selected':''}>${s}</option>`).join('')}</select></div>
+    </div>`;
+
+  if (type === 'health') return `
+    <div class="mfg"><label>Label checklist *</label><input id="mf-lbl" value="${esc(v(d?.label))}" placeholder="Contoh: MPR disubmit sebelum rekrutmen"></div>
+    <div class="mfr">
+      <div class="mfg"><label>Terpenuhi (numerator)</label><input type="number" id="mf-num" value="${v(d?.num,0)}" min="0"></div>
+      <div class="mfg"><label>Total (denominator)</label><input type="number" id="mf-den" value="${v(d?.den,0)}" min="0"></div>
+    </div>`;
+
+  if (type === 'project') return `
+    <div class="mfg"><label>Nama project *</label><input id="mf-nm" value="${esc(v(d?.name))}"></div>
+    <div class="mfg"><label>Deskripsi</label><textarea id="mf-desc">${esc(v(d?.description))}</textarea></div>
+    <div class="mfg"><label>Impact / notes</label><textarea id="mf-imp">${esc(v(d?.impact))}</textarea></div>
+    <div class="mfr">
+      <div class="mfg"><label>Status</label><select id="mf-st">${['Completed','In progress','Planned'].map(s=>`<option ${d?.status===s?'selected':''}>${s}</option>`).join('')}</select></div>
+      <div class="mfg"><label>Tanggal (YYYY-MM)</label><input id="mf-dt" value="${v(d?.date)}" placeholder="2026-06"></div>
+    </div>`;
+
+  if (type === 'todo') return `
+    <div class="mfg"><label>Task *</label><input id="mf-txt" value="${esc(v(d?.text))}" placeholder="Apa yang perlu dikerjakan?"></div>
+    <div class="mfr">
+      <div class="mfg"><label>Tanggal</label><input type="date" id="mf-tdt" value="${v(d?.date)}"></div>
+      <div class="mfg"><label>Status</label><select id="mf-tst">${Object.keys(TDC).map(s=>`<option value="${s}" ${(d?.status||'Not started')===s?'selected':''}>${TD_LBL[s]}</option>`).join('')}</select></div>
+    </div>`;
+
+  if (type === 'tool' || type === 'hrskill') return `
+    <div class="mfg"><label>Nama skill *</label><input id="mf-skn" value="${esc(v(d?.name))}" placeholder="${type==='tool'?'Contoh: Figma, Google Analytics':'Contoh: Behavioral interviewing'}"></div>
+    <div class="mfg"><label>Belajar di mana / dari mana</label><textarea id="mf-sks" placeholder="Contoh: Self-taught via YouTube, training internal WM Center, dll">${esc(v(d?.source))}</textarea></div>`;
+  return '';
+}
+
+function saveM() {
+  const { type, id } = MC;
+  if (type === 'pipeline') {
+    const pos = gv('mf-pos'); if (!pos) { toast('Isi posisi dulu!', 'warn'); return; }
+    upsert('pipeline', { id:id||uid(), position:pos, division:gv('mf-div'), urgency:gv('mf-urg'),
+      category:gv('mf-cat'), stage:gv('mf-stg'), month:+gv('mf-mon') }, DEF.pipeline);
+  } else if (type === 'hire') {
+    const nm = gv('mf-nm'); if (!nm) { toast('Isi nama dulu!', 'warn'); return; }
+    upsert('hires', { id:id||uid(), name:nm, position:gv('mf-pos'), division:gv('mf-div'),
+      offerDate:gv('mf-od'), joinDate:gv('mf-jd'), contractEnd:gv('mf-ce'), status:gv('mf-st') }, DEF.hires);
+  } else if (type === 'health') {
+    const lbl = gv('mf-lbl'); if (!lbl) { toast('Isi label dulu!', 'warn'); return; }
+    const hd = ld('health', DEF.health);
+    if (!hd.checks) hd.checks = [];
+    const chk = { id:id||uid(), label:lbl, num:+(gv('mf-num')||0), den:+(gv('mf-den')||0) };
+    const i = hd.checks.findIndex(c => c.id === id);
+    if (i >= 0) hd.checks[i] = chk; else hd.checks.push(chk);
+    sv('health', hd);
+  } else if (type === 'project') {
+    const nm = gv('mf-nm'); if (!nm) { toast('Isi nama project dulu!', 'warn'); return; }
+    upsert('projects', { id:id||uid(), name:nm, description:gv('mf-desc'),
+      impact:gv('mf-imp'), status:gv('mf-st'), date:gv('mf-dt') }, DEF.projects);
+  } else if (type === 'todo') {
+    const txt = gv('mf-txt'); if (!txt) { toast('Isi task dulu!', 'warn'); return; }
+    const todos = ld('todos', DEF.todos);
+    const entry = { id:id||uid(), text:txt, date:gv('mf-tdt')||null, status:gv('mf-tst')||'Not started' };
+    const i = todos.findIndex(t => t.id === id);
+    if (i >= 0) todos[i] = entry; else todos.push(entry);
+    sv('todos', todos);
+  } else if (type === 'tool' || type === 'hrskill') {
+    const nm = gv('mf-skn'); if (!nm) { toast('Isi nama skill dulu!', 'warn'); return; }
+    const sd = ld('selfdev', DEF.selfdev);
+    const key = type === 'tool' ? 'tools' : 'hr';
+    const list = normSkills(sd[key]);
+    const entry = { id:id||uid(), name:nm, source:gv('mf-sks') };
+    const i = list.findIndex(s => s.id === id);
+    if (i >= 0) list[i] = entry; else list.push(entry);
+    sd[key] = list;
+    sv('selfdev', sd);
+  }
+  closeM();
+  renderAll();
+  toast('✓ Data tersimpan', 'ok');
+}
+
+// ═══════════════════════════════════
+// CRUD HELPERS
+// ═══════════════════════════════════
+function upsert(key, entry, def) {
+  const arr = ld(key, def);
+  const i   = arr.findIndex(x => x.id === entry.id);
+  if (i >= 0) arr[i] = entry; else arr.push(entry);
+  sv(key, arr);
+}
+async function delEntry(type, id) {
+  const ok = await showConfirm('Hapus data ini?', 'Ya, hapus');
+  if (!ok) return;
+  if      (type === 'pipeline') sv('pipeline', ld('pipeline', DEF.pipeline).filter(x => x.id !== id));
+  else if (type === 'hire')     sv('hires',    ld('hires',    DEF.hires).filter(x => x.id !== id));
+  else if (type === 'project')  sv('projects', ld('projects', DEF.projects).filter(x => x.id !== id));
+  else if (type === 'health') {
+    const h = ld('health', DEF.health);
+    h.checks = (h.checks||[]).filter(x => x.id !== id);
+    sv('health', h);
+  } else if (type === 'todo') {
+    sv('todos', ld('todos', DEF.todos).filter(x => x.id !== id));
+  } else if (type === 'tool' || type === 'hrskill') {
+    const sd = ld('selfdev', DEF.selfdev);
+    const key = type === 'tool' ? 'tools' : 'hr';
+    sd[key] = normSkills(sd[key]).filter(s => s.id !== id);
+    sv('selfdev', sd);
+  }
+  renderAll();
+  toast('Data berhasil dihapus', 'info');
+}
+
+// ═══════════════════════════════════
+// UTILS
+// ═══════════════════════════════════
+const uid = () => Math.random().toString(36).slice(2,9);
+function fd(s) {
+  if (!s) return '—';
+  const d = new Date(s + 'T00:00:00');
+  return isNaN(d) ? s : d.toLocaleDateString('id-ID', { day:'numeric', month:'short', year:'2-digit' });
+}
+
+// ═══════════════════════════════════
+// GOOGLE SHEETS INTEGRATION
+// ═══════════════════════════════════
+const getSheetsUrl = () => ld('sheets_url', null);
+
+function updateSyncPill() {
+  const pill = document.getElementById('sync-pill');
+  if (!pill) return;
+  const url      = getSheetsUrl();
+  const lastSync = ld('last_sync', null);
+  if (!url) {
+    pill.className = 'sync-pill sp-local';
+    pill.textContent = '⬤ Local only';
+  } else if (lastSync) {
+    const d = new Date(lastSync);
+    const ts = d.toLocaleDateString('id-ID',{day:'numeric',month:'short'}) + ' ' +
+               d.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
+    pill.className = 'sync-pill sp-synced';
+    pill.textContent = '⬤ Synced · ' + ts;
+  } else {
+    pill.className = 'sync-pill sp-configured';
+    pill.textContent = '⬤ Sheets configured';
+  }
+}
+
+function setSyncPill(state, msg) {
+  const pill = document.getElementById('sync-pill');
+  if (!pill) return;
+  if (state === 'syncing') { pill.className = 'sync-pill sp-syncing'; pill.textContent = '⟳ ' + (msg||'Syncing...'); }
+  else if (state === 'error')  { pill.className = 'sync-pill sp-error';  pill.textContent = '⬤ ' + (msg||'Sync failed'); }
+  else updateSyncPill();
+}
+
+function updateImStatus() {
+  const url      = getSheetsUrl();
+  const lastSync = ld('last_sync', null);
+  const dot      = document.getElementById('im-dot');
+  const txt      = document.getElementById('im-status-txt');
+  const urlInp   = document.getElementById('im-url');
+  if (urlInp && url) urlInp.value = url;
+
+  if (!dot || !txt) return;
+  if (!url) {
+    dot.style.background = '#D1D5DB'; txt.textContent = 'Belum dikonfigurasi';
+  } else if (lastSync) {
+    const d  = new Date(lastSync);
+    const ts = d.toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'2-digit'}) + ' ' +
+               d.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
+    dot.style.background = '#059669';
+    txt.textContent = 'Terkoneksi · last sync ' + ts;
+  } else {
+    dot.style.background = '#D97706';
+    txt.textContent = 'URL tersimpan · belum pernah sync';
+  }
+}
+
+function showIntegration() {
+  updateImStatus();
+  document.getElementById('imodal').classList.add('show');
+}
+function closeIntegration() {
+  document.getElementById('imodal').classList.remove('show');
+}
+
+function saveSheetUrl() {
+  const val = document.getElementById('im-url').value.trim();
+  if (val && !val.startsWith('https://script.google.com')) {
+    toast('URL tidak valid. Harus dari script.google.com', 'err'); return;
+  }
+  sv('sheets_url', val || null);
+  updateImStatus(); updateSyncPill();
+  if (val) toast('✓ URL tersimpan! Sekarang coba Push to Sheets', 'ok');
+  else toast('URL dihapus', 'info');
+}
+
+// Pull: JSONP GET dari Apps Script
+function pullFromSheets() {
+  const url = getSheetsUrl();
+  if (!url) { toast('Set Apps Script URL dulu ya.', 'warn'); return; }
+
+  setSyncPill('syncing', 'Pulling...');
+  const dot = document.getElementById('im-dot');
+  const txt = document.getElementById('im-status-txt');
+  if (dot) dot.style.background = '#8B6EE8';
+  if (txt) txt.textContent = 'Menarik data dari Sheets...';
+
+  const cbName = 'gs_' + Date.now();
+  const timeout = setTimeout(() => {
+    delete window[cbName];
+    const sc = document.querySelector(`script[data-cb="${cbName}"]`);
+    if (sc) sc.remove();
+    setSyncPill('error', 'Pull timeout');
+    if (dot) dot.style.background = '#DC2626';
+    if (txt) txt.textContent = 'Timeout — cek URL dan akses Apps Script';
+    toast('Timeout. Pastikan URL benar dan Access: Anyone', 'err');
+  }, 12000);
+
+  window[cbName] = function(data) {
+    clearTimeout(timeout);
+    try {
+      if (data.pipeline) sv('pipeline', data.pipeline);
+      if (data.hires)    sv('hires',    data.hires);
+      if (data.health)   sv('health',   data.health);
+      if (data.projects) sv('projects', data.projects);
+      if (data.selfdev)  sv('selfdev',  data.selfdev);
+      if (data.todos)    sv('todos',    data.todos);
+      sv('last_sync', new Date().toISOString());
+      setSyncPill('synced'); updateImStatus(); renderAll();
+      toast('✓ Pull berhasil! Data dari Sheets dimuat.', 'ok');
+    } catch(e) { setSyncPill('error', 'Parse error'); toast('Gagal parse data dari Sheets', 'err'); }
+    delete window[cbName];
+    const sc = document.querySelector(`script[data-cb="${cbName}"]`);
+    if (sc) sc.remove();
+  };
+
+  const sc = document.createElement('script');
+  sc.setAttribute('data-cb', cbName);
+  sc.src = url + (url.includes('?') ? '&' : '?') + 'callback=' + cbName;
+  sc.onerror = () => {
+    clearTimeout(timeout); delete window[cbName]; sc.remove();
+    setSyncPill('error', 'Pull failed');
+    if (dot) dot.style.background = '#DC2626';
+    if (txt) txt.textContent = 'Gagal — cek URL dan deployment Apps Script';
+    toast('Gagal pull. Cek URL dan pastikan Access: Anyone', 'err');
+  };
+  document.head.appendChild(sc);
+}
+
+// Push: POST ke Apps Script (no-cors, response opaque tapi request terkirim)
+async function pushToSheets() {
+  const url = getSheetsUrl();
+  if (!url) { toast('Set Apps Script URL dulu ya.', 'warn'); return; }
+
+  const ok = await showConfirm('Push semua data lokal ke Google Sheets?\nData yang ada di Sheets akan ditimpa.', 'Ya, push sekarang');
+  if (!ok) return;
+
+  setSyncPill('syncing', 'Pushing...');
+  const dot = document.getElementById('im-dot');
+  const txt = document.getElementById('im-status-txt');
+  if (dot) dot.style.background = '#8B6EE8';
+  if (txt) txt.textContent = 'Mengirim data ke Sheets...';
+
+  const payload = {
+    pipeline: ld('pipeline', DEF.pipeline),
+    hires:    ld('hires',    DEF.hires),
+    health:   ld('health',   DEF.health),
+    projects: ld('projects', DEF.projects),
+    selfdev:  ld('selfdev',  DEF.selfdev),
+    todos:    ld('todos',    DEF.todos)
+  };
+
+  try {
+    await fetch(url, { method:'POST', mode:'no-cors', body:JSON.stringify(payload) });
+    sv('last_sync', new Date().toISOString());
+    sv('last_push', new Date().toISOString());
+    setSyncPill('synced'); updateImStatus();
+    toast('✓ Push berhasil! Cek spreadsheet kamu.', 'ok');
+  } catch(e) {
+    setSyncPill('error', 'Push failed');
+    if (dot) dot.style.background = '#DC2626';
+    if (txt) txt.textContent = 'Gagal push ke Sheets';
+    toast('Gagal push: ' + e.message, 'err');
+  }
+}
+
+// ═══════════════════════════════════
+// INIT
+// ═══════════════════════════════════
+function initApp() {
+  const sel = document.getElementById('m-sel');
+  if (sel) sel.innerHTML = MF.map((m,i) =>
+    `<option value="${i+1}" ${i+1 === ST.month ? 'selected' : ''}>${m}</option>`).join('');
+  updateSyncPill();
+  renderAll();
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  if (localStorage.getItem('aisy_auth') === '1') {
+    document.getElementById('auth').style.display = 'none';
+    document.getElementById('app').style.display  = 'block';
+    initApp();
+  } else {
+    document.getElementById('auth').style.display = 'flex';
+  }
+  document.getElementById('modal').addEventListener('click', function(e) {
+    if (e.target === this) closeM();
+  });
+  document.getElementById('imodal').addEventListener('click', function(e) {
+    if (e.target === this) closeIntegration();
+  });
+  document.getElementById('cmodal').addEventListener('click', function(e) {
+    if (e.target === this) resolveC(false);
+  });
+  document.getElementById('pmodal').addEventListener('click', function(e) {
+    if (e.target === this) resolveP(false);
+  });
+  document.getElementById('cmodal').addEventListener('click', function(e) {
+    if (e.target === this) resolveC(false);
+  });
+  document.getElementById('pmodal').addEventListener('click', function(e) {
+    if (e.target === this) resolveP(false);
+  });
+});
+</script>
+</body>
+</html>
