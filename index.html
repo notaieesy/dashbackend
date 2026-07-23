@@ -1,0 +1,2675 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aisy's Work Related</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+:root{
+  --ac50:#EEF2FF;--ac100:#E0E7FF;--ac200:#C7D2FE;--ac300:#A5B4FC;
+  --ac400:#818CF8;--ac500:#6366F1;--ac600:#4F46E5;--ac700:#4338CA;
+  --bg:#F7F8FB;--sf:#FFFFFF;--bd:#E6E8EF;--bd2:#EEF0F5;
+  --t1:#111827;--t2:#6B7280;--t3:#9CA3AF;
+  --ok:#059669;--ok-bg:#D1FAE5;--ok-bd:#A7F3D0;
+  --wn:#D97706;--wn-bg:#FEF3C7;--wn-bd:#FDE68A;
+  --er:#DC2626;--er-bg:#FEE2E2;--er-bd:#FECACA;
+  --pk:#DB2777;--pk-bg:#FCE7F3;--pk-bd:#FBCFE8;
+  --sbw:228px;--hh:56px;
+  --font:'Inter',system-ui,-apple-system,sans-serif;
+  --rad:12px;--rsm:8px;--rxs:6px;
+  --shadow:0 1px 2px rgba(17,24,39,.04),0 1px 3px rgba(17,24,39,.03);
+  --shadow-md:0 4px 14px rgba(17,24,39,.06),0 1px 3px rgba(17,24,39,.04);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);background:var(--bg);color:var(--t1);font-size:14px;min-height:100vh;line-height:1.5;-webkit-font-smoothing:antialiased}
+button{cursor:pointer;border:none;background:none;font-family:inherit;font-size:14px}
+input,select,textarea{font-family:inherit;font-size:13px;outline:none}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-thumb{background:var(--bd);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--t3)}
+a{color:inherit}
+
+/* ── AUTH ── */
+#auth{display:none;align-items:center;justify-content:center;min-height:100vh;
+  background:radial-gradient(circle at 20% 20%, var(--ac50) 0%, var(--bg) 55%)}
+.ac{background:var(--sf);border-radius:20px;padding:42px 38px;width:368px;
+  box-shadow:0 12px 40px rgba(79,70,229,.10);border:1px solid var(--bd2)}
+.ab{text-align:center;margin-bottom:30px}
+.ab-logo{width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,var(--ac500),var(--ac700));
+  margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:19px;color:#fff;
+  box-shadow:0 6px 16px rgba(79,70,229,.25)}
+.ab h1{font-size:19px;font-weight:800;color:var(--t1);margin-bottom:5px;letter-spacing:-.01em}
+.ab p{font-size:12.5px;color:var(--t3)}
+.fg{margin-bottom:15px}
+.fg label{display:block;font-size:11.5px;font-weight:600;color:var(--t2);margin-bottom:6px;letter-spacing:.1px}
+.fg input{width:100%;padding:10px 13px;border:1.5px solid var(--bd);border-radius:var(--rsm);
+  background:var(--bg);color:var(--t1);transition:border-color .15s}
+.fg input:focus{border-color:var(--ac400);background:var(--sf)}
+.a-btn{width:100%;padding:11px;background:var(--ac600);color:#fff;border-radius:var(--rsm);
+  font-weight:700;font-size:14px;font-family:var(--font);transition:background .15s;margin-top:8px}
+.a-btn:hover{background:var(--ac700)}
+.a-err{font-size:12px;color:var(--er);margin-top:11px;text-align:center;min-height:18px}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════ AUTH PAGE ═══════════════════════ -->
+<div id="auth">
+  <div class="ac">
+    <div class="ab">
+      <div class="ab-logo">✦</div>
+      <h1>Aisy's Work Related</h1>
+      <p>Personal dashboard</p>
+    </div>
+    <div class="fg">
+      <label>Username</label>
+      <input type="text" id="inp-u" placeholder="Enter username" autocomplete="username">
+    </div>
+    <div class="fg">
+      <label>Password</label>
+      <input type="password" id="inp-p" placeholder="Enter password" autocomplete="current-password"
+        onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="a-btn" onclick="doLogin()">Sign in</button>
+    <p class="a-err" id="a-err"></p>
+  </div>
+</div>
+<style id="app-css">
+/* ── APP LAYOUT ── */
+#app{display:none;height:100vh;overflow:hidden}
+.layout{display:flex;height:100vh}
+
+/* ── SIDEBAR ── */
+.sb{width:var(--sbw);flex-shrink:0;background:var(--sf);border-right:1px solid var(--bd);
+  display:flex;flex-direction:column;height:100vh;overflow-y:auto}
+.sb-brand{padding:20px 18px 16px;border-bottom:1px solid var(--bd)}
+.sb-pip{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--ac500),var(--ac700));
+  display:flex;align-items:center;justify-content:center;font-size:14px;margin-bottom:10px;color:#fff}
+.sb-name{font-size:15px;font-weight:800;color:var(--t1);letter-spacing:-.01em}
+.sb-role{font-size:10.5px;color:var(--t3);margin-top:3px;line-height:1.5}
+.sb-nav{flex:1;padding:10px 8px 0}
+.sb-grp{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;
+  padding:12px 10px 6px}
+.sb-grp:first-child{padding-top:2px}
+.sb-a{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:var(--rxs);
+  font-size:13px;color:var(--t2);font-weight:500;margin-bottom:1px;cursor:pointer;transition:all .13s}
+.sb-a:hover{background:var(--bg);color:var(--t1)}
+.sb-a.active{background:var(--ac50);color:var(--ac700);font-weight:700}
+.sb-a .ni{font-size:14px;width:17px;text-align:center;flex-shrink:0}
+.sb-foot{padding:10px 8px 16px;border-top:1px solid var(--bd);display:flex;flex-direction:column;gap:2px;margin-top:auto}
+.sfb{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:var(--rxs);
+  font-size:12px;color:var(--t3);width:100%;transition:all .13s}
+.sfb:hover{background:var(--bg);color:var(--t2)}
+.sfb.danger:hover{background:var(--er-bg);color:var(--er)}
+
+/* ── MAIN ── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+.topbar{height:var(--hh);background:var(--sf);border-bottom:1px solid var(--bd);
+  display:flex;align-items:center;padding:0 24px;gap:12px;flex-shrink:0}
+.tb-title{font-size:14.5px;color:var(--t1);flex:1;font-weight:700}
+.m-sel{padding:6px 12px;border:1.5px solid var(--bd);border-radius:20px;font-size:12px;
+  color:var(--t2);background:var(--sf);font-family:var(--font);font-weight:500}
+.m-sel:focus{border-color:var(--ac400);outline:none}
+.content{flex:1;overflow-y:auto;padding:20px 24px 36px}
+
+/* ── PAGES ── */
+.page{display:none}.page.active{display:block}
+.phead{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:18px;gap:12px}
+.pht{font-size:17px;font-weight:800;color:var(--t1);letter-spacing:-.01em}
+.phs{font-size:12px;color:var(--t3);margin-top:3px;max-width:620px;line-height:1.6}
+
+/* ── CONTRACT TIMELINE ── */
+.tl{display:flex;align-items:center;gap:12px;background:var(--sf);border:1px solid var(--bd);
+  border-radius:var(--rad);padding:14px 18px;margin-bottom:18px;box-shadow:var(--shadow)}
+.tl-lbl{font-size:10px;color:var(--t3);white-space:nowrap;font-weight:700}
+.tl-ms{display:flex;gap:3px;flex:1}
+.tl-m{flex:1}
+.tl-trk{height:5px;background:var(--bg);border-radius:3px;overflow:hidden;margin-bottom:4px}
+.tl-fill{height:100%;border-radius:3px}
+.tl-fill.s{background:var(--ac500)}
+.tl-fill.n{background:var(--pk)}
+.tl-ml{font-size:9px;color:var(--t3);text-align:center;font-weight:500}
+.tl-ml.cur{color:var(--ac600);font-weight:800}
+.tl-info{font-size:9.5px;color:var(--t3);white-space:nowrap;line-height:1.7;text-align:right}
+
+/* ── KPI CARDS ── */
+.kg{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:11px;margin-bottom:18px}
+.kc{background:var(--sf);border:1px solid var(--bd);border-radius:var(--rad);padding:14px 16px;box-shadow:var(--shadow)}
+.kl{font-size:10.5px;color:var(--t3);margin-bottom:7px;font-weight:600;letter-spacing:.1px}
+.kv{font-size:23px;font-weight:800;line-height:1;color:var(--t1);letter-spacing:-.02em}
+.kv.ok{color:var(--ok)}.kv.ac{color:var(--ac600)}.kv.pk{color:var(--pk)}.kv.wn{color:var(--wn)}.kv.er{color:var(--er)}
+.ks{font-size:11px;color:var(--t3);margin-top:5px}
+.ks.ok{color:var(--ok)}.ks.er{color:var(--er)}
+
+/* ── GRID ── */
+.tc{display:grid;gap:14px;margin-bottom:16px}
+.tc.a{grid-template-columns:1fr 1fr}
+.tc.b{grid-template-columns:1fr 1fr}
+.tc.c{grid-template-columns:1.3fr 1fr}
+.card{background:var(--sf);border:1px solid var(--bd);border-radius:var(--rad);padding:17px 19px;box-shadow:var(--shadow)}
+.ct{font-size:13.5px;font-weight:700;color:var(--t1);margin-bottom:2px}
+.cs{font-size:11.5px;color:var(--t3);margin-bottom:13px}
+
+/* ── FUNNEL (custom bars) ── */
+.fn{display:flex;flex-direction:column;gap:9px}
+.fr{display:flex;align-items:center;gap:8px}
+.fl{font-size:11px;color:var(--t2);width:96px;text-align:right;flex-shrink:0;font-weight:500}
+.fw{flex:1;height:24px;background:var(--bg);border-radius:5px;overflow:hidden;position:relative}
+.fbar{height:100%;border-radius:5px;transition:width .3s}
+.fc{font-size:13px;font-weight:700;color:var(--t1);width:26px;text-align:right;flex-shrink:0}
+.fd{font-size:10px;color:var(--t3);width:40px;text-align:right;flex-shrink:0}
+
+/* ── CHART ── */
+.cw{position:relative;width:100%;height:200px}
+.cw.sm{height:170px}
+
+/* ── SECTION BAR ── */
+.sbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px;gap:8px}
+.sh{font-size:13.5px;font-weight:700;color:var(--t1)}
+.ss{font-size:11.5px;color:var(--t3)}
+.add-btn{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;
+  background:var(--ac600);color:#fff;border-radius:var(--rxs);font-size:12.5px;
+  font-weight:600;font-family:var(--font);transition:background .15s;flex-shrink:0;white-space:nowrap}
+.add-btn:hover{background:var(--ac700)}
+.add-btn.ghost{background:var(--sf);color:var(--ac700);border:1.5px solid var(--ac200)}
+.add-btn.ghost:hover{background:var(--ac50)}
+
+/* ── TABS ── */
+.tabs{display:flex;gap:3px;background:var(--bg);padding:3px;border-radius:var(--rxs);
+  width:fit-content;margin-bottom:13px;flex-wrap:wrap}
+.tab{padding:6px 14px;border-radius:5px;font-size:12px;font-weight:500;color:var(--t2);
+  cursor:pointer;transition:all .13s;font-family:var(--font);white-space:nowrap}
+.tab.active{background:var(--sf);color:var(--ac700);font-weight:700;box-shadow:var(--shadow)}
+
+/* ── TABLE ── */
+.tw{overflow-x:auto}
+.tbl{width:100%;border-collapse:collapse;font-size:12.5px}
+.tbl th{font-size:10px;color:var(--t3);font-weight:700;text-align:left;
+  padding:6px 10px 8px;border-bottom:1px solid var(--bd);white-space:nowrap;letter-spacing:.3px;text-transform:uppercase}
+.tbl td{padding:10px 10px;border-bottom:1px solid var(--bd2);color:var(--t1);vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:var(--bg)}
+
+/* ── BADGES ── */
+.badge{display:inline-flex;align-items:center;font-size:10px;font-weight:700;
+  padding:3px 8px;border-radius:9px;white-space:nowrap}
+.b-p0{background:var(--er-bg);color:#991B1B}
+.b-p1{background:var(--wn-bg);color:#92400E}
+.b-p2{background:var(--ok-bg);color:#065F46}
+.b-sl{background:var(--ac50);color:var(--ac600)}
+.b-hr{background:var(--pk-bg);color:#9D174D}
+.b-ui{background:#EEF2FF;color:#3730A3}
+.b-sc{background:#FFF7ED;color:#9A3412}
+.b-of{background:var(--ok-bg);color:var(--ok)}
+.b-active{background:var(--ok-bg);color:var(--ok)}
+.b-resigned{background:var(--er-bg);color:var(--er)}
+.b-ended{background:#F3F4F6;color:#374151}
+.b-extended{background:#EEF2FF;color:#3730A3}
+.b-done{background:var(--ok-bg);color:var(--ok)}
+.b-prog{background:var(--ac100);color:var(--ac700)}
+.b-plan{background:#F3F4F6;color:#374151}
+.b-hired{background:var(--ok-bg);color:var(--ok)}
+.b-rejected{background:var(--er-bg);color:var(--er)}
+.b-withdrew{background:#F3F4F6;color:#4B5563}
+.b-onhold{background:var(--wn-bg);color:var(--wn)}
+.b-inprocess{background:var(--ac50);color:var(--ac600)}
+.b-yes{background:var(--ok-bg);color:var(--ok)}
+.b-no{background:var(--er-bg);color:var(--er)}
+.b-pending{background:#F3F4F6;color:#4B5563}
+
+/* ── ACTION BUTTONS ── */
+.ae{padding:4px 9px;border-radius:5px;font-size:11px;font-weight:600;
+  cursor:pointer;border:1px solid;font-family:var(--font);transition:all .13s}
+.ae-e{background:var(--ac50);border-color:var(--ac200);color:var(--ac700)}
+.ae-e:hover{background:var(--ac100)}
+.ae-d{background:var(--er-bg);border-color:var(--er-bd);color:var(--er)}
+.ae-d:hover{background:#FEE2E2}
+
+/* ── PROCESS HEALTH ── */
+.hs{display:flex;align-items:center;gap:15px;padding:15px 18px;
+  background:linear-gradient(135deg,var(--ac50),var(--pk-bg));
+  border-radius:var(--rsm);margin-bottom:14px;border:1px solid var(--bd)}
+.gc{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:21px;font-weight:800;flex-shrink:0}
+.gA{background:var(--ok-bg);color:var(--ok);border:2px solid var(--ok-bd)}
+.gB{background:var(--wn-bg);color:var(--wn);border:2px solid var(--wn-bd)}
+.gC{background:var(--er-bg);color:var(--er);border:2px solid var(--er-bd)}
+.ph-row{display:flex;align-items:center;gap:10px;padding:11px 12px;border-bottom:1px solid var(--bd2)}
+.ph-row:last-child{border-bottom:none}
+.phi{width:17px;height:17px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:9px;flex-shrink:0}
+.phi-ok{background:var(--ok-bg);color:var(--ok)}
+.phi-wn{background:var(--wn-bg);color:var(--wn)}
+.phi-er{background:var(--er-bg);color:var(--er)}
+.ph-lbl{flex:1;font-size:13px}
+.ph-val{font-size:12px;font-weight:700;min-width:34px;text-align:right}
+.ph-ok{color:var(--ok)}.ph-wn{color:var(--wn)}.ph-er{color:var(--er)}
+
+/* ── PROJECTS ── */
+.pl{display:flex;flex-direction:column;gap:10px}
+.pi{background:var(--sf);border:1px solid var(--bd);border-radius:var(--rad);
+  padding:14px 17px;display:flex;gap:12px;align-items:flex-start;box-shadow:var(--shadow)}
+.pi-l{flex:1;min-width:0}
+.pi-n{font-size:13.5px;font-weight:700;color:var(--t1);margin-bottom:4px}
+.pi-d{font-size:12px;color:var(--t2);line-height:1.55;margin-bottom:4px}
+.pi-i{font-size:11px;color:var(--t3)}
+.pi-r{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0}
+
+/* ── SELF DEV / LISTS ── */
+.skl-list{display:flex;flex-direction:column;gap:8px}
+.skl-item{background:var(--bg);border:1px solid var(--bd);border-radius:var(--rxs);
+  padding:12px 14px;display:flex;gap:10px;align-items:flex-start}
+.skl-l{flex:1;min-width:0}
+.skl-n{font-size:13px;font-weight:700;color:var(--t1);margin-bottom:3px}
+.skl-s{font-size:11.5px;color:var(--t2);line-height:1.5}
+.skl-s::before{content:"↳ ";color:var(--t3)}
+.skl-r{display:flex;gap:4px;flex-shrink:0;padding-top:1px}
+
+/* ── LEARNING LOG ── */
+.lrn-item{background:var(--bg);border:1px solid var(--bd);border-radius:var(--rxs);
+  padding:13px 15px;margin-bottom:8px}
+.lrn-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:5px}
+.lrn-n{font-size:13px;font-weight:700;color:var(--t1)}
+.lrn-topic{display:inline-block;font-size:10px;font-weight:700;color:var(--ac600);
+  background:var(--ac50);padding:2px 8px;border-radius:8px;margin-bottom:6px}
+.lrn-rel{font-size:12px;color:var(--t2);line-height:1.55}
+.lrn-rel::before{content:"↳ Relevansi: ";color:var(--t3);font-weight:600}
+.lrn-date{font-size:10px;color:var(--t3);white-space:nowrap;flex-shrink:0}
+
+/* ── REFLECTION ── */
+.rf-item{background:var(--sf);border:1px solid var(--bd);border-radius:var(--rad);
+  padding:16px 18px;margin-bottom:12px;box-shadow:var(--shadow)}
+.rf-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:11px;
+  padding-bottom:11px;border-bottom:1px solid var(--bd2)}
+.rf-wk{font-size:13.5px;font-weight:700;color:var(--t1)}
+.rf-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.rf-blk{font-size:12px;line-height:1.6}
+.rf-blk b{display:block;font-size:10.5px;color:var(--t3);font-weight:700;text-transform:uppercase;
+  letter-spacing:.3px;margin-bottom:4px}
+.rf-blk span{color:var(--t1)}
+
+/* ── TODO & TASK ── */
+.td-list{display:flex;flex-direction:column;gap:8px}
+.td-item{display:flex;flex-direction:column;gap:9px;padding:12px 14px;
+  background:var(--sf);border:1px solid var(--bd);border-radius:var(--rxs)}
+.td-top{display:flex;align-items:center;gap:9px}
+.td-date{font-size:10px;font-weight:700;color:var(--ac600);background:var(--ac50);
+  border-radius:5px;padding:5px 6px;text-align:center;flex-shrink:0;min-width:38px;line-height:1.25}
+.td-date.overdue{background:var(--er-bg);color:var(--er)}
+.td-txt{flex:1;font-size:13px;font-weight:600;min-width:0}
+.td-txt.done{text-decoration:line-through;color:var(--t3)}
+.td-badge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:9px;flex-shrink:0;white-space:nowrap}
+.td-actions{display:flex;gap:4px;flex-shrink:0}
+.td-prog-row{display:flex;align-items:center;gap:9px;padding-left:47px}
+.td-prog-track{flex:1;height:6px;background:var(--bg);border-radius:3px;overflow:hidden}
+.td-prog-fill{height:100%;border-radius:3px;background:var(--ac500);transition:width .2s}
+.td-prog-fill.done{background:var(--ok)}
+.td-prog-pct{font-size:10.5px;font-weight:700;color:var(--t2);width:34px;text-align:right;flex-shrink:0}
+.td-chk{width:15px;height:15px;accent-color:var(--ac600);cursor:pointer;flex-shrink:0}
+.td-subs{display:flex;flex-direction:column;gap:5px;padding-left:47px}
+.td-sub-row{display:flex;align-items:center;gap:8px}
+.td-sub-row input[type=checkbox]{width:14px;height:14px;accent-color:var(--ac600);cursor:pointer;flex-shrink:0}
+.td-sub-txt{font-size:12px;color:var(--t2)}
+.td-sub-txt.done{text-decoration:line-through;color:var(--t3)}
+.tdg-year{font-size:14px;font-weight:800;color:var(--ac700);margin:20px 0 10px;
+  padding-bottom:7px;border-bottom:2px solid var(--ac200)}
+.tdg-year:first-child{margin-top:0}
+.tdg-month{font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;
+  letter-spacing:.4px;margin:13px 0 8px}
+.tdg-month:first-of-type{margin-top:0}
+
+/* ── SUBTASK EDITOR (in modal) ── */
+.subtask-row{display:flex;gap:6px;align-items:center;margin-bottom:7px}
+.subtask-row input[type=checkbox]{width:15px;height:15px;accent-color:var(--ac600);cursor:pointer;flex-shrink:0}
+.subtask-row input[type=text]{flex:1;padding:8px 11px;border:1.5px solid var(--bd);
+  border-radius:var(--rxs);background:var(--bg);color:var(--t1);font-family:var(--font);font-size:12.5px}
+.subtask-row input[type=text]:focus{border-color:var(--ac400);background:var(--sf);outline:none}
+.subtask-rm{color:var(--er);font-size:15px;padding:3px 7px;border-radius:5px;flex-shrink:0}
+.subtask-rm:hover{background:var(--er-bg)}
+
+/* ── WORKFORCE ── */
+.wf-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--bd2)}
+.wf-row:last-child{border-bottom:none}
+.wf-name{font-size:12.5px;font-weight:600;color:var(--t1);width:120px;flex-shrink:0}
+.wf-track{flex:1;height:20px;background:var(--bg);border-radius:5px;position:relative;overflow:hidden}
+.wf-fill{height:100%;background:var(--ac400);border-radius:5px;transition:width .3s}
+.wf-fill.over{background:var(--wn)}
+.wf-fill.under{background:var(--ac400)}
+.wf-target{position:absolute;top:0;bottom:0;width:2px;background:var(--t1)}
+.wf-num{font-size:11.5px;color:var(--t2);width:70px;text-align:right;flex-shrink:0;font-weight:600}
+.exp-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--bd2);font-size:12.5px}
+.exp-row:last-child{border-bottom:none}
+.exp-days{font-size:10px;font-weight:700;padding:3px 8px;border-radius:9px;flex-shrink:0}
+.exp-30{background:var(--er-bg);color:var(--er)}
+.exp-60{background:var(--wn-bg);color:var(--wn)}
+.exp-90{background:var(--ac50);color:var(--ac600)}
+
+#today-card{border-left:3px solid var(--wn);background:linear-gradient(135deg,var(--wn-bg) 0%,var(--sf) 40%)}
+
+/* ── PAGER ── */
+.pager{display:flex;gap:4px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+.pg-btn{min-width:28px;height:28px;padding:0 8px;border-radius:6px;border:1px solid var(--bd);
+  background:var(--sf);color:var(--t2);font-size:12px;font-weight:600;font-family:var(--font);cursor:pointer;transition:all .13s}
+.pg-btn:hover:not(:disabled){background:var(--bg)}
+.pg-btn.active{background:var(--ac600);color:#fff;border-color:var(--ac600)}
+.pg-btn:disabled{opacity:.35;cursor:not-allowed}
+
+.word-tags{display:flex;flex-wrap:wrap;gap:6px}
+.word-tag{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;
+  padding:5px 11px;border-radius:14px;background:var(--ac50);color:var(--ac700)}
+.word-tag .cnt{font-size:9.5px;font-weight:700;color:var(--ac400);background:#fff;
+  border-radius:8px;padding:1px 6px}
+.streak-row{display:flex;gap:11px;margin-bottom:8px}
+.streak-box{flex:1;background:var(--bg);border:1px solid var(--bd);border-radius:var(--rxs);padding:12px 14px;text-align:center}
+.streak-num{font-size:22px;font-weight:800;color:var(--t1)}
+.streak-lbl{font-size:10.5px;color:var(--t3);margin-top:3px}
+
+/* ── EMPTY STATE ── */
+.empty{text-align:center;padding:30px;color:var(--t3);font-size:13px}
+.empty span{font-size:27px;display:block;margin-bottom:8px}
+
+/* ── LEGEND ROW ── */
+.legend{display:flex;gap:13px;flex-wrap:wrap;margin-bottom:10px}
+.leg-item{display:flex;align-items:center;gap:5px;font-size:10.5px;color:var(--t3);font-weight:500}
+.leg-dot{width:9px;height:9px;border-radius:2px;flex-shrink:0}
+</style>
+<style id="modal-css">
+/* ── MODAL ── */
+#modal{display:none;position:fixed;inset:0;background:rgba(17,24,39,.42);
+  z-index:100;align-items:center;justify-content:center}
+#modal.show{display:flex}
+.mc{background:var(--sf);border-radius:16px;width:500px;max-width:93vw;
+  max-height:85vh;overflow:hidden;display:flex;flex-direction:column;
+  box-shadow:0 20px 60px rgba(17,24,39,.18)}
+.mh{padding:17px 21px;border-bottom:1px solid var(--bd);
+  display:flex;align-items:center;justify-content:space-between}
+.mh-t{font-size:14.5px;font-weight:700;color:var(--t1)}
+.m-x{font-size:18px;color:var(--t3);cursor:pointer;padding:1px 6px;border-radius:5px}
+.m-x:hover{background:var(--bg)}
+.mb{padding:19px 21px;overflow-y:auto;flex:1}
+.mfg{margin-bottom:13px}
+.mfg label{display:block;font-size:11.5px;font-weight:600;color:var(--t2);margin-bottom:5px}
+.mfg input,.mfg select,.mfg textarea{width:100%;padding:9px 12px;
+  border:1.5px solid var(--bd);border-radius:var(--rxs);background:var(--bg);
+  color:var(--t1);font-family:var(--font);font-size:13px}
+.mfg input:focus,.mfg select:focus,.mfg textarea:focus{border-color:var(--ac400);background:var(--sf)}
+.mfg textarea{resize:vertical;min-height:68px}
+.mfr{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.mf{padding:13px 21px;border-top:1px solid var(--bd);display:flex;justify-content:flex-end;gap:8px}
+.m-save{padding:9px 18px;background:var(--ac600);color:#fff;border-radius:var(--rxs);
+  font-weight:700;font-size:13px;font-family:var(--font)}
+.m-save:hover{background:var(--ac700)}
+.m-cancel{padding:9px 18px;background:var(--sf);color:var(--t2);
+  border:1px solid var(--bd);border-radius:var(--rxs);font-size:13px;font-family:var(--font)}
+.m-cancel:hover{background:var(--bg)}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(14px);
+  padding:11px 22px;border-radius:var(--rsm);font-size:13px;font-family:var(--font);
+  font-weight:600;z-index:600;opacity:0;transition:all .25s ease;max-width:380px;
+  text-align:center;box-shadow:0 4px 18px rgba(0,0,0,.18);pointer-events:none;white-space:pre-line}
+.toast.in{opacity:1;transform:translateX(-50%) translateY(0)}
+.t-ok{background:#059669;color:#fff}
+.t-err{background:#DC2626;color:#fff}
+.t-info{background:var(--ac600);color:#fff}
+.t-warn{background:#D97706;color:#fff}
+
+/* ── CONFIRM MODAL ── */
+#cmodal{display:none;position:fixed;inset:0;background:rgba(17,24,39,.44);
+  z-index:400;align-items:center;justify-content:center}
+#cmodal.show{display:flex}
+.cm-card{background:var(--sf);border-radius:16px;width:380px;max-width:90vw;
+  box-shadow:0 20px 60px rgba(17,24,39,.2);overflow:hidden}
+.cm-msg{padding:24px 24px 14px;font-size:14px;color:var(--t1);line-height:1.65;white-space:pre-line}
+.cm-foot{padding:10px 20px 18px;display:flex;justify-content:flex-end;gap:8px}
+.cm-yes-d{padding:9px 18px;border-radius:var(--rxs);font-weight:700;font-size:13px;
+  font-family:var(--font);background:#DC2626;color:#fff;border:none}
+.cm-yes-d:hover{background:#B91C1C}
+
+/* ── PROMPT MODAL ── */
+#pmodal{display:none;position:fixed;inset:0;background:rgba(17,24,39,.44);
+  z-index:400;align-items:center;justify-content:center}
+#pmodal.show{display:flex}
+.pm-card{background:var(--sf);border-radius:16px;width:380px;max-width:90vw;
+  box-shadow:0 20px 60px rgba(17,24,39,.2);overflow:hidden}
+.pm-inner{padding:21px 22px 10px}
+.pm-lbl{font-size:12px;font-weight:700;color:var(--t2);margin-bottom:7px}
+.pm-inp{width:100%;padding:9px 12px;border:1.5px solid var(--bd);border-radius:var(--rxs);
+  background:var(--bg);color:var(--t1);font-size:13px;font-family:var(--font)}
+.pm-inp:focus{border-color:var(--ac400);outline:none}
+.pm-foot{padding:10px 20px 16px;display:flex;justify-content:flex-end;gap:8px}
+</style>
+<!-- ═══════════════════════ APP ═══════════════════════ -->
+<div id="app">
+<div class="layout">
+
+<!-- SIDEBAR -->
+<nav class="sb">
+  <div class="sb-brand">
+    <div class="sb-pip">✦</div>
+    <div class="sb-name">Aisy's Work Related</div>
+  </div>
+  <div class="sb-nav">
+    <div class="sb-grp">Recruitment</div>
+    <div class="sb-a active" data-nav="recruitment" onclick="nav('recruitment')">
+      <span class="ni">📊</span>Recruitment</div>
+    <div class="sb-a" data-nav="retention" onclick="nav('retention')">
+      <span class="ni">🎯</span>Hire &amp; Retention</div>
+
+    <div class="sb-grp">Performance</div>
+    <div class="sb-a" data-nav="health" onclick="nav('health')">
+      <span class="ni">✅</span>Process health</div>
+    <div class="sb-a" data-nav="projects" onclick="nav('projects')">
+      <span class="ni">📋</span>Projects</div>
+
+    <div class="sb-grp">Growth</div>
+    <div class="sb-a" data-nav="selfdev" onclick="nav('selfdev')">
+      <span class="ni">🌱</span>Self-development</div>
+    <div class="sb-a" data-nav="reflection" onclick="nav('reflection')">
+      <span class="ni">📝</span>Reflection</div>
+    <div class="sb-a" data-nav="todo" onclick="nav('todo')">
+      <span class="ni">🗒️</span>To-do &amp; Task</div>
+  </div>
+  <div class="sb-foot">
+    <button class="sfb" onclick="clearCache()">🗑️&nbsp; Clear cache</button>
+    <button class="sfb danger" onclick="doLogout()">🚪&nbsp; Sign out</button>
+  </div>
+</nav>
+
+<!-- MAIN AREA -->
+<div class="main">
+  <div class="topbar">
+    <div class="tb-title" id="tb-title">Recruitment</div>
+    <div id="today-date" style="font-size:12px;color:var(--t3);white-space:nowrap"></div>
+    <select class="m-sel" id="m-sel" onchange="changeMonth(+this.value)"></select>
+    <div id="sync-status" style="font-size:11px;color:var(--t3);display:flex;align-items:center;gap:5px"></div>
+  </div>
+
+  <div class="content">
+    <!-- ─── PAGE: RECRUITMENT ─── -->
+    <div class="page active" id="page-recruitment">
+      <div id="tl" class="tl"></div>
+      <div class="kg" id="kg"></div>
+
+      <div class="card" style="margin-bottom:16px">
+        <div class="sbar">
+          <div>
+            <div class="ct">Posisi (requisition)</div>
+            <div class="cs">Track posisi yang kamu handle — beda dari candidate tracker di bawah, ini level per-posisi (bisa banyak kandidat per posisi)</div>
+          </div>
+          <button class="add-btn" onclick="showM('position',null)">+ Add posisi</button>
+        </div>
+        <div class="kg" id="pos-kg" style="margin-bottom:14px"></div>
+        <div class="tabs">
+          <div class="tab active" onclick="switchPosTab('All',this)">All</div>
+          <div class="tab" onclick="switchPosTab('Open',this)">Open</div>
+          <div class="tab" onclick="switchPosTab('Closed',this)">Closed</div>
+        </div>
+        <div class="tw">
+          <table class="tbl">
+            <thead><tr>
+              <th>Posisi</th><th>Divisi</th><th>Headcount</th><th>Urgensi</th><th>Status</th><th>Bulan</th><th>Aksi</th>
+            </tr></thead>
+            <tbody id="pos-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="tc c">
+        <div class="card">
+          <div class="ct">Recruitment funnel</div>
+          <div class="cs">Konversi kandidat per stage, dengan % dari total shortlisted</div>
+          <div class="fn" id="fn"></div>
+        </div>
+        <div class="card">
+          <div class="ct">Source of hire</div>
+          <div class="cs">Dari mana kandidat yang berhasil di-hire berasal</div>
+          <div class="cw sm"><canvas id="source-c"></canvas></div>
+        </div>
+      </div>
+
+      <div class="tc b">
+        <div class="card">
+          <div class="ct">Rejection &amp; withdrawal reasons</div>
+          <div class="cs">Kenapa kandidat gagal lanjut atau mengundurkan diri</div>
+          <div class="cw sm"><canvas id="reject-c"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="ct">Time-to-fill by hire</div>
+          <div class="cs">Hari dari tanggal offer ke tanggal join</div>
+          <div class="legend">
+            <div class="leg-item"><div class="leg-dot" style="background:#059669"></div>Fast (≤7d)</div>
+            <div class="leg-item"><div class="leg-dot" style="background:#6366F1"></div>Normal (8–14d)</div>
+            <div class="leg-item"><div class="leg-dot" style="background:#DC2626"></div>Slow (&gt;14d)</div>
+          </div>
+          <div class="cw sm"><canvas id="ttf-c"></canvas></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="sbar">
+          <div>
+            <div class="sh">Candidate tracker</div>
+            <div class="ss">Track tiap kandidat per posisi, source, dan stage</div>
+          </div>
+          <button class="add-btn" onclick="showM('candidate',null)">+ Add candidate</button>
+        </div>
+        <div class="tabs">
+          <div class="tab active" onclick="switchTab('In Process',this)">In Process</div>
+          <div class="tab" onclick="switchTab('On Hold',this)">On Hold</div>
+          <div class="tab" onclick="switchTab('Hired',this)">Hired</div>
+          <div class="tab" onclick="switchTab('Not Hired',this)">Not Hired</div>
+        </div>
+        <div class="tw">
+          <table class="tbl">
+            <thead><tr>
+              <th>Kandidat</th><th>Posisi</th><th>Divisi</th><th>Urgensi</th>
+              <th>Source</th><th>Stage</th><th>Bulan</th><th>Aksi</th>
+            </tr></thead>
+            <tbody id="p-body"></tbody>
+          </table>
+        </div>
+        <div id="p-pager"></div>
+      </div>
+    </div>
+    <!-- ─── PAGE: HIRE & RETENTION ─── -->
+    <div class="page" id="page-retention">
+      <div class="phead">
+        <div>
+          <div class="pht">Hire &amp; Retention</div>
+          <div class="phs">Semua hire yang kamu proses, plus quality of hire dan retention — apakah hire-nya bertahan dan berkembang setelah join?</div>
+        </div>
+        <button class="add-btn" onclick="showM('hire',null)">+ Add hire</button>
+      </div>
+
+      <div class="kg" id="rt-kg"></div>
+
+      <div class="tc b">
+        <div class="card">
+          <div class="ct">Retention rate by source</div>
+          <div class="cs">% hire yang masih aktif, per sumber kandidat</div>
+          <div class="cw sm"><canvas id="retsrc-c"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="ct">Cohort active rate</div>
+          <div class="cs">% hire yang masih aktif di hari ke-30 / 60 / 90</div>
+          <div class="cw sm"><canvas id="cohort-c"></canvas></div>
+        </div>
+      </div>
+
+      <div class="tc b">
+        <div class="card">
+          <div class="ct">Resignation reasons</div>
+          <div class="cs">Breakdown alasan resign (voluntary) dari hire yang keluar sendiri</div>
+          <div class="cw sm"><canvas id="resign-c"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="ct">PHK reasons</div>
+          <div class="cs">Breakdown alasan PHK (involuntary) dari hire yang diberhentikan</div>
+          <div class="cw sm"><canvas id="phk-c"></canvas></div>
+        </div>
+      </div>
+
+      <div class="tc b">
+        <div class="card">
+          <div class="ct">Tenure snapshot</div>
+          <div class="cs">Ringkasan lama kerja hire yang sudah keluar vs masih aktif</div>
+          <div id="tenure-box" style="padding-top:8px"></div>
+        </div>
+        <div class="card">
+          <div class="ct">Contract expiry monitor</div>
+          <div class="cs">Hire aktif yang kontraknya akan habis dalam 90 hari</div>
+          <div id="exp-list"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="sbar">
+          <div>
+            <div class="sh">Hire tracker</div>
+            <div class="ss">Detail tiap hire termasuk status retention, resign, dan PHK</div>
+          </div>
+        </div>
+        <div class="tw">
+          <table class="tbl">
+            <thead><tr>
+              <th>Nama</th><th>Posisi</th><th>Source</th>
+              <th>Join date</th><th>30/60/90 hari</th>
+              <th>Status</th><th>Aksi</th>
+            </tr></thead>
+            <tbody id="h-body"></tbody>
+          </table>
+        </div>
+        <div id="h-pager"></div>
+      </div>
+    </div>
+    <!-- ─── PAGE: PROCESS HEALTH ─── -->
+    <div class="page" id="page-health">
+      <div class="phead">
+        <div>
+          <div class="pht">Process health</div>
+          <div class="phs">Checklist kepatuhan terhadap SOP rekrutmen — bukan hasil hire-nya, tapi apakah prosesnya dijalankan dengan benar. Dihitung <strong>otomatis</strong> dari checklist yang kamu isi tiap kali nambah/edit kandidat (di Recruitment) dan hire (di Hire &amp; Retention) — gak perlu itung manual lagi.</div>
+        </div>
+      </div>
+      <div id="h-score"></div>
+      <div class="card">
+        <div id="ph-checks"></div>
+      </div>
+    </div>
+
+    <!-- ─── PAGE: PROJECTS ─── -->
+    <div class="page" id="page-projects">
+      <div class="phead">
+        <div>
+          <div class="pht">Projects &amp; initiatives</div>
+          <div class="phs">Contributions beyond daily recruitment tasks — plus insight breakdown scope kerjaan kamu sebenarnya</div>
+        </div>
+        <button class="add-btn" onclick="showM('project',null)">+ Add project</button>
+      </div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="ct">Breakdown scope kerjaan</div>
+        <div class="cs">Kategori project yang kamu kerjakan — biar kelihatan seberapa besar porsi di luar rekrutmen</div>
+        <div class="cw sm"><canvas id="projcat-c"></canvas></div>
+      </div>
+      <div class="pl" id="p-list"></div>
+    </div>
+    <!-- ─── PAGE: SELF-DEVELOPMENT ─── -->
+    <div class="page" id="page-selfdev">
+      <div class="phead">
+        <div>
+          <div class="pht">Self-development</div>
+          <div class="phs">Skills, tools, dan pembelajaran HC/People Analytics selama kontrak</div>
+        </div>
+      </div>
+      <div class="tc b">
+        <div class="card">
+          <div class="sbar">
+            <div>
+              <div class="ct">Tools &amp; tech</div>
+              <div class="cs">Technical skills, dipelajari di mana</div>
+            </div>
+            <button class="add-btn" onclick="showM('tool',null)">+ Add</button>
+          </div>
+          <div class="skl-list" id="tg-tools"></div>
+        </div>
+        <div class="card">
+          <div class="sbar">
+            <div>
+              <div class="ct">HR knowledge</div>
+              <div class="cs">HR &amp; recruitment skills, dipelajari di mana</div>
+            </div>
+            <button class="add-btn" onclick="showM('hrskill',null)">+ Add</button>
+          </div>
+          <div class="skl-list" id="tg-hr"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="sbar">
+          <div>
+            <div class="ct">HC &amp; People Analytics learning log</div>
+            <div class="cs">Resource yang dipelajari, topik, dan relevansinya ke kerjaan kamu</div>
+          </div>
+          <button class="add-btn" onclick="showM('learning',null)">+ Add learning</button>
+        </div>
+        <div id="lrn-list"></div>
+      </div>
+    </div>
+
+    <!-- ─── PAGE: REFLECTION ─── -->
+    <div class="page" id="page-reflection">
+      <div class="phead">
+        <div>
+          <div class="pht">Reflection</div>
+          <div class="phs">Ruang buat evaluasi diri — dari mood harian sampai refleksi mingguan</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="sbar">
+          <div>
+            <div class="ct">Daily Journal (mood tracker)</div>
+            <div class="cs">Catat mood harian kamu, dashboard otomatis rangkum pola per bulan</div>
+          </div>
+          <button class="add-btn" onclick="showM('journal',null)">+ Log mood</button>
+        </div>
+        <div id="journal-recap" style="margin-bottom:16px"></div>
+        <div class="tc b">
+          <div>
+            <div class="ss" style="margin-bottom:8px">Tren mood</div>
+            <div class="cw sm"><canvas id="mood-trend-c"></canvas></div>
+          </div>
+          <div>
+            <div class="ss" style="margin-bottom:8px">Distribusi mood</div>
+            <div class="cw sm"><canvas id="mood-dist-c"></canvas></div>
+          </div>
+        </div>
+        <div class="tc b">
+          <div>
+            <div class="ss" style="margin-bottom:8px">Pola mood per hari kerja (Senin–Sabtu)</div>
+            <div class="cw sm"><canvas id="mood-dow-c"></canvas></div>
+          </div>
+          <div>
+            <div class="ss" style="margin-bottom:8px">Streak observasi</div>
+            <div id="mood-streak"></div>
+          </div>
+        </div>
+        <div class="tc b">
+          <div>
+            <div class="ss" style="margin-bottom:8px">Tema di "yang bikin semangat"</div>
+            <div id="energizer-words"></div>
+          </div>
+          <div>
+            <div class="ss" style="margin-bottom:8px">Tema di "yang bikin capek/stress"</div>
+            <div id="drainer-words"></div>
+          </div>
+        </div>
+        <div id="journal-list" style="margin-top:14px"></div>
+      </div>
+
+      <div class="sbar" style="margin-top:22px">
+        <div>
+          <div class="sh">Weekly Reflection</div>
+          <div class="ss">Jurnal mingguan buat evaluasi diri — bisa jadi portofolio growth kamu juga nantinya</div>
+        </div>
+        <button class="add-btn" onclick="showM('reflection',null)">+ Add reflection</button>
+      </div>
+      <div id="rf-list"></div>
+    </div>
+
+    <!-- ─── PAGE: TO-DO & TASK ─── -->
+    <div class="page" id="page-todo">
+      <div class="phead">
+        <div>
+          <div class="pht">To-do &amp; Task</div>
+          <div class="phs">Tugas dengan deadline dan progress, dikelompokkan per tanggal, bulan, dan tahun</div>
+        </div>
+        <button class="add-btn" onclick="showM('todo',null)">+ Add task</button>
+      </div>
+      <div class="card" id="today-card" style="margin-bottom:16px">
+        <div class="sbar">
+          <div>
+            <div class="ct">🔥 Hari ini</div>
+            <div class="cs">Deadline jatuh tempo hari ini — <span id="today-label"></span></div>
+          </div>
+        </div>
+        <div id="today-list"></div>
+      </div>
+      <div class="card">
+        <div class="tabs">
+          <div class="tab active" onclick="switchTodoTab('All',this)">All</div>
+          <div class="tab" onclick="switchTodoTab('Not started',this)">Belum mulai</div>
+          <div class="tab" onclick="switchTodoTab('On progress',this)">On progress</div>
+          <div class="tab" onclick="switchTodoTab('Done',this)">Done</div>
+        </div>
+        <div id="td-groups"></div>
+        <div id="td-pager"></div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+</div><!-- /layout -->
+</div><!-- /app -->
+<div id="modal">
+  <div class="mc">
+    <div class="mh">
+      <div class="mh-t" id="m-title">Add entry</div>
+      <button class="m-x" onclick="closeM()">✕</button>
+    </div>
+    <div class="mb" id="m-body"></div>
+    <div class="mf">
+      <button class="m-cancel" onclick="closeM()">Cancel</button>
+      <button class="m-save" onclick="saveM()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRM MODAL -->
+<div id="cmodal">
+  <div class="cm-card">
+    <div class="cm-msg" id="cm-msg"></div>
+    <div class="cm-foot">
+      <button class="m-cancel" onclick="resolveC(false)">Batal</button>
+      <button class="cm-yes-d" id="cm-yes" onclick="resolveC(true)">Ya, lanjutkan</button>
+    </div>
+  </div>
+</div>
+
+<!-- PROMPT MODAL -->
+<div id="pmodal">
+  <div class="pm-card">
+    <div class="pm-inner">
+      <div class="pm-lbl" id="pm-lbl">Tambah skill</div>
+      <input class="pm-inp" id="pm-inp" placeholder=""
+        onkeydown="if(event.key==='Enter')resolveP(true);if(event.key==='Escape')resolveP(false)">
+    </div>
+    <div class="pm-foot">
+      <button class="m-cancel" onclick="resolveP(false)">Batal</button>
+      <button class="m-save" onclick="resolveP(true)">Tambah</button>
+    </div>
+  </div>
+</div>
+<script>
+// ═══════════════════════════════════
+// CUSTOM DIALOGS (replaces confirm/alert/prompt)
+// ═══════════════════════════════════
+let _cRes = null, _pRes = null;
+
+function showConfirm(msg, yesLabel, danger) {
+  return new Promise(res => {
+    _cRes = res;
+    document.getElementById('cm-msg').textContent = msg;
+    const yb = document.getElementById('cm-yes');
+    yb.textContent = yesLabel || 'Ya, lanjutkan';
+    yb.style.background = danger === false ? '#4F46E5' : '#DC2626';
+    document.getElementById('cmodal').classList.add('show');
+  });
+}
+function resolveC(val) {
+  document.getElementById('cmodal').classList.remove('show');
+  if (_cRes) { _cRes(val); _cRes = null; }
+}
+
+function showPrompt(label, placeholder) {
+  return new Promise(res => {
+    _pRes = res;
+    document.getElementById('pm-lbl').textContent = label || 'Input';
+    const inp = document.getElementById('pm-inp');
+    inp.value = ''; inp.placeholder = placeholder || '';
+    document.getElementById('pmodal').classList.add('show');
+    setTimeout(() => inp.focus(), 60);
+  });
+}
+function resolveP(ok) {
+  const val = document.getElementById('pm-inp').value.trim();
+  document.getElementById('pmodal').classList.remove('show');
+  if (_pRes) { _pRes(ok && val ? val : null); _pRes = null; }
+}
+
+function toast(msg, type) {
+  const el = document.createElement('div');
+  el.className = 'toast t-' + (type || 'ok');
+  el.textContent = msg;
+  document.body.appendChild(el);
+  requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('in')));
+  setTimeout(() => { el.classList.remove('in'); setTimeout(() => el.remove(), 300); }, 3200);
+}
+
+// ═══════════════════════════════════
+// CONFIG — password stored as SHA-256
+// ═══════════════════════════════════
+const CFG = {
+  un: 'aisyshere',
+  ph: 'abfdda28659778075fc99e5ecefadc47a6dc3dd2050f94c4a12f1dfc216be17e'
+};
+const MS  = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const MF  = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const STG = ['Shortlisted','HR Interview','User Interview','Study Case','Offered'];
+const OUTCOMES = ['In Process','On Hold','Hired','Rejected','Withdrew'];
+const SOURCES = ['Job Portal','Referral','Campus','Walk-in','Media Sosial','Lainnya'];
+const REJECT_REASONS = ['Ekspektasi gaji','Gagal assessment','Gagal interview','Culture fit tidak sesuai','Dapat offer lain','Lokasi/jarak jauh','Tidak merespons','Lainnya'];
+const RESIGN_REASONS = ['Kesempatan lebih baik','Kompensasi','Relokasi','Kesehatan','Tidak cocok dengan pekerjaan','Alasan pribadi','Lainnya'];
+const PHK_REASONS = ['Restrukturisasi/downsizing','Pelanggaran disiplin','Performance tidak sesuai','Kontrak selesai & tidak diperpanjang','Efisiensi/tutup cabang','Lainnya'];
+const MOOD_LEVELS = [
+  {v:1, emoji:'😣', label:'Very tough'},
+  {v:2, emoji:'😕', label:'Tough'},
+  {v:3, emoji:'😐', label:'Neutral'},
+  {v:4, emoji:'🙂', label:'Good'},
+  {v:5, emoji:'😄', label:'Great'}
+];
+const moodInfo = v => MOOD_LEVELS.find(m => m.v === +v) || MOOD_LEVELS[2];
+const PROJECT_CATEGORIES = ['Recruitment','Process Improvement','Analytics & Tooling','Program & Culture','Documentation/SOP','Lainnya'];
+const PALETTE = ['#4F46E5','#059669','#D97706','#DC2626','#0EA5E9','#DB2777','#7C3AED','#65A30D','#EA580C','#0891B2'];
+
+// ═══════════════════════════════════
+// MONTH FILTER HELPERS
+// ST.month === 0 means "Semua bulan" (no filter)
+// ═══════════════════════════════════
+function matchMonthNum(m) { return ST.month === 0 || +m === ST.month; }
+function matchMonthDate(dateStr) {
+  if (ST.month === 0) return true;
+  if (!dateStr) return false;
+  const parts = String(dateStr).split('-');
+  return parts.length >= 2 && +parts[1] === ST.month;
+}
+
+// ═══════════════════════════════════
+// STATE
+// ═══════════════════════════════════
+const NOW = new Date();
+let ST = { page:'recruitment', month: 0, tab:'In Process', todoTab:'All', posTab:'All' };
+let CHARTS = {}; // named chart instances, destroyed/recreated on render
+
+// ═══════════════════════════════════
+// STORAGE
+// ═══════════════════════════════════
+const ld = (k,d) => { try { const v=localStorage.getItem('aisy_'+k); return v ? JSON.parse(v) : d; } catch { return d; } };
+const sv = (k,v) => localStorage.setItem('aisy_'+k, JSON.stringify(v));
+
+// ═══════════════════════════════════
+// DEFAULT DATA
+// ═══════════════════════════════════
+const DEF = {
+  candidates: [
+    {id:'c1',name:'Rian Saputra',position:'Physiotherapist',division:'Clinical',urgency:'P0',source:'Job Portal',stage:'HR Interview',outcome:'In Process',rejectReason:null,month:6,chkMPR:'Yes',chkNotes:'Yes',chkSLA:'Yes'},
+    {id:'c2',name:'Dewi Anggraini',position:'Admin staff',division:'Back Office',urgency:'P1',source:'Referral',stage:'Shortlisted',outcome:'In Process',rejectReason:null,month:6,chkMPR:'Yes',chkNotes:'No',chkSLA:'No'},
+    {id:'c3',name:'Tari Kusuma',position:'Receptionist',division:'Front Office',urgency:'P1',source:'Job Portal',stage:'Offered',outcome:'Hired',rejectReason:null,month:6,chkMPR:'Yes',chkNotes:'Yes',chkSLA:'Yes'},
+    {id:'c4',name:'Budi Santoso',position:'Cleaning staff',division:'Operations',urgency:'P2',source:'Walk-in',stage:'Offered',outcome:'Hired',rejectReason:null,month:6,chkMPR:'Yes',chkNotes:'Yes',chkSLA:'Yes'},
+    {id:'c5',name:'Marketing kandidat A',position:'Marketing staff',division:'Marketing',urgency:'P1',source:'Media Sosial',stage:'User Interview',outcome:'On Hold',rejectReason:null,month:6,chkMPR:'No',chkNotes:'Yes',chkSLA:'No'},
+    {id:'c6',name:'Fajar Nugroho',position:'Physiotherapist',division:'Clinical',urgency:'P0',source:'Campus',stage:'User Interview',outcome:'Rejected',rejectReason:'Gagal interview',month:6,chkMPR:'Yes',chkNotes:'Yes',chkSLA:'Yes'},
+    {id:'c7',name:'Sinta Wulandari',position:'Admin staff',division:'Back Office',urgency:'P1',source:'Job Portal',stage:'Offered',outcome:'Withdrew',rejectReason:'Dapat offer lain',month:6,chkMPR:'Yes',chkNotes:'Yes',chkSLA:'No'},
+    {id:'c8',name:'Andi Pratama',position:'Back office staff',division:'Back Office',urgency:'P1',source:'Referral',stage:'HR Interview',outcome:'Rejected',rejectReason:'Ekspektasi gaji',month:6,chkMPR:'Yes',chkNotes:'Yes',chkSLA:'Yes'},
+  ],
+  hires: [
+    {id:'h1',name:'Budi S.',position:'Cleaning staff',division:'Operations',source:'Walk-in',offerDate:'2026-06-01',joinDate:'2026-06-05',contractEnd:'2026-12-05',
+      day30:'Yes',day60:'Not yet',day90:'Not yet',status:'Active',resignDate:null,resignReason:null,terminationReason:null,chkOfferLetter:'Yes',candidateId:'c4'},
+    {id:'h2',name:'Tari K.',position:'Receptionist',division:'Front Office',source:'Job Portal',offerDate:'2026-06-03',joinDate:'2026-06-07',contractEnd:'2026-12-07',
+      day30:'Yes',day60:'Not yet',day90:'Not yet',status:'Active',resignDate:null,resignReason:null,terminationReason:null,chkOfferLetter:'Yes',candidateId:'c3'},
+    {id:'h3',name:'Andi P.',position:'Back office staff',division:'Back Office',source:'Referral',offerDate:'2026-05-28',joinDate:'2026-05-30',contractEnd:'2026-11-30',
+      day30:'Yes',day60:'No',day90:'No',status:'Resigned',resignDate:'2026-06-25',resignReason:'Kesempatan lebih baik',terminationReason:null,chkOfferLetter:'No',candidateId:null},
+  ],
+  projects: [
+    {id:'j1',name:'MPR recruitment website',description:'React web app — public MPR form + admin pipeline dashboard dengan P0/P1/P2 prioritization',impact:'Formalized via IOC. Streamlined intake process untuk semua posisi.',status:'Completed',date:'2026-05',category:'Analytics & Tooling'},
+    {id:'j2',name:'MPR IOC formalization',description:'Interoffice Correspondence mewajibkan MPR submission sebelum rekrutmen dimulai',impact:'Policy-level impact di WM Center.',status:'Completed',date:'2026-05',category:'Process Improvement'},
+    {id:'j3',name:'WFH schedule tracker',description:'Multi-sheet Excel dengan automated compliance tracking, dropdown validation, dan conditional formatting untuk Back Office',impact:'Covers May–Jul 2026.',status:'Completed',date:'2026-05',category:'Analytics & Tooling'},
+    {id:'j4',name:'Campus Ambassador program support',description:'Employer branding — KPI framework, BEI/CBI question bank, 7-stage recruitment flow, SOP docs & onboarding materials',impact:'Ongoing 3-month program.',status:'In progress',date:'2026-06',category:'Program & Culture'},
+    {id:'j5',name:'HC Analytics dashboard',description:'HTML website + Google Sheets via Apps Script, hosted on GitHub Pages',impact:'Self-monitoring, HC analytics learning, & salary negotiation prep.',status:'In progress',date:'2026-06',category:'Analytics & Tooling'},
+  ],
+  selfdev: {
+    tools: [
+      {id:'sk1',name:'React.js',source:'Self-taught sambil bangun recruitment dashboard & MPR website'},
+      {id:'sk2',name:'Google Apps Script',source:'Belajar saat develop dashboard — backend via Google Sheets'},
+      {id:'sk3',name:'Google Sheets (advanced)',source:'Dipakai sebagai database untuk semua tools internal'},
+      {id:'sk4',name:'Excel advanced',source:'Bikin WFH schedule tracker untuk Back Office'},
+      {id:'sk5',name:'GitHub & GitHub Pages',source:'Hosting semua web tools internal WM Center'},
+      {id:'sk6',name:'HTML/CSS/JS',source:'Self-taught untuk kebutuhan internal tooling'},
+    ],
+    hr: [
+      {id:'sk7',name:'KPI framework design',source:'Dipakai untuk Campus Ambassador program'},
+      {id:'sk8',name:'BEI/CBI interviewing',source:'Internal training + praktik langsung saat interview kandidat'},
+      {id:'sk9',name:'SOP writing',source:'Dokumentasi proses untuk Campus Ambassador & onboarding'},
+      {id:'sk10',name:'Talent pipeline management',source:'Praktik harian sebagai TA staff di WM Center'},
+      {id:'sk11',name:'Recruitment operations',source:'Day-to-day di WM Center'},
+    ],
+    learning: [
+      {id:'l1',resource:'Artikel: "Quality of Hire Metrics" — SHRM',topic:'Quality of hire',date:'2026-06-10',relevance:'Bisa dipakai untuk desain metric 30/60/90 hari di hire tracker WM Center'},
+      {id:'l2',resource:'Course: People Analytics Fundamentals',topic:'Workforce planning',date:'2026-06-15',relevance:'Konsep headcount gap analysis relevan untuk perencanaan tim ke depannya'},
+    ]
+  },
+  todos: [
+    {id:'t1',text:'Set up Google Sheets data source untuk dashboard',deadline:'2026-06-18',done:false,subtasks:[
+      {id:'s1',text:'Setup semua sheet via Apps Script',done:true},
+      {id:'s2',text:'Deploy web app & test koneksi',done:true},
+      {id:'s3',text:'Isi data awal',done:false},
+    ]},
+    {id:'t2',text:'Configure Apps Script web app endpoint',deadline:'2026-06-19',done:false,subtasks:[]},
+    {id:'t3',text:'Follow up lamaran ke NielsenIQ',deadline:'2026-06-20',done:false,subtasks:[]},
+  ],
+  reflections: [
+    {id:'r1',weekStart:'2026-06-08',closedPositions:2,challenge:'Kandidat physiotherapist banyak yang withdraw karena ekspektasi gaji',skillsUsed:'Negotiation, BEI interviewing',improvement:'Mau riset benchmark gaji physiotherapist di kompetitor sebelum offer'},
+  ],
+  journal: [
+    {id:'jr1',date:'2026-06-16',mood:4,energizer:'Berhasil closing 2 posisi sekaligus',drainer:''},
+    {id:'jr2',date:'2026-06-17',mood:3,energizer:'',drainer:'Banyak meeting back-to-back'},
+    {id:'jr3',date:'2026-06-18',mood:2,energizer:'',drainer:'Kandidat bagus withdraw di menit akhir'},
+  ],
+  positions: [
+    {id:'p1',position:'Customer Service',division:'Operations',headcount:2,urgency:'P1',jobStatus:'Open',month:7},
+    {id:'p2',position:'Front Office',division:'Operations',headcount:3,urgency:'P1',jobStatus:'Open',month:6},
+    {id:'p3',position:'Content Creator (for Influencer)',division:'Creative Marketing',headcount:1,urgency:'P0',jobStatus:'Closed',month:6},
+    {id:'p4',position:'Cleaning Service (Puri)',division:'Operations',headcount:1,urgency:'P0',jobStatus:'Closed',month:6},
+    {id:'p5',position:'Cleaning Service (Bekasi)',division:'Operations',headcount:1,urgency:'P0',jobStatus:'Closed',month:6},
+    {id:'p6',position:'General Affair (Intern)',division:'HRGA',headcount:1,urgency:'P0',jobStatus:'Closed',month:4},
+    {id:'p7',position:'Social Media Specialist',division:'Creative Marketing',headcount:2,urgency:'P1',jobStatus:'Closed',month:4},
+    {id:'p8',position:'Social Media Intern',division:'Creative Marketing',headcount:5,urgency:'P1',jobStatus:'Closed',month:2},
+    {id:'p9',position:'Cleaning Service',division:'Operations',headcount:1,urgency:'P0',jobStatus:'Closed',month:7},
+    {id:'p10',position:'Cleaning Service',division:'Operations',headcount:1,urgency:'P0',jobStatus:'Open',month:7},
+  ]
+};
+
+// ═══════════════════════════════════
+// AUTH
+// ═══════════════════════════════════
+async function sha(s) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s));
+  return Array.from(new Uint8Array(buf)).map(x => x.toString(16).padStart(2,'0')).join('');
+}
+async function doLogin() {
+  const u   = document.getElementById('inp-u').value.trim();
+  const p   = document.getElementById('inp-p').value;
+  const err = document.getElementById('a-err');
+  if (!u || !p) { err.textContent = 'Isi username dan password dulu.'; return; }
+  if (u !== CFG.un) { err.textContent = 'Username atau password salah.'; return; }
+  if (await sha(p) !== CFG.ph) { err.textContent = 'Username atau password salah.'; return; }
+  sv('auth','1');
+  document.getElementById('auth').style.display = 'none';
+  document.getElementById('app').style.display  = 'block';
+  initApp();
+}
+async function doLogout() {
+  const ok = await showConfirm('Sign out dari dashboard?', 'Sign out', true);
+  if (!ok) return;
+  localStorage.removeItem('aisy_auth');
+  document.getElementById('app').style.display  = 'none';
+  document.getElementById('auth').style.display = 'flex';
+}
+async function clearCache() {
+  const ok = await showConfirm(
+    'Hapus semua data lokal?\n\n· Data di Google Sheets TIDAK terpengaruh\n· Session login tetap aman\n· Dashboard akan reload data dari Sheets',
+    'Ya, hapus cache'
+  );
+  if (!ok) return;
+  Object.keys(localStorage)
+    .filter(k => k.startsWith('aisy_') && k !== 'aisy_auth')
+    .forEach(k => localStorage.removeItem(k));
+  renderAll();
+  autoLoad();
+  toast('✓ Cache dibersihkan, memuat ulang dari Sheets...', 'ok');
+}
+
+// ═══════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════
+const TITLES = {
+  recruitment: 'Recruitment',
+  retention:   'Hire & Retention',
+  health:      'Process health',
+  projects:    'Projects & initiatives',
+  selfdev:     'Self-development',
+  reflection:  'Reflection',
+  todo:        'To-do & Task'
+};
+function nav(page) {
+  ST.page = page;
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  document.querySelectorAll('[data-nav]').forEach(a => a.classList.remove('active'));
+  document.querySelector('[data-nav="'+page+'"]').classList.add('active');
+  document.getElementById('tb-title').textContent = TITLES[page];
+  renderAll();
+}
+function changeMonth(m) { ST.month = m; PG.candidates = 1; PG.hires = 1; PG.todos = 1; renderAll(); }
+function switchTab(tab, el) {
+  ST.tab = tab;
+  PG.candidates = 1;
+  el.parentElement.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  renderCandidates();
+}
+function switchPosTab(tab, el) {
+  ST.posTab = tab;
+  el.parentElement.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  renderPositions();
+}
+function switchTodoTab(tab, el) {
+  ST.todoTab = tab;
+  PG.todos = 1;
+  el.parentElement.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  renderTodos();
+}
+
+// ═══════════════════════════════════
+// RENDER ALL
+// ═══════════════════════════════════
+function renderAll() {
+  renderTL(); renderKPIs(); renderPositionKPIs(); renderFunnel(); renderSourceChart(); renderRejectChart(); renderTTF();
+  renderCandidates(); renderPositions();
+  renderRetentionKPIs(); renderRetSrcChart(); renderCohortChart(); renderResignChart(); renderPhkChart(); renderTenureBox(); renderContractExpiry(); renderHires();
+  renderHealth(); renderProjects();
+  renderSelfDev(); renderLearning(); renderJournal(); renderReflections();
+  renderTodayTasks(); renderTodos();
+}
+
+// Helper: destroy + create a named Chart.js instance safely
+function mkChart(name, canvasId, config) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  if (CHARTS[name]) { CHARTS[name].destroy(); delete CHARTS[name]; }
+  CHARTS[name] = new Chart(canvas, config);
+}
+function destroyChart(name) {
+  if (CHARTS[name]) { CHARTS[name].destroy(); delete CHARTS[name]; }
+}
+
+// ═══════════════════════════════════
+// CONTRACT TIMELINE
+// ═══════════════════════════════════
+function renderTL() {
+  const el = document.getElementById('tl');
+  if (!el) return;
+  const curM     = NOW.getMonth()+1;
+  const curD     = NOW.getDate();
+  const daysInCur = new Date(2026, curM, 0).getDate();
+  const curPct   = Math.round(curD / daysInCur * 100);
+
+  let html = '<span class="tl-lbl">2026</span><div class="tl-ms">';
+  for (let m = 1; m <= 12; m++) {
+    let fp = 0, fc = '';
+    if (m >= 5 && m <= 11) { fc = 's'; fp = m < curM ? 100 : (m === curM ? curPct : 0); }
+    html += `<div class="tl-m">
+      <div class="tl-trk"><div class="tl-fill ${fc}" style="width:${fp}%"></div></div>
+      <div class="tl-ml${m === curM ? ' cur' : ''}">${MS[m-1]}</div>
+    </div>`;
+  }
+  html += '</div><div class="tl-info">Staff: May 25<br>Ends Nov 24</div>';
+  el.innerHTML = html;
+}
+
+// ═══════════════════════════════════
+// KPI CARDS (Recruitment)
+// ═══════════════════════════════════
+// ═══════════════════════════════════
+// PAGINATION HELPERS
+// ═══════════════════════════════════
+const PAGE_SIZE = 30;
+let PG = { candidates:1, hires:1, todos:1 };
+function paginate(arr, key) {
+  const totalPages = Math.max(1, Math.ceil(arr.length / PAGE_SIZE));
+  if (PG[key] > totalPages) PG[key] = totalPages;
+  if (PG[key] < 1) PG[key] = 1;
+  const start = (PG[key]-1) * PAGE_SIZE;
+  return { items: arr.slice(start, start+PAGE_SIZE), totalPages, current: PG[key] };
+}
+function gotoPage(key, page) { PG[key] = page; renderAll(); }
+function pagerHtml(key, totalPages, current) {
+  if (totalPages <= 1) return '';
+  let btns = '';
+  for (let p = 1; p <= totalPages; p++) {
+    btns += `<button class="pg-btn${p===current?' active':''}" onclick="gotoPage('${key}',${p})">${p}</button>`;
+  }
+  return `<div class="pager">
+    <button class="pg-btn" ${current<=1?'disabled':''} onclick="gotoPage('${key}',${current-1})">‹</button>
+    ${btns}
+    <button class="pg-btn" ${current>=totalPages?'disabled':''} onclick="gotoPage('${key}',${current+1})">›</button>
+  </div>`;
+}
+
+function renderKPIs() {
+  const el = document.getElementById('kg');
+  if (!el) return;
+  const candidates = ld('candidates', DEF.candidates);
+  const hires      = ld('hires', DEF.hires);
+
+  const cm      = candidates.filter(c => matchMonthNum(c.month));
+  const hired   = cm.filter(c => c.outcome === 'Hired').length;
+  const hm      = hires.filter(h => matchMonthDate(h.joinDate));
+  const ttfs    = hm.filter(h => h.offerDate && h.joinDate)
+    .map(h => Math.round((new Date(h.joinDate) - new Date(h.offerDate)) / 86400000))
+    .filter(d => d > 0);
+  const avgTTF  = ttfs.length ? Math.round(ttfs.reduce((a,b) => a+b, 0) / ttfs.length) : 0;
+  const notHired = cm.filter(c => c.outcome === 'Rejected' || c.outcome === 'Withdrew').length;
+  const acc     = (hired + notHired) ? Math.round(hired / (hired + notHired) * 100) : 0;
+  const active  = cm.filter(c => c.outcome === 'In Process' || c.outcome === 'On Hold').length;
+  const fr      = cm.length ? Math.round(hired / cm.length * 100) : 0;
+  const periodLbl = ST.month === 0 ? 'semua bulan' : 'in ' + MF[ST.month-1];
+
+  el.innerHTML = `
+    <div class="kc"><div class="kl">Candidates in</div>
+      <div class="kv">${cm.length}</div><div class="ks">${periodLbl}</div></div>
+    <div class="kc"><div class="kl">Hired</div>
+      <div class="kv ok">${hired}</div><div class="ks ok">${fr}% dari kandidat periode ini</div></div>
+    <div class="kc"><div class="kl">Avg. time-to-fill</div>
+      <div class="kv">${avgTTF || '—'}<span style="font-size:13px;color:var(--t3)">${avgTTF ? ' d' : ''}</span></div>
+      <div class="ks">offer → join date</div></div>
+    <div class="kc"><div class="kl">Conversion rate</div>
+      <div class="kv ac">${acc}%</div><div class="ks">${hired} hired dari ${hired+notHired} closed</div></div>
+    <div class="kc"><div class="kl">Active in pipeline</div>
+      <div class="kv ac">${active}</div><div class="ks">in process / on hold</div></div>`;
+}
+
+// ═══════════════════════════════════
+// POSISI (REQUISITION) TRACKER
+// ═══════════════════════════════════
+function renderPositionKPIs() {
+  const el = document.getElementById('pos-kg');
+  if (!el) return;
+  const rows = ld('positions', DEF.positions).filter(p => matchMonthNum(p.month));
+  const openCount   = rows.filter(p => p.jobStatus === 'Open').length;
+  const closedCount = rows.filter(p => p.jobStatus === 'Closed').length;
+  const totalHC     = rows.reduce((s,p) => s + (+p.headcount||0), 0);
+  el.innerHTML = `
+    <div class="kc"><div class="kl">Posisi aktif</div><div class="kv wn">${openCount}</div><div class="ks">status Open</div></div>
+    <div class="kc"><div class="kl">Posisi closed</div><div class="kv ok">${closedCount}</div><div class="ks">status Closed</div></div>
+    <div class="kc"><div class="kl">Total headcount diminta</div><div class="kv">${totalHC}</div><div class="ks">${rows.length} posisi periode ini</div></div>`;
+}
+
+const JSC = { 'Open':'b-onhold', 'Closed':'b-done' };
+
+function renderPositions() {
+  const tb = document.getElementById('pos-body');
+  if (!tb) return;
+  let rows = ld('positions', DEF.positions).filter(p => matchMonthNum(p.month));
+  if (ST.posTab !== 'All') rows = rows.filter(p => p.jobStatus === ST.posTab);
+
+  if (!rows.length) { tb.innerHTML = '<tr><td colspan="7"><div class="empty"><span>📋</span>Belum ada posisi di kategori/periode ini.</div></td></tr>'; return; }
+  tb.innerHTML = rows.map(p => `<tr>
+    <td><strong>${esc(p.position)}</strong></td>
+    <td style="color:var(--t2)">${esc(p.division)}</td>
+    <td style="color:var(--t2)">${p.headcount}</td>
+    <td><span class="badge ${URC[p.urgency]||''}">${p.urgency}</span></td>
+    <td><span class="badge ${JSC[p.jobStatus]||''}">${p.jobStatus}</span></td>
+    <td style="color:var(--t2)">${MS[(p.month||1)-1]}</td>
+    <td><div style="display:flex;gap:4px">
+      <button class="ae ae-e" onclick="showM('position','${p.id}')">Edit</button>
+      <button class="ae ae-d" onclick="delEntry('position','${p.id}')">Del</button>
+    </div></td>
+  </tr>`).join('');
+}
+
+// ═══════════════════════════════════
+// RECRUITMENT FUNNEL (with conversion %)
+// ═══════════════════════════════════
+function renderFunnel() {
+  const el = document.getElementById('fn');
+  if (!el) return;
+  const cands = ld('candidates', DEF.candidates).filter(c => matchMonthNum(c.month));
+  const cols = ['#4F46E5','#6366F1','#818CF8','#A5B4FC','#059669'];
+
+  const stageIdx = c => {
+    const base = STG.indexOf(c.stage);
+    return c.outcome === 'Hired' ? STG.length - 1 : base;
+  };
+  const counts = STG.map((_, i) => cands.filter(c => stageIdx(c) >= i).length);
+  const max = counts[0] || 1;
+
+  el.innerHTML = STG.map((st, i) => {
+    const pct = Math.round(counts[i] / max * 100);
+    const conv = i === 0 ? 100 : (counts[i-1] ? Math.round(counts[i] / counts[i-1] * 100) : 0);
+    return `<div class="fr">
+      <div class="fl">${st}</div>
+      <div class="fw"><div class="fbar" style="width:${pct}%;background:${cols[i]}22;border:1.5px solid ${cols[i]}"></div></div>
+      <div class="fc">${counts[i]}</div>
+      <div class="fd">${i===0?'':conv+'%'}</div>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════
+// SOURCE OF HIRE (pie chart)
+// ═══════════════════════════════════
+function renderSourceChart() {
+  const canvas = document.getElementById('source-c');
+  if (!canvas) return;
+  const hires = ld('hires', DEF.hires).filter(h => matchMonthDate(h.joinDate));
+  if (!hires.length) { destroyChart('source'); return; }
+
+  const counts = {};
+  hires.forEach(h => { const s = h.source || 'Lainnya'; counts[s] = (counts[s]||0) + 1; });
+  const labels = Object.keys(counts);
+
+  mkChart('source', 'source-c', {
+    type: 'doughnut',
+    data: {
+      labels,
+      datasets: [{ data: labels.map(l => counts[l]), backgroundColor: labels.map((_,i) => PALETTE[i % PALETTE.length]), borderWidth: 2, borderColor: '#fff' }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false, cutout: '60%',
+      plugins: { legend: { position: 'right', labels: { boxWidth: 10, font: { size: 11 }, color: '#6B7280' } } }
+    }
+  });
+}
+
+// ═══════════════════════════════════
+// REJECTION / WITHDRAWAL REASONS (bar chart)
+// ═══════════════════════════════════
+function renderRejectChart() {
+  const canvas = document.getElementById('reject-c');
+  if (!canvas) return;
+  const cands = ld('candidates', DEF.candidates).filter(c => matchMonthNum(c.month) && (c.outcome === 'Rejected' || c.outcome === 'Withdrew'));
+  if (!cands.length) { destroyChart('reject'); return; }
+
+  const counts = {};
+  cands.forEach(c => { const r = c.rejectReason || 'Lainnya'; counts[r] = (counts[r]||0) + 1; });
+  const labels = Object.keys(counts).sort((a,b) => counts[b]-counts[a]);
+
+  mkChart('reject', 'reject-c', {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{ data: labels.map(l => counts[l]), backgroundColor: '#DC262630', borderColor: '#DC2626', borderWidth: 1.5, borderRadius: 4 }]
+    },
+    options: {
+      indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { beginAtZero: true, ticks: { stepSize: 1, color: '#9CA3AF', font: { size: 10 } }, grid: { color: '#EEF0F5' } },
+        y: { ticks: { color: '#6B7280', font: { size: 10.5 } }, grid: { display: false } }
+      }
+    }
+  });
+}
+
+// ═══════════════════════════════════
+// TTF CHART
+// ═══════════════════════════════════
+function renderTTF() {
+  const canvas = document.getElementById('ttf-c');
+  if (!canvas) return;
+  const hires = ld('hires', DEF.hires).filter(h => h.joinDate && h.offerDate && matchMonthDate(h.joinDate));
+  if (!hires.length) { destroyChart('ttf'); return; }
+
+  const data   = hires.map(h => Math.max(1, Math.round((new Date(h.joinDate) - new Date(h.offerDate)) / 86400000)));
+  const colors = data.map(d => d <= 7 ? '#059669' : d <= 14 ? '#6366F1' : '#DC2626');
+
+  mkChart('ttf', 'ttf-c', {
+    type: 'bar',
+    data: {
+      labels: hires.map(h => h.name || h.position || ''),
+      datasets: [{ data, backgroundColor: colors.map(c => c+'30'), borderColor: colors, borderWidth: 1.5, borderRadius: 4 }]
+    },
+    options: {
+      indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ` ${c.raw} hari` } } },
+      scales: {
+        x: { beginAtZero: true, grid: { color: '#EEF0F5' }, border: { display: false },
+             ticks: { color: '#9CA3AF', font: { size: 10 }, callback: v => v+'d' } },
+        y: { grid: { display: false }, border: { display: false },
+             ticks: { color: '#6B7280', font: { size: 10 } } }
+      }
+    }
+  });
+}
+
+// ═══════════════════════════════════
+// CANDIDATE TABLE (month-filtered + paginated)
+// ═══════════════════════════════════
+const URC = { P0:'b-p0', P1:'b-p1', P2:'b-p2' };
+const STC = { 'Shortlisted':'b-sl','HR Interview':'b-hr','User Interview':'b-ui','Study Case':'b-sc','Offered':'b-of' };
+const OUTC = { 'In Process':'b-inprocess','On Hold':'b-onhold','Hired':'b-hired','Rejected':'b-rejected','Withdrew':'b-withdrew' };
+
+function renderCandidates() {
+  const tb = document.getElementById('p-body');
+  if (!tb) return;
+  const all = ld('candidates', DEF.candidates).filter(c => matchMonthNum(c.month));
+  let filtered;
+  if (ST.tab === 'Not Hired') filtered = all.filter(c => c.outcome === 'Rejected' || c.outcome === 'Withdrew');
+  else filtered = all.filter(c => c.outcome === ST.tab);
+
+  if (!filtered.length) {
+    tb.innerHTML = '<tr><td colspan="8"><div class="empty"><span>📭</span>Tidak ada kandidat di kategori/periode ini.</div></td></tr>';
+    const pg = document.getElementById('p-pager'); if (pg) pg.innerHTML = '';
+    return;
+  }
+  const linkedCandidateIds = new Set(ld('hires', DEF.hires).map(h => h.candidateId).filter(Boolean));
+  const { items: rows, totalPages, current } = paginate(filtered, 'candidates');
+  tb.innerHTML = rows.map(c => `<tr>
+    <td><strong>${esc(c.name)}</strong>${c.outcome==='Rejected'||c.outcome==='Withdrew' ? `<div style="font-size:10px;color:var(--t3);margin-top:2px">${esc(c.rejectReason||'')}</div>` : ''}</td>
+    <td style="color:var(--t2)">${esc(c.position)}</td>
+    <td style="color:var(--t2)">${esc(c.division)}</td>
+    <td><span class="badge ${URC[c.urgency]||''}">${c.urgency}</span></td>
+    <td style="color:var(--t2);font-size:11.5px">${esc(c.source||'—')}</td>
+    <td><span class="badge ${STC[c.stage]||''}">${c.stage}</span> <span class="badge ${OUTC[c.outcome]||''}" style="margin-left:3px">${c.outcome}</span></td>
+    <td style="color:var(--t2)">${MS[(c.month||1)-1]}</td>
+    <td><div style="display:flex;flex-direction:column;gap:4px;align-items:flex-start">
+      <div style="display:flex;gap:4px">
+        <button class="ae ae-e" onclick="showM('candidate','${c.id}')">Edit</button>
+        <button class="ae ae-d" onclick="delEntry('candidate','${c.id}')">Del</button>
+      </div>
+      ${c.outcome === 'Hired' ? (
+        linkedCandidateIds.has(c.id)
+          ? `<span class="badge b-yes">✓ Hire record dibuat</span>`
+          : `<button class="ae" style="background:var(--ok-bg);border-color:var(--ok-bd);color:var(--ok)" onclick="convertToHire('${c.id}')">🔗 Buat Hire</button>`
+      ) : ''}
+    </div></td>
+  </tr>`).join('');
+  const pg = document.getElementById('p-pager');
+  if (pg) pg.innerHTML = pagerHtml('candidates', totalPages, current);
+}
+
+// ═══════════════════════════════════
+// RETENTION KPIs
+// ═══════════════════════════════════
+function daysBetween(a, b) { return Math.round((new Date(b) - new Date(a)) / 86400000); }
+
+function renderRetentionKPIs() {
+  const el = document.getElementById('rt-kg');
+  if (!el) return;
+  const hires = ld('hires', DEF.hires).filter(h => matchMonthDate(h.joinDate));
+  if (!hires.length) { el.innerHTML = '<div class="empty"><span>👥</span>Belum ada hire di periode ini.</div>'; return; }
+
+  const total     = hires.length;
+  const resigned  = hires.filter(h => h.status === 'Resigned');
+  const phk       = hires.filter(h => h.status === 'PHK');
+  const active    = total - resigned.length - phk.length;
+  const retention = Math.round(active / total * 100);
+  const early     = resigned.filter(h => h.joinDate && h.resignDate && daysBetween(h.joinDate, h.resignDate) <= 90).length;
+  const earlyRate = total ? Math.round(early / total * 100) : 0;
+
+  el.innerHTML = `
+    <div class="kc"><div class="kl">Total hires</div><div class="kv">${total}</div><div class="ks">periode terpilih</div></div>
+    <div class="kc"><div class="kl">Retention rate</div><div class="kv ok">${retention}%</div><div class="ks ok">${active}/${total} masih aktif</div></div>
+    <div class="kc"><div class="kl">Early resign rate</div><div class="kv ${earlyRate>15?'er':'ac'}">${earlyRate}%</div><div class="ks">resign ≤90 hari sejak join</div></div>
+    <div class="kc"><div class="kl">Resign vs PHK</div><div class="kv">${resigned.length} / ${phk.length}</div><div class="ks">voluntary vs involuntary turnover</div></div>`;
+}
+
+// ═══════════════════════════════════
+// RETENTION BY SOURCE (bar chart)
+// ═══════════════════════════════════
+function renderRetSrcChart() {
+  const canvas = document.getElementById('retsrc-c');
+  if (!canvas) return;
+  const hires = ld('hires', DEF.hires).filter(h => matchMonthDate(h.joinDate));
+  if (!hires.length) { destroyChart('retsrc'); return; }
+
+  const bySource = {};
+  hires.forEach(h => {
+    const s = h.source || 'Lainnya';
+    if (!bySource[s]) bySource[s] = { total: 0, retained: 0 };
+    bySource[s].total++;
+    if (h.status !== 'Resigned' && h.status !== 'PHK') bySource[s].retained++;
+  });
+  const labels = Object.keys(bySource);
+  const rates  = labels.map(l => Math.round(bySource[l].retained / bySource[l].total * 100));
+
+  mkChart('retsrc', 'retsrc-c', {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{ data: rates, backgroundColor: '#4F46E530', borderColor: '#4F46E5', borderWidth: 1.5, borderRadius: 5 }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ` ${c.raw}% retained` } } },
+      scales: {
+        y: { beginAtZero: true, max: 100, ticks: { color: '#9CA3AF', font: { size: 10 }, callback: v => v+'%' }, grid: { color: '#EEF0F5' } },
+        x: { ticks: { color: '#6B7280', font: { size: 10.5 } }, grid: { display: false } }
+      }
+    }
+  });
+}
+
+// ═══════════════════════════════════
+// COHORT ACTIVE RATE 30/60/90 (bar chart)
+// ═══════════════════════════════════
+function renderCohortChart() {
+  const canvas = document.getElementById('cohort-c');
+  if (!canvas) return;
+  const hires = ld('hires', DEF.hires).filter(h => matchMonthDate(h.joinDate));
+  if (!hires.length) { destroyChart('cohort'); return; }
+
+  const calc = key => {
+    const known = hires.filter(h => h[key] === 'Yes' || h[key] === 'No');
+    if (!known.length) return null;
+    const yes = known.filter(h => h[key] === 'Yes').length;
+    return Math.round(yes / known.length * 100);
+  };
+  const d30 = calc('day30'), d60 = calc('day60'), d90 = calc('day90');
+  const labels = ['Hari ke-30','Hari ke-60','Hari ke-90'];
+  const data   = [d30, d60, d90];
+
+  mkChart('cohort', 'cohort-c', {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{ data: data.map(d => d==null?0:d), backgroundColor: '#05966930', borderColor: '#059669', borderWidth: 1.5, borderRadius: 5 }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => data[c.dataIndex]==null ? 'Belum ada data' : ` ${c.raw}% masih aktif` } } },
+      scales: {
+        y: { beginAtZero: true, max: 100, ticks: { color: '#9CA3AF', font: { size: 10 }, callback: v => v+'%' }, grid: { color: '#EEF0F5' } },
+        x: { ticks: { color: '#6B7280', font: { size: 10.5 } }, grid: { display: false } }
+      }
+    }
+  });
+}
+
+// ═══════════════════════════════════
+// RESIGNATION REASONS (pie chart)
+// ═══════════════════════════════════
+function renderResignChart() {
+  const canvas = document.getElementById('resign-c');
+  if (!canvas) return;
+  const resigned = ld('hires', DEF.hires).filter(h => matchMonthDate(h.joinDate) && h.status === 'Resigned');
+  if (!resigned.length) { destroyChart('resign'); return; }
+
+  const counts = {};
+  resigned.forEach(h => { const r = h.resignReason || 'Lainnya'; counts[r] = (counts[r]||0) + 1; });
+  const labels = Object.keys(counts);
+
+  mkChart('resign', 'resign-c', {
+    type: 'pie',
+    data: {
+      labels,
+      datasets: [{ data: labels.map(l => counts[l]), backgroundColor: labels.map((_,i) => PALETTE[i % PALETTE.length]), borderWidth: 2, borderColor: '#fff' }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'right', labels: { boxWidth: 10, font: { size: 11 }, color: '#6B7280' } } }
+    }
+  });
+}
+
+// ═══════════════════════════════════
+// PHK REASONS (pie chart) — involuntary turnover
+// ═══════════════════════════════════
+function renderPhkChart() {
+  const canvas = document.getElementById('phk-c');
+  if (!canvas) return;
+  const phk = ld('hires', DEF.hires).filter(h => matchMonthDate(h.joinDate) && h.status === 'PHK');
+  if (!phk.length) { destroyChart('phk'); return; }
+
+  const counts = {};
+  phk.forEach(h => { const r = h.terminationReason || 'Lainnya'; counts[r] = (counts[r]||0) + 1; });
+  const labels = Object.keys(counts);
+
+  mkChart('phk', 'phk-c', {
+    type: 'pie',
+    data: {
+      labels,
+      datasets: [{ data: labels.map(l => counts[l]), backgroundColor: labels.map((_,i) => PALETTE[(i+3) % PALETTE.length]), borderWidth: 2, borderColor: '#fff' }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'right', labels: { boxWidth: 10, font: { size: 11 }, color: '#6B7280' } } }
+    }
+  });
+}
+
+// ═══════════════════════════════════
+// TENURE SNAPSHOT (descriptive stat box, no chart needed)
+// ═══════════════════════════════════
+function renderTenureBox() {
+  const el = document.getElementById('tenure-box');
+  if (!el) return;
+  const hires = ld('hires', DEF.hires).filter(h => matchMonthDate(h.joinDate));
+  if (!hires.length) { el.innerHTML = '<div class="empty"><span>📊</span>Belum ada data di periode ini.</div>'; return; }
+
+  const departed = hires.filter(h => (h.status === 'Resigned' || h.status === 'PHK') && h.joinDate && h.resignDate);
+  const active   = hires.filter(h => h.status !== 'Resigned' && h.status !== 'PHK' && h.joinDate);
+  const avgDeparted = departed.length ? Math.round(departed.reduce((s,h) => s + daysBetween(h.joinDate, h.resignDate), 0) / departed.length) : null;
+  const avgActive    = active.length ? Math.round(active.reduce((s,h) => s + daysBetween(h.joinDate, new Date().toISOString().slice(0,10)), 0) / active.length) : null;
+
+  el.innerHTML = `
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div>
+        <div style="font-size:10.5px;color:var(--t3);font-weight:700;text-transform:uppercase;letter-spacing:.3px;margin-bottom:4px">Avg tenure — masih aktif</div>
+        <div style="font-size:22px;font-weight:800;color:var(--ac600)">${avgActive==null?'—':avgActive+' hari'}</div>
+        <div style="font-size:11px;color:var(--t3);margin-top:2px">${active.length} hire dihitung dari join date sampai hari ini</div>
+      </div>
+      <div>
+        <div style="font-size:10.5px;color:var(--t3);font-weight:700;text-transform:uppercase;letter-spacing:.3px;margin-bottom:4px">Avg tenure — sudah resign / PHK</div>
+        <div style="font-size:22px;font-weight:800;color:${avgDeparted && avgDeparted<=90 ? 'var(--er)' : 'var(--t1)'}">${avgDeparted==null?'—':avgDeparted+' hari'}</div>
+        <div style="font-size:11px;color:var(--t3);margin-top:2px">${departed.length} hire dihitung dari join date sampai tanggal keluar</div>
+      </div>
+    </div>`;
+}
+
+// ═══════════════════════════════════
+// HIRE TABLE (30/60/90 columns, month-filtered + paginated)
+// ═══════════════════════════════════
+const HSC   = { 'Active':'b-active','Resigned':'b-resigned','PHK':'b-rejected','Contract ended':'b-ended','Extended':'b-extended' };
+const YNC   = { 'Yes':'b-yes','No':'b-no','Pending':'b-pending','Not yet':'b-pending' };
+
+function renderHires() {
+  const tb = document.getElementById('h-body');
+  if (!tb) return;
+  const filtered = ld('hires', DEF.hires).filter(h => matchMonthDate(h.joinDate));
+  if (!filtered.length) {
+    tb.innerHTML = '<tr><td colspan="7"><div class="empty"><span>👥</span>Belum ada hire entries di periode ini.</div></td></tr>';
+    const pg = document.getElementById('h-pager'); if (pg) pg.innerHTML = '';
+    return;
+  }
+  const { items: rows, totalPages, current } = paginate(filtered, 'hires');
+  tb.innerHTML = rows.map(h => `<tr>
+    <td><strong>${esc(h.name)}</strong></td>
+    <td style="color:var(--t2)">${esc(h.position)}</td>
+    <td style="color:var(--t2);font-size:11.5px">${esc(h.source||'—')}</td>
+    <td style="color:var(--t2)">${fd(h.joinDate)}</td>
+    <td style="white-space:nowrap">
+      <span class="badge ${YNC[h.day30]||'b-pending'}" title="Hari ke-30">30d</span>
+      <span class="badge ${YNC[h.day60]||'b-pending'}" title="Hari ke-60" style="margin-left:2px">60d</span>
+      <span class="badge ${YNC[h.day90]||'b-pending'}" title="Hari ke-90" style="margin-left:2px">90d</span>
+    </td>
+    <td><span class="badge ${HSC[h.status]||''}">${h.status}</span>${(h.status==='Resigned'&&h.resignReason)||(h.status==='PHK'&&h.terminationReason) ? `<div style="font-size:10px;color:var(--t3);margin-top:2px">${esc(h.status==='PHK'?h.terminationReason:h.resignReason)}</div>` : ''}</td>
+    <td><div style="display:flex;gap:4px">
+      <button class="ae ae-e" onclick="showM('hire','${h.id}')">Edit</button>
+      <button class="ae ae-d" onclick="delEntry('hire','${h.id}')">Del</button>
+    </div></td>
+  </tr>`).join('');
+  const pg = document.getElementById('h-pager');
+  if (pg) pg.innerHTML = pagerHtml('hires', totalPages, current);
+}
+
+// ═══════════════════════════════════
+// WORKFORCE SNAPSHOT
+// ═══════════════════════════════════
+// ═══════════════════════════════════
+// CONTRACT EXPIRY MONITOR (moved to Hire & Retention page)
+// ═══════════════════════════════════
+function renderContractExpiry() {
+  const exp = document.getElementById('exp-list');
+  if (!exp) return;
+  const hires = ld('hires', DEF.hires).filter(h => h.status !== 'Resigned' && h.status !== 'PHK' && h.contractEnd);
+  const today = new Date();
+  const withDays = hires.map(h => ({ ...h, daysLeft: Math.round((new Date(h.contractEnd) - today) / 86400000) }))
+    .filter(h => h.daysLeft >= 0 && h.daysLeft <= 90)
+    .sort((a,b) => a.daysLeft - b.daysLeft);
+
+  if (!withDays.length) exp.innerHTML = '<div class="empty"><span>✅</span>Tidak ada kontrak yang akan habis dalam 90 hari.</div>';
+  else exp.innerHTML = withDays.map(h => {
+    const cls = h.daysLeft <= 30 ? 'exp-30' : h.daysLeft <= 60 ? 'exp-60' : 'exp-90';
+    return `<div class="exp-row">
+      <div class="exp-days ${cls}">${h.daysLeft}d</div>
+      <div style="flex:1"><strong>${esc(h.name)}</strong> <span style="color:var(--t3)">· ${esc(h.position)}</span></div>
+      <div style="color:var(--t3);font-size:11px">${fd(h.contractEnd)}</div>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════
+// PROCESS HEALTH (auto-computed from checklist di tiap candidate & hire)
+// ═══════════════════════════════════
+const HEALTH_ITEMS = [
+  { key:'chkMPR',        label:'MPR disubmit sebelum rekrutmen dimulai', src:'candidate' },
+  { key:'chkNotes',       label:'Interview notes lengkap',                src:'candidate' },
+  { key:'chkSLA',         label:'SLA ≤ 21 hari terpenuhi',                src:'candidate' },
+  { key:'chkOfferLetter', label:'Offer letter terkirim tepat waktu',      src:'hire' },
+];
+
+function renderHealth() {
+  const candidates = ld('candidates', DEF.candidates).filter(c => matchMonthNum(c.month));
+  const hires      = ld('hires', DEF.hires).filter(h => matchMonthDate(h.joinDate));
+
+  const rows = HEALTH_ITEMS.map(item => {
+    const pool = item.src === 'candidate' ? candidates : hires;
+    const known = pool.filter(r => r[item.key] === 'Yes' || r[item.key] === 'No');
+    const yes   = known.filter(r => r[item.key] === 'Yes').length;
+    return { ...item, num: yes, den: known.length };
+  });
+
+  const tot   = rows.reduce((s,r) => s + r.den, 0);
+  const pass  = rows.reduce((s,r) => s + r.num, 0);
+  const pct   = tot ? pass/tot : 0;
+  const grade = tot === 0 ? '—' : pct >= 0.9 ? 'A' : pct >= 0.75 ? 'B' : 'C';
+  const msg   = tot === 0 ? 'Belum ada data untuk dihitung' :
+    { A:'Proses berjalan baik ✨', B:'Beberapa area perlu perhatian', C:'Perlu perbaikan segera' }[grade];
+
+  const se = document.getElementById('h-score');
+  if (se) se.innerHTML = `<div class="hs">
+    <div class="gc g${grade==='—'?'B':grade}">${grade}</div>
+    <div>
+      <div style="font-weight:700;font-size:13px;color:var(--t1);margin-bottom:2px">${msg}</div>
+      <div style="font-size:12px;color:var(--t2)">${pass} dari ${tot} checklist terpenuhi · ${tot?Math.round(pct*100):0}% · dihitung otomatis dari checklist di tiap kandidat &amp; hire pada periode ini</div>
+    </div>
+  </div>`;
+
+  const ce = document.getElementById('ph-checks');
+  if (!ce) return;
+  ce.innerHTML = rows.map(r => {
+    const ratio = r.den ? r.num/r.den : null;
+    const ic  = ratio == null ? 'phi-wn' : ratio >= 1 ? 'phi-ok' : ratio >= 0.6 ? 'phi-wn' : 'phi-er';
+    const vc  = ratio == null ? 'ph-wn'  : ratio >= 1 ? 'ph-ok'  : ratio >= 0.6 ? 'ph-wn'  : 'ph-er';
+    const sym = ratio == null ? '?' : ratio >= 1 ? '✓' : ratio >= 0.6 ? '!' : '✗';
+    const srcLbl = r.src === 'candidate' ? 'per kandidat' : 'per hire';
+    return `<div class="ph-row">
+      <div class="phi ${ic}">${sym}</div>
+      <div class="ph-lbl">${esc(r.label)}<div style="font-size:10px;color:var(--t3);margin-top:1px">diisi ${srcLbl} · dicek dari ${r.den} data</div></div>
+      <div class="ph-val ${vc}">${r.den ? r.num+'/'+r.den : '—'}</div>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════
+// PROJECTS
+// ═══════════════════════════════════
+const PSC = { 'Completed':'b-done','In progress':'b-prog','Planned':'b-plan' };
+const CATC = { 'Recruitment':'b-sl','Process Improvement':'b-of','Analytics & Tooling':'b-ui','Program & Culture':'b-hr','Documentation/SOP':'b-sc','Lainnya':'b-plan' };
+
+function renderProjects() {
+  const el   = document.getElementById('p-list');
+  if (!el) return;
+  const rows = ld('projects', DEF.projects).filter(p => matchMonthDate(p.date+'-01'));
+
+  // Category breakdown chart
+  const canvas = document.getElementById('projcat-c');
+  if (canvas) {
+    if (!rows.length) destroyChart('projcat');
+    else {
+      const counts = {};
+      rows.forEach(p => { const c = p.category || 'Lainnya'; counts[c] = (counts[c]||0) + 1; });
+      const labels = Object.keys(counts);
+      mkChart('projcat', 'projcat-c', {
+        type: 'pie',
+        data: {
+          labels,
+          datasets: [{ data: labels.map(l => counts[l]), backgroundColor: labels.map((_,i) => PALETTE[i % PALETTE.length]), borderWidth: 2, borderColor: '#fff' }]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { position: 'right', labels: { boxWidth: 10, font: { size: 11 }, color: '#6B7280' } },
+            tooltip: { callbacks: { label: c => ` ${c.label}: ${c.raw} project (${Math.round(c.raw/rows.length*100)}%)` } } }
+        }
+      });
+    }
+  }
+
+  if (!rows.length) { el.innerHTML = '<div class="empty"><span>📋</span>Belum ada projects di periode ini.</div>'; return; }
+  el.innerHTML = rows.map(p => `<div class="pi">
+    <div class="pi-l">
+      <div class="pi-n">${esc(p.name)}</div>
+      <div class="pi-d">${esc(p.description)}</div>
+      ${p.impact ? `<div class="pi-i">↳ ${esc(p.impact)}</div>` : ''}
+      <div style="margin-top:6px;display:flex;align-items:center;gap:7px">
+        <span class="badge ${CATC[p.category]||'b-plan'}">${esc(p.category||'Lainnya')}</span>
+        <span style="font-size:10px;color:var(--t3)">${p.date||''}</span>
+      </div>
+    </div>
+    <div class="pi-r">
+      <span class="badge ${PSC[p.status]||'b-plan'}">${p.status}</span>
+      <div style="display:flex;gap:4px">
+        <button class="ae ae-e" onclick="showM('project','${p.id}')">Edit</button>
+        <button class="ae ae-d" onclick="delEntry('project','${p.id}')">Del</button>
+      </div>
+    </div>
+  </div>`).join('');
+}
+
+// ═══════════════════════════════════
+// SELF-DEVELOPMENT
+// ═══════════════════════════════════
+// Normalizes legacy string-array entries (old tag format) into {id,name,source} objects
+function normSkills(arr) {
+  return (arr||[]).map(s => typeof s === 'string' ? { id: uid(), name: s, source: '' } : s);
+}
+function renderSelfDev() {
+  const sd = ld('selfdev', DEF.selfdev);
+  const tools = normSkills(sd.tools);
+  const hr    = normSkills(sd.hr);
+
+  const te = document.getElementById('tg-tools');
+  if (te) {
+    if (!tools.length) te.innerHTML = '<div class="empty"><span>🛠️</span>Belum ada tools/tech yang dicatat.</div>';
+    else te.innerHTML = tools.map(s => `<div class="skl-item">
+      <div class="skl-l">
+        <div class="skl-n">${esc(s.name)}</div>
+        ${s.source ? `<div class="skl-s">${esc(s.source)}</div>` : ''}
+      </div>
+      <div class="skl-r">
+        <button class="ae ae-e" onclick="showM('tool','${s.id}')">Edit</button>
+        <button class="ae ae-d" onclick="delEntry('tool','${s.id}')">Del</button>
+      </div>
+    </div>`).join('');
+  }
+
+  const he = document.getElementById('tg-hr');
+  if (he) {
+    if (!hr.length) he.innerHTML = '<div class="empty"><span>🧠</span>Belum ada HR knowledge yang dicatat.</div>';
+    else he.innerHTML = hr.map(s => `<div class="skl-item">
+      <div class="skl-l">
+        <div class="skl-n">${esc(s.name)}</div>
+        ${s.source ? `<div class="skl-s">${esc(s.source)}</div>` : ''}
+      </div>
+      <div class="skl-r">
+        <button class="ae ae-e" onclick="showM('hrskill','${s.id}')">Edit</button>
+        <button class="ae ae-d" onclick="delEntry('hrskill','${s.id}')">Del</button>
+      </div>
+    </div>`).join('');
+  }
+}
+
+// ═══════════════════════════════════
+// HC LEARNING LOG
+// ═══════════════════════════════════
+function renderLearning() {
+  const el = document.getElementById('lrn-list');
+  if (!el) return;
+  const sd = ld('selfdev', DEF.selfdev);
+  const rows = (sd.learning || []).filter(l => matchMonthDate(l.date));
+  if (!rows.length) { el.innerHTML = '<div class="empty"><span>📚</span>Belum ada learning log di periode ini.</div>'; return; }
+  el.innerHTML = rows.slice().sort((a,b) => (b.date||'').localeCompare(a.date||'')).map(l => `<div class="lrn-item">
+    <div class="lrn-top">
+      <div>
+        <div class="lrn-n">${esc(l.resource)}</div>
+        <div class="lrn-topic">${esc(l.topic||'General')}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="lrn-date">${fd(l.date)}</div>
+        <div style="display:flex;gap:4px">
+          <button class="ae ae-e" onclick="showM('learning','${l.id}')">Edit</button>
+          <button class="ae ae-d" onclick="delEntry('learning','${l.id}')">Del</button>
+        </div>
+      </div>
+    </div>
+    ${l.relevance ? `<div class="lrn-rel">${esc(l.relevance)}</div>` : ''}
+  </div>`).join('');
+}
+
+// ═══════════════════════════════════
+// WEEKLY REFLECTION
+// ═══════════════════════════════════
+function renderReflections() {
+  const el = document.getElementById('rf-list');
+  if (!el) return;
+  const rows = ld('reflections', DEF.reflections).filter(r => matchMonthDate(r.weekStart));
+  if (!rows.length) { el.innerHTML = '<div class="empty"><span>📝</span>Belum ada reflection log di periode ini.</div>'; return; }
+  el.innerHTML = rows.slice().sort((a,b) => (b.weekStart||'').localeCompare(a.weekStart||'')).map(r => `<div class="rf-item">
+    <div class="rf-top">
+      <div class="rf-wk">Minggu dari ${fd(r.weekStart)}</div>
+      <div style="display:flex;gap:4px">
+        <button class="ae ae-e" onclick="showM('reflection','${r.id}')">Edit</button>
+        <button class="ae ae-d" onclick="delEntry('reflection','${r.id}')">Del</button>
+      </div>
+    </div>
+    <div class="rf-grid">
+      <div class="rf-blk"><b>Posisi ter-close</b><span>${r.closedPositions ?? 0} posisi</span></div>
+      <div class="rf-blk"><b>Skill yang dipakai</b><span>${esc(r.skillsUsed||'—')}</span></div>
+      <div class="rf-blk"><b>Tantangan terbesar</b><span>${esc(r.challenge||'—')}</span></div>
+      <div class="rf-blk"><b>Mau diperbaiki minggu depan</b><span>${esc(r.improvement||'—')}</span></div>
+    </div>
+  </div>`).join('');
+}
+
+// ═══════════════════════════════════
+// DAILY JOURNAL (mood tracker) — with monthly auto-recap
+// ═══════════════════════════════════
+function renderJournal() {
+  const all = ld('journal', DEF.journal);
+  const filtered = all.filter(j => matchMonthDate(j.date)).sort((a,b) => a.date.localeCompare(b.date));
+
+  // Recap
+  const recapEl = document.getElementById('journal-recap');
+  if (recapEl) {
+    if (!filtered.length) {
+      recapEl.innerHTML = '<div class="empty"><span>📔</span>Belum ada catatan mood di periode ini.</div>';
+    } else if (ST.month === 0) {
+      const byMonth = {};
+      all.forEach(j => {
+        if (!j.date) return;
+        const key = j.date.slice(0,7);
+        if (!byMonth[key]) byMonth[key] = [];
+        byMonth[key].push(j.mood);
+      });
+      const rows = Object.keys(byMonth).sort().map(key => {
+        const moods = byMonth[key];
+        const avg   = moods.reduce((a,b)=>a+b,0) / moods.length;
+        const tough = moods.filter(m => m <= 2).length;
+        const [y,m] = key.split('-');
+        return { label: MS[+m-1]+' '+y, avg, tough, total: moods.length };
+      });
+      recapEl.innerHTML = `<div class="tw"><table class="tbl"><thead><tr>
+        <th>Bulan</th><th>Avg mood</th><th>Hari tough/very tough</th><th>Total entri</th>
+      </tr></thead><tbody>
+        ${rows.map(r => `<tr><td>${r.label}</td><td>${r.avg.toFixed(1)} / 5</td><td>${r.tough} dari ${r.total}</td><td>${r.total}</td></tr>`).join('')}
+      </tbody></table></div>`;
+    } else {
+      const moods    = filtered.map(j => j.mood);
+      const avg      = moods.reduce((a,b)=>a+b,0) / moods.length;
+      const tough    = moods.filter(m => m <= 2).length;
+      const toughPct = Math.round(tough / moods.length * 100);
+      let note;
+      if (toughPct >= 50) note = 'Lebih dari separuh hari yang tercatat bulan ini masuk kategori "tough" atau "very tough". Ini pola yang cukup berat — worth banget buat ambil waktu istirahat atau ngobrol sama orang yang kamu percaya.';
+      else if (toughPct >= 25) note = 'Ada beberapa hari yang cukup berat bulan ini. Kalau pola ini terus berlanjut, coba luangkan waktu buat cek-in sama diri sendiri atau orang terdekat.';
+      else note = 'Secara umum mood kamu cukup stabil bulan ini 🙂';
+      recapEl.innerHTML = `<div class="kg" style="margin-bottom:10px">
+        <div class="kc"><div class="kl">Avg mood</div><div class="kv ac">${avg.toFixed(1)}/5</div><div class="ks">dari ${moods.length} entri</div></div>
+        <div class="kc"><div class="kl">Hari tough / very tough</div><div class="kv ${toughPct>=50?'er':toughPct>=25?'wn':'ok'}">${tough}</div><div class="ks">${toughPct}% dari entri bulan ini</div></div>
+      </div>
+      <div style="font-size:12px;color:var(--t2);background:var(--ac50);border-radius:var(--rxs);padding:11px 13px;line-height:1.6">${note}</div>`;
+    }
+  }
+
+  // Trend line chart
+  const trendCanvas = document.getElementById('mood-trend-c');
+  if (trendCanvas) {
+    if (!filtered.length) destroyChart('moodTrend');
+    else mkChart('moodTrend', 'mood-trend-c', {
+      type: 'line',
+      data: {
+        labels: filtered.map(j => fd(j.date)),
+        datasets: [{
+          data: filtered.map(j => j.mood),
+          borderColor: '#4F46E5', backgroundColor: '#4F46E520',
+          pointBackgroundColor: filtered.map(j => ({1:'#DC2626',2:'#D97706',3:'#9CA3AF',4:'#4F46E5',5:'#059669'}[j.mood]||'#9CA3AF')),
+          pointRadius: 4, tension: 0.3, fill: true
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => moodInfo(c.raw).emoji + ' ' + moodInfo(c.raw).label } } },
+        scales: {
+          y: { min: 1, max: 5, ticks: { stepSize: 1, color: '#9CA3AF', font: { size: 10 }, callback: v => moodInfo(v).emoji }, grid: { color: '#EEF0F5' } },
+          x: { ticks: { color: '#9CA3AF', font: { size: 9 }, maxRotation: 0 }, grid: { display: false } }
+        }
+      }
+    });
+  }
+
+  // Distribution bar chart
+  const distCanvas = document.getElementById('mood-dist-c');
+  if (distCanvas) {
+    if (!filtered.length) destroyChart('moodDist');
+    else {
+      const counts = MOOD_LEVELS.map(m => filtered.filter(j => j.mood === m.v).length);
+      mkChart('moodDist', 'mood-dist-c', {
+        type: 'bar',
+        data: {
+          labels: MOOD_LEVELS.map(m => m.emoji + ' ' + m.label),
+          datasets: [{ data: counts, backgroundColor: ['#DC262630','#D9770630','#9CA3AF30','#4F46E530','#05966930'],
+            borderColor: ['#DC2626','#D97706','#9CA3AF','#4F46E5','#059669'], borderWidth: 1.5, borderRadius: 5 }]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            y: { beginAtZero: true, ticks: { stepSize: 1, color: '#9CA3AF', font: { size: 10 } }, grid: { color: '#EEF0F5' } },
+            x: { ticks: { color: '#6B7280', font: { size: 10 } }, grid: { display: false } }
+          }
+        }
+      });
+    }
+  }
+
+  // Day-of-week pattern (Senin–Sabtu)
+  const dowCanvas = document.getElementById('mood-dow-c');
+  if (dowCanvas) {
+    const workdayEntries = filtered.filter(j => {
+      const day = new Date(j.date+'T00:00:00').getDay();
+      return day >= 1 && day <= 6;
+    });
+    if (!workdayEntries.length) destroyChart('moodDow');
+    else {
+      const dowLabels = ['Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+      const buckets = [[],[],[],[],[],[]];
+      workdayEntries.forEach(j => {
+        const day = new Date(j.date+'T00:00:00').getDay();
+        buckets[day-1].push(j.mood);
+      });
+      const avgs = buckets.map(arr => arr.length ? +(arr.reduce((a,b)=>a+b,0)/arr.length).toFixed(2) : null);
+      mkChart('moodDow', 'mood-dow-c', {
+        type: 'bar',
+        data: {
+          labels: dowLabels,
+          datasets: [{ data: avgs.map(v=>v==null?0:v), backgroundColor: '#4F46E530', borderColor: '#4F46E5', borderWidth: 1.5, borderRadius: 5 }]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => avgs[c.dataIndex]==null ? 'Belum ada data' : `Avg mood: ${avgs[c.dataIndex]}/5` } } },
+          scales: {
+            y: { min:1, max:5, ticks: { stepSize:1, color:'#9CA3AF', font:{size:10}, callback: v=>moodInfo(v).emoji }, grid: { color:'#EEF0F5' } },
+            x: { ticks: { color:'#6B7280', font:{size:10.5} }, grid: { display:false } }
+          }
+        }
+      });
+    }
+  }
+
+  // Streak analysis (consecutive calendar days with mood tough/very tough)
+  const streakEl = document.getElementById('mood-streak');
+  if (streakEl) {
+    if (!filtered.length) {
+      streakEl.innerHTML = '<div class="empty" style="padding:14px"><span>📊</span>Belum ada data.</div>';
+    } else {
+      let longest = 0, run = 0, prevDate = null;
+      filtered.forEach(j => {
+        const tough = j.mood <= 2;
+        const consecutive = prevDate && daysBetween(prevDate, j.date) === 1;
+        if (tough && consecutive) run += 1;
+        else if (tough) run = 1;
+        else run = 0;
+        longest = Math.max(longest, run);
+        prevDate = j.date;
+      });
+      let curStreak = 0;
+      for (let i = filtered.length - 1; i >= 0; i--) {
+        if (filtered[i].mood > 2) break;
+        if (curStreak === 0) curStreak = 1;
+        else {
+          const gap = daysBetween(filtered[i].date, filtered[i+1].date);
+          if (gap === 1) curStreak++; else break;
+        }
+      }
+      const note = longest >= 3
+        ? `Ada streak ${longest} hari tough/very tough berturut-turut di periode ini — worth diperhatiin polanya.`
+        : 'Belum ada streak hari berat yang panjang di periode ini 🙂';
+      streakEl.innerHTML = `
+        <div class="streak-row">
+          <div class="streak-box"><div class="streak-num">${curStreak}</div><div class="streak-lbl">Streak saat ini</div></div>
+          <div class="streak-box"><div class="streak-num">${longest}</div><div class="streak-lbl">Streak terpanjang</div></div>
+        </div>
+        <div style="font-size:11.5px;color:var(--t2);line-height:1.6">${note}</div>`;
+    }
+  }
+
+  // Word frequency in energizer / drainer
+  const STOPWORDS = new Set(['yang','dan','dari','ini','itu','ada','saya','aku','gak','tidak','bisa','sama','juga','nya',
+    'untuk','dengan','karena','jadi','banyak','sih','deh','tapi','atau','saat','waktu','pas','lagi','masih','udah','sudah',
+    'akan','mau','kalo','kalau','aja','kok','loh','dong','kan','the','and','for','yg','krn','dg','pd','sm']);
+  function topWords(entries, field, n) {
+    const counts = {};
+    entries.forEach(j => {
+      const text = (j[field]||'').toLowerCase();
+      text.split(/[^a-z0-9]+/).forEach(w => {
+        if (w.length < 3 || STOPWORDS.has(w)) return;
+        counts[w] = (counts[w]||0) + 1;
+      });
+    });
+    return Object.entries(counts).sort((a,b) => b[1]-a[1]).slice(0, n);
+  }
+  const enerEl = document.getElementById('energizer-words');
+  if (enerEl) {
+    const top = topWords(filtered, 'energizer', 8);
+    enerEl.innerHTML = top.length
+      ? `<div class="word-tags">${top.map(([w,c]) => `<span class="word-tag">${esc(w)}<span class="cnt">${c}</span></span>`).join('')}</div>`
+      : '<div class="empty" style="padding:12px"><span>💬</span>Belum ada catatan.</div>';
+  }
+  const drainEl = document.getElementById('drainer-words');
+  if (drainEl) {
+    const top = topWords(filtered, 'drainer', 8);
+    drainEl.innerHTML = top.length
+      ? `<div class="word-tags">${top.map(([w,c]) => `<span class="word-tag">${esc(w)}<span class="cnt">${c}</span></span>`).join('')}</div>`
+      : '<div class="empty" style="padding:12px"><span>💬</span>Belum ada catatan.</div>';
+  }
+
+  // List (most recent first)
+  const listEl = document.getElementById('journal-list');
+  if (listEl) {
+    if (!filtered.length) { listEl.innerHTML = ''; }
+    else listEl.innerHTML = filtered.slice().reverse().map(j => {
+      const mi = moodInfo(j.mood);
+      return `<div class="rf-item" style="padding:12px 16px">
+        <div style="display:flex;align-items:center;gap:10px;justify-content:space-between">
+          <div style="display:flex;align-items:center;gap:9px">
+            <span style="font-size:19px">${mi.emoji}</span>
+            <div>
+              <div style="font-size:12.5px;font-weight:700;color:var(--t1)">${fd(j.date)} · ${mi.label}</div>
+              ${j.energizer ? `<div style="font-size:11px;color:var(--t2);margin-top:2px">↑ ${esc(j.energizer)}</div>` : ''}
+              ${j.drainer ? `<div style="font-size:11px;color:var(--t2);margin-top:1px">↓ ${esc(j.drainer)}</div>` : ''}
+            </div>
+          </div>
+          <div style="display:flex;gap:4px;flex-shrink:0">
+            <button class="ae ae-e" onclick="showM('journal','${j.id}')">Edit</button>
+            <button class="ae ae-d" onclick="delEntry('journal','${j.id}')">Del</button>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+}
+
+// ═══════════════════════════════════
+// TO-DO & TASK (own page, grouped by deadline: year → month, with subtask checklist)
+// ═══════════════════════════════════
+function taskProgress(t) {
+  if (t.subtasks && t.subtasks.length) {
+    const done = t.subtasks.filter(s => s.done).length;
+    return Math.round(done / t.subtasks.length * 100);
+  }
+  return t.done ? 100 : 0;
+}
+const statusOf = p => p >= 100 ? 'Done' : p > 0 ? 'On progress' : 'Not started';
+const TDC = { 'Not started':'b-plan', 'On progress':'b-prog', 'Done':'b-done' };
+const TD_LBL = { 'Not started':'Belum mulai', 'On progress':'On progress', 'Done':'Done' };
+const todayStr = () => new Date().toISOString().slice(0,10);
+
+function todoItemHtml(t) {
+  const hasSubs  = t.subtasks && t.subtasks.length;
+  const progress = taskProgress(t);
+  const status   = statusOf(progress);
+  const overdue  = t.deadline && t.deadline < todayStr() && status !== 'Done';
+  const dateChip = t.deadline
+    ? `<div class="td-date${overdue?' overdue':''}">${new Date(t.deadline+'T00:00:00').toLocaleDateString('id-ID',{day:'2-digit',month:'short'})}</div>`
+    : `<div class="td-date">—</div>`;
+
+  const checkbox = hasSubs ? '' :
+    `<input type="checkbox" class="td-chk" ${t.done?'checked':''} onchange="toggleTaskDone('${t.id}',this.checked)">`;
+
+  const bodyHtml = hasSubs ? `<div class="td-subs">${t.subtasks.map(s => `<div class="td-sub-row">
+        <input type="checkbox" ${s.done?'checked':''} onchange="toggleSubtask('${t.id}','${s.id}',this.checked)">
+        <span class="td-sub-txt${s.done?' done':''}">${esc(s.text)}</span>
+      </div>`).join('')}</div>
+      <div class="td-prog-row">
+        <div class="td-prog-track"><div class="td-prog-fill${status==='Done'?' done':''}" style="width:${progress}%"></div></div>
+        <div class="td-prog-pct">${progress}%</div>
+      </div>` : '';
+
+  return `<div class="td-item">
+    <div class="td-top">
+      ${dateChip}
+      ${checkbox}
+      <span class="td-txt${status==='Done'?' done':''}">${esc(t.text)}</span>
+      <span class="td-badge ${TDC[status]}">${overdue ? 'Overdue' : TD_LBL[status]}</span>
+      <div class="td-actions">
+        <button class="ae ae-e" onclick="showM('todo','${t.id}')">Edit</button>
+        <button class="ae ae-d" onclick="delEntry('todo','${t.id}')">Del</button>
+      </div>
+    </div>
+    ${bodyHtml}
+  </div>`;
+}
+
+// ═══════════════════════════════════
+// "HARI INI" — task dengan deadline hari ini, selalu tampil di atas (gak kena filter tab/bulan)
+// ═══════════════════════════════════
+function renderTodayTasks() {
+  const labelEl = document.getElementById('today-label');
+  const listEl  = document.getElementById('today-list');
+  if (!listEl) return;
+  if (labelEl) labelEl.textContent = NOW.toLocaleDateString('id-ID', { weekday:'long', day:'numeric', month:'long' });
+
+  const todos = ld('todos', DEF.todos);
+  const dueToday = todos.filter(t => t.deadline === todayStr());
+
+  if (!dueToday.length) {
+    listEl.innerHTML = '<div class="empty" style="padding:16px"><span>✅</span>Gak ada deadline hari ini. Aman!</div>';
+    return;
+  }
+  const notDone = dueToday.filter(t => statusOf(taskProgress(t)) !== 'Done');
+  const done    = dueToday.filter(t => statusOf(taskProgress(t)) === 'Done');
+  const ordered = [...notDone, ...done];
+  listEl.innerHTML = `<div class="td-list">${ordered.map(todoItemHtml).join('')}</div>`;
+}
+
+function renderTodos() {
+  const host = document.getElementById('td-groups');
+  if (!host) return;
+  let todos = ld('todos', DEF.todos);
+  if (ST.todoTab !== 'All') todos = todos.filter(t => statusOf(taskProgress(t)) === ST.todoTab);
+  // Month filter: task tanpa deadline selalu tampil, task dengan deadline difilter per bulan
+  todos = todos.filter(t => !t.deadline || matchMonthDate(t.deadline));
+
+  if (!todos.length) {
+    host.innerHTML = '<div class="empty"><span>📝</span>Belum ada to-dos di kategori/periode ini.</div>';
+    const pg = document.getElementById('td-pager'); if (pg) pg.innerHTML = '';
+    return;
+  }
+
+  const undated = todos.filter(t => !t.deadline);
+  const dated   = todos.filter(t => t.deadline).sort((a,b) => a.deadline.localeCompare(b.deadline));
+
+  // Flatten into ordered list (undated first, then dated chronologically) for pagination
+  const flat = [];
+  undated.forEach(t => flat.push({ t, year:null, month:null }));
+  dated.forEach(t => {
+    const d = new Date(t.deadline+'T00:00:00');
+    flat.push({ t, year:d.getFullYear(), month:d.getMonth() });
+  });
+
+  const { items: pageItems, totalPages, current } = paginate(flat, 'todos');
+
+  // Group consecutive page items by year/month for header rendering
+  const blocks = [];
+  let curKey = null;
+  pageItems.forEach(entry => {
+    const key = entry.year === null ? 'undated' : entry.year+'-'+entry.month;
+    if (key !== curKey) { blocks.push({ year: entry.year, month: entry.month, items: [] }); curKey = key; }
+    blocks[blocks.length-1].items.push(entry.t);
+  });
+
+  let html = '';
+  let curYear = undefined;
+  blocks.forEach(b => {
+    if (b.year === null) {
+      html += `<div class="tdg-month">Tanpa deadline</div>`;
+    } else {
+      if (b.year !== curYear) { html += `<div class="tdg-year">${b.year}</div>`; curYear = b.year; }
+      html += `<div class="tdg-month">${MF[b.month]}</div>`;
+    }
+    html += `<div class="td-list">${b.items.map(todoItemHtml).join('')}</div>`;
+  });
+
+  host.innerHTML = html;
+  const pg = document.getElementById('td-pager');
+  if (pg) pg.innerHTML = pagerHtml('todos', totalPages, current);
+}
+function toggleSubtask(taskId, subId, checked) {
+  const todos = ld('todos', DEF.todos);
+  const t = todos.find(x => x.id === taskId);
+  if (!t || !t.subtasks) return;
+  const s = t.subtasks.find(x => x.id === subId);
+  if (s) { s.done = checked; sv('todos', todos); renderTodos(); autoSave(); }
+}
+function toggleTaskDone(taskId, checked) {
+  const todos = ld('todos', DEF.todos);
+  const t = todos.find(x => x.id === taskId);
+  if (t) { t.done = checked; sv('todos', todos); renderTodos(); autoSave(); }
+}
+
+// ═══════════════════════════════════
+// MODAL
+// ═══════════════════════════════════
+let MC = { type: null, id: null };
+let PENDING_LINK_CANDIDATE = null; // candidateId to link when a prefilled hire is saved
+const MTitles = {
+  candidate:'Candidate', hire:'Hire entry', project:'Project',
+  todo:'To-do task', tool:'Tools & tech skill', hrskill:'HR knowledge skill',
+  learning:'HC learning log', reflection:'Weekly reflection', position:'Posisi (requisition)', journal:'Daily journal entry'
+};
+const gv = sel => { const e = document.getElementById(sel); return e ? e.value.trim() : ''; };
+
+function showM(type, id, prefill) {
+  MC = { type, id };
+  document.getElementById('m-title').textContent = (id ? 'Edit ' : 'Add ') + MTitles[type];
+  let d = null;
+  if (id) {
+    if (type === 'candidate') d = ld('candidates', DEF.candidates).find(x => x.id === id);
+    if (type === 'hire')      d = ld('hires',    DEF.hires).find(x => x.id === id);
+    if (type === 'project')   d = ld('projects', DEF.projects).find(x => x.id === id);
+    if (type === 'todo')      d = ld('todos',    DEF.todos).find(x => x.id === id);
+    if (type === 'tool')      d = normSkills(ld('selfdev', DEF.selfdev).tools).find(x => x.id === id);
+    if (type === 'hrskill')   d = normSkills(ld('selfdev', DEF.selfdev).hr).find(x => x.id === id);
+    if (type === 'learning')  d = (ld('selfdev', DEF.selfdev).learning||[]).find(x => x.id === id);
+    if (type === 'reflection')d = ld('reflections', DEF.reflections).find(x => x.id === id);
+    if (type === 'position')  d = ld('positions', DEF.positions).find(x => x.id === id);
+    if (type === 'journal')   d = ld('journal', DEF.journal).find(x => x.id === id);
+  } else if (prefill) {
+    d = prefill;
+  }
+  document.getElementById('m-body').innerHTML = buildForm(type, d);
+  document.getElementById('modal').classList.add('show');
+}
+function closeM() { document.getElementById('modal').classList.remove('show'); PENDING_LINK_CANDIDATE = null; }
+
+// Buka form Hire dengan data dasar sudah terisi dari candidate yang outcome-nya "Hired"
+function convertToHire(candidateId) {
+  const c = ld('candidates', DEF.candidates).find(x => x.id === candidateId);
+  if (!c) return;
+  PENDING_LINK_CANDIDATE = candidateId;
+  showM('hire', null, { name: c.name, position: c.position, division: c.division, source: c.source });
+}
+
+function esc(s) { return (s==null?'':String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function opts(arr, sel) { return arr.map(o => `<option ${sel===o?'selected':''}>${o}</option>`).join(''); }
+
+function subtaskRowHtml(s) {
+  return `<div class="subtask-row" data-id="${s.id}" data-done="${s.done?1:0}">
+    <input type="checkbox" ${s.done?'checked':''} onchange="this.closest('.subtask-row').dataset.done=this.checked?1:0">
+    <input type="text" value="${esc(s.text)}" placeholder="Detail tugas...">
+    <button type="button" class="subtask-rm" onclick="this.closest('.subtask-row').remove()">✕</button>
+  </div>`;
+}
+function addSubtaskRow() {
+  const host = document.getElementById('subtask-rows');
+  if (!host) return;
+  const div = document.createElement('div');
+  div.innerHTML = subtaskRowHtml({ id: uid(), text: '', done: false });
+  host.appendChild(div.firstElementChild);
+}
+
+function buildForm(type, d) {
+  const v = (val, def='') => val != null ? val : def;
+
+  if (type === 'candidate') return `
+    <div class="mfr">
+      <div class="mfg"><label>Nama kandidat *</label><input id="mf-nm" value="${esc(v(d?.name))}"></div>
+      <div class="mfg"><label>Posisi *</label><input id="mf-pos" value="${esc(v(d?.position))}"></div>
+    </div>
+    <div class="mfr">
+      <div class="mfg"><label>Divisi</label><input id="mf-div" value="${esc(v(d?.division))}"></div>
+      <div class="mfg"><label>Urgensi</label><select id="mf-urg">${opts(['P0','P1','P2'], d?.urgency)}</select></div>
+    </div>
+    <div class="mfr">
+      <div class="mfg"><label>Source</label><select id="mf-src">${opts(SOURCES, d?.source)}</select></div>
+      <div class="mfg"><label>Bulan</label><select id="mf-mon">${MF.map((m,i)=>`<option value="${i+1}" ${d?.month==i+1?'selected':''}>${m}</option>`).join('')}</select></div>
+    </div>
+    <div class="mfr">
+      <div class="mfg"><label>Stage saat ini</label><select id="mf-stg">${opts(STG, d?.stage)}</select></div>
+      <div class="mfg"><label>Outcome</label><select id="mf-outc" onchange="document.getElementById('mf-rr-wrap').style.display=this.value==='Rejected'||this.value==='Withdrew'?'block':'none'">${opts(OUTCOMES, d?.outcome)}</select></div>
+    </div>
+    <div class="mfg" id="mf-rr-wrap" style="display:${(d?.outcome==='Rejected'||d?.outcome==='Withdrew')?'block':'none'}">
+      <label>Alasan reject / withdraw</label>
+      <select id="mf-rr">${opts(REJECT_REASONS, d?.rejectReason)}</select>
+    </div>
+    <div class="mfg">
+      <label>Process health checklist <span style="color:var(--t3);font-weight:400">(dipakai buat hitung Process Health otomatis)</span></label>
+      <div class="mfr" style="grid-template-columns:1fr 1fr">
+        <div><label style="font-weight:400;font-size:11px">MPR disubmit sebelum rekrutmen?</label><select id="mf-chkmpr">${opts(['No','Yes'], d?.chkMPR)}</select></div>
+        <div><label style="font-weight:400;font-size:11px">Interview notes lengkap?</label><select id="mf-chknotes">${opts(['No','Yes'], d?.chkNotes)}</select></div>
+      </div>
+      <div class="mfg" style="margin-top:11px">
+        <label style="font-weight:400;font-size:11px">SLA ≤21 hari terpenuhi?</label><select id="mf-chksla">${opts(['No','Yes'], d?.chkSLA)}</select>
+      </div>
+    </div>`;
+
+  if (type === 'hire') return `
+    <div class="mfr">
+      <div class="mfg"><label>Nama *</label><input id="mf-nm" value="${esc(v(d?.name))}"></div>
+      <div class="mfg"><label>Posisi *</label><input id="mf-pos" value="${esc(v(d?.position))}"></div>
+    </div>
+    <div class="mfr">
+      <div class="mfg"><label>Divisi</label><input id="mf-div" value="${esc(v(d?.division))}"></div>
+      <div class="mfg"><label>Source</label><select id="mf-src">${opts(SOURCES, d?.source)}</select></div>
+    </div>
+    <div class="mfr">
+      <div class="mfg"><label>Tanggal offer</label><input type="date" id="mf-od" value="${v(d?.offerDate)}"></div>
+      <div class="mfg"><label>Join date</label><input type="date" id="mf-jd" value="${v(d?.joinDate)}"></div>
+    </div>
+    <div class="mfr">
+      <div class="mfg"><label>Akhir kontrak</label><input type="date" id="mf-ce" value="${v(d?.contractEnd)}"></div>
+      <div class="mfg"><label>Status</label><select id="mf-st" onchange="const r=this.value==='Resigned',p=this.value==='PHK'; document.getElementById('mf-rrs-wrap').style.display=r?'block':'none'; document.getElementById('mf-trs-wrap').style.display=p?'block':'none';">${opts(['Active','Resigned','PHK','Contract ended','Extended'], d?.status)}</select></div>
+    </div>
+    <div class="mfr" style="grid-template-columns:1fr 1fr 1fr">
+      <div class="mfg"><label>Aktif hari-30?</label><select id="mf-d30">${opts(['Not yet','Yes','No'], d?.day30)}</select></div>
+      <div class="mfg"><label>Aktif hari-60?</label><select id="mf-d60">${opts(['Not yet','Yes','No'], d?.day60)}</select></div>
+      <div class="mfg"><label>Aktif hari-90?</label><select id="mf-d90">${opts(['Not yet','Yes','No'], d?.day90)}</select></div>
+    </div>
+    <div class="mfg" id="mf-rrs-wrap" style="display:${d?.status==='Resigned'?'block':'none'}">
+      <div class="mfr">
+        <div class="mfg"><label>Tanggal resign</label><input type="date" id="mf-rd" value="${v(d?.resignDate)}"></div>
+        <div class="mfg"><label>Alasan resign</label><select id="mf-rrs"><option value="">—</option>${opts(RESIGN_REASONS, d?.resignReason)}</select></div>
+      </div>
+    </div>
+    <div class="mfg" id="mf-trs-wrap" style="display:${d?.status==='PHK'?'block':'none'}">
+      <div class="mfr">
+        <div class="mfg"><label>Tanggal PHK</label><input type="date" id="mf-td" value="${v(d?.resignDate)}"></div>
+        <div class="mfg"><label>Alasan PHK</label><select id="mf-trs"><option value="">—</option>${opts(PHK_REASONS, d?.terminationReason)}</select></div>
+      </div>
+    </div>
+    <div class="mfg"><label>Offer letter terkirim tepat waktu? <span style="color:var(--t3);font-weight:400">(untuk process health)</span></label>
+      <select id="mf-chkol">${opts(['No','Yes'], d?.chkOfferLetter)}</select></div>`;
+
+  if (type === 'project') return `
+    <div class="mfg"><label>Nama project *</label><input id="mf-nm" value="${esc(v(d?.name))}"></div>
+    <div class="mfg"><label>Deskripsi</label><textarea id="mf-desc">${esc(v(d?.description))}</textarea></div>
+    <div class="mfg"><label>Impact / notes</label><textarea id="mf-imp">${esc(v(d?.impact))}</textarea></div>
+    <div class="mfr">
+      <div class="mfg"><label>Kategori</label><select id="mf-cat">${opts(PROJECT_CATEGORIES, d?.category)}</select></div>
+      <div class="mfg"><label>Status</label><select id="mf-st">${opts(['Completed','In progress','Planned'], d?.status)}</select></div>
+    </div>
+    <div class="mfg"><label>Tanggal (YYYY-MM)</label><input id="mf-dt" value="${v(d?.date)}" placeholder="2026-06"></div>`;
+
+  if (type === 'todo') return `
+    <div class="mfg"><label>Task *</label><input id="mf-txt" value="${esc(v(d?.text))}" placeholder="Apa yang perlu dikerjakan?"></div>
+    <div class="mfg"><label>Deadline</label><input type="date" id="mf-tdt" value="${v(d?.deadline)}"></div>
+    <div class="mfg">
+      <label>Detail tugas (checklist) — opsional</label>
+      <div id="subtask-rows">${(d?.subtasks||[]).map(subtaskRowHtml).join('')}</div>
+      <button type="button" class="add-btn ghost" style="margin-top:2px" onclick="addSubtaskRow()">+ Tambah detail tugas</button>
+    </div>`;
+
+  if (type === 'tool' || type === 'hrskill') return `
+    <div class="mfg"><label>Nama skill *</label><input id="mf-skn" value="${esc(v(d?.name))}" placeholder="${type==='tool'?'Contoh: Figma, Google Analytics':'Contoh: Behavioral interviewing'}"></div>
+    <div class="mfg"><label>Belajar di mana / dari mana</label><textarea id="mf-sks" placeholder="Contoh: Self-taught via YouTube, training internal WM Center, dll">${esc(v(d?.source))}</textarea></div>`;
+
+  if (type === 'learning') return `
+    <div class="mfg"><label>Resource *</label><input id="mf-res" value="${esc(v(d?.resource))}" placeholder="Contoh: Artikel/buku/course apa yang dipelajari"></div>
+    <div class="mfr">
+      <div class="mfg"><label>Topik</label><input id="mf-top" value="${esc(v(d?.topic))}" placeholder="Contoh: Quality of hire, workforce planning"></div>
+      <div class="mfg"><label>Tanggal</label><input type="date" id="mf-ldt" value="${v(d?.date)}"></div>
+    </div>
+    <div class="mfg"><label>Relevansi ke kerjaan kamu</label><textarea id="mf-rel" placeholder="Konsep ini bisa dipakai untuk...">${esc(v(d?.relevance))}</textarea></div>`;
+
+  if (type === 'reflection') return `
+    <div class="mfr">
+      <div class="mfg"><label>Mulai minggu (tanggal)</label><input type="date" id="mf-wk" value="${v(d?.weekStart)}"></div>
+      <div class="mfg"><label>Posisi ter-close</label><input type="number" id="mf-cp" min="0" value="${v(d?.closedPositions,0)}"></div>
+    </div>
+    <div class="mfg"><label>Tantangan terbesar minggu ini</label><textarea id="mf-chl">${esc(v(d?.challenge))}</textarea></div>
+    <div class="mfg"><label>Skill yang dipakai</label><textarea id="mf-sku">${esc(v(d?.skillsUsed))}</textarea></div>
+    <div class="mfg"><label>Mau dilakukan berbeda minggu depan</label><textarea id="mf-imp2">${esc(v(d?.improvement))}</textarea></div>`;
+
+  if (type === 'position') return `
+    <div class="mfr">
+      <div class="mfg"><label>Nama posisi *</label><input id="mf-pn" value="${esc(v(d?.position))}"></div>
+      <div class="mfg"><label>Divisi</label><input id="mf-pdiv" value="${esc(v(d?.division))}"></div>
+    </div>
+    <div class="mfr">
+      <div class="mfg"><label>Headcount</label><input type="number" id="mf-phc" min="1" value="${v(d?.headcount,1)}"></div>
+      <div class="mfg"><label>Urgensi</label><select id="mf-purg">${opts(['P0','P1','P2'], d?.urgency)}</select></div>
+    </div>
+    <div class="mfr">
+      <div class="mfg"><label>Status posisi</label><select id="mf-pstat">${opts(['Open','Closed'], d?.jobStatus)}</select></div>
+      <div class="mfg"><label>Bulan</label><select id="mf-pmon">${MF.map((m,i)=>`<option value="${i+1}" ${d?.month==i+1?'selected':''}>${m}</option>`).join('')}</select></div>
+    </div>`;
+
+  if (type === 'journal') return `
+    <div class="mfg"><label>Tanggal *</label><input type="date" id="mf-jdt" value="${v(d?.date, todayStr())}"></div>
+    <div class="mfg"><label>Mood hari ini</label>
+      <select id="mf-jmood">${MOOD_LEVELS.slice().reverse().map(m => `<option value="${m.v}" ${(d?.mood||3)===m.v?'selected':''}>${m.emoji} ${m.label}</option>`).join('')}</select>
+    </div>
+    <div class="mfg"><label>Yang bikin semangat hari ini (opsional)</label><textarea id="mf-jener" placeholder="Apa yang bikin hari ini lebih baik?">${esc(v(d?.energizer))}</textarea></div>
+    <div class="mfg"><label>Yang bikin capek/stress hari ini (opsional)</label><textarea id="mf-jdrain" placeholder="Apa yang terasa berat hari ini?">${esc(v(d?.drainer))}</textarea></div>`;
+
+  return '';
+}
+
+function saveM() {
+  const { type, id } = MC;
+  if (type === 'candidate') {
+    const nm = gv('mf-nm'); if (!nm) { toast('Isi nama kandidat dulu!', 'warn'); return; }
+    upsert('candidates', { id:id||uid(), name:nm, position:gv('mf-pos'), division:gv('mf-div'),
+      urgency:gv('mf-urg'), source:gv('mf-src'), stage:gv('mf-stg'), outcome:gv('mf-outc'),
+      rejectReason: (gv('mf-outc')==='Rejected'||gv('mf-outc')==='Withdrew') ? gv('mf-rr') : null,
+      month:+gv('mf-mon'),
+      chkMPR:gv('mf-chkmpr'), chkNotes:gv('mf-chknotes'), chkSLA:gv('mf-chksla') }, DEF.candidates);
+  } else if (type === 'hire') {
+    const nm = gv('mf-nm'); if (!nm) { toast('Isi nama dulu!', 'warn'); return; }
+    const existingHire = id ? ld('hires', DEF.hires).find(x => x.id === id) : null;
+    const linkedCandidateId = PENDING_LINK_CANDIDATE || (existingHire ? existingHire.candidateId : null) || null;
+    const st = gv('mf-st');
+    const endDate   = st === 'PHK' ? (gv('mf-td')||null) : (st === 'Resigned' ? (gv('mf-rd')||null) : null);
+    const resignRsn = st === 'Resigned' ? (gv('mf-rrs')||null) : null;
+    const termRsn   = st === 'PHK' ? (gv('mf-trs')||null) : null;
+    upsert('hires', { id:id||uid(), name:nm, position:gv('mf-pos'), division:gv('mf-div'), source:gv('mf-src'),
+      offerDate:gv('mf-od'), joinDate:gv('mf-jd'), contractEnd:gv('mf-ce'), status:st,
+      day30:gv('mf-d30'), day60:gv('mf-d60'), day90:gv('mf-d90'),
+      resignDate:endDate, resignReason:resignRsn, terminationReason:termRsn,
+      chkOfferLetter:gv('mf-chkol'), candidateId:linkedCandidateId }, DEF.hires);
+    PENDING_LINK_CANDIDATE = null;
+  } else if (type === 'project') {
+    const nm = gv('mf-nm'); if (!nm) { toast('Isi nama project dulu!', 'warn'); return; }
+    upsert('projects', { id:id||uid(), name:nm, description:gv('mf-desc'),
+      impact:gv('mf-imp'), status:gv('mf-st'), date:gv('mf-dt'), category:gv('mf-cat') }, DEF.projects);
+  } else if (type === 'todo') {
+    const txt = gv('mf-txt'); if (!txt) { toast('Isi task dulu!', 'warn'); return; }
+    const rows = document.querySelectorAll('#subtask-rows .subtask-row');
+    const subtasks = Array.from(rows).map(row => ({
+      id: row.dataset.id,
+      text: row.querySelector('input[type=text]').value.trim(),
+      done: row.dataset.done === '1'
+    })).filter(s => s.text);
+    const existing = id ? ld('todos', DEF.todos).find(x => x.id === id) : null;
+    upsert('todos', { id:id||uid(), text:txt, deadline:gv('mf-tdt')||null,
+      done: existing ? !!existing.done : false, subtasks }, DEF.todos);
+  } else if (type === 'tool' || type === 'hrskill') {
+    const nm = gv('mf-skn'); if (!nm) { toast('Isi nama skill dulu!', 'warn'); return; }
+    const sd = ld('selfdev', DEF.selfdev);
+    const key = type === 'tool' ? 'tools' : 'hr';
+    const list = normSkills(sd[key]);
+    const entry = { id:id||uid(), name:nm, source:gv('mf-sks') };
+    const i = list.findIndex(s => s.id === id);
+    if (i >= 0) list[i] = entry; else list.push(entry);
+    sd[key] = list;
+    sv('selfdev', sd);
+  } else if (type === 'learning') {
+    const res = gv('mf-res'); if (!res) { toast('Isi resource dulu!', 'warn'); return; }
+    const sd = ld('selfdev', DEF.selfdev);
+    if (!sd.learning) sd.learning = [];
+    const entry = { id:id||uid(), resource:res, topic:gv('mf-top'), date:gv('mf-ldt')||null, relevance:gv('mf-rel') };
+    const i = sd.learning.findIndex(l => l.id === id);
+    if (i >= 0) sd.learning[i] = entry; else sd.learning.push(entry);
+    sv('selfdev', sd);
+  } else if (type === 'reflection') {
+    const wk = gv('mf-wk'); if (!wk) { toast('Isi tanggal mulai minggu dulu!', 'warn'); return; }
+    upsert('reflections', { id:id||uid(), weekStart:wk, closedPositions:+(gv('mf-cp')||0),
+      challenge:gv('mf-chl'), skillsUsed:gv('mf-sku'), improvement:gv('mf-imp2') }, DEF.reflections);
+  } else if (type === 'position') {
+    const pn = gv('mf-pn'); if (!pn) { toast('Isi nama posisi dulu!', 'warn'); return; }
+    upsert('positions', { id:id||uid(), position:pn, division:gv('mf-pdiv'), headcount:+(gv('mf-phc')||1),
+      urgency:gv('mf-purg'), jobStatus:gv('mf-pstat'), month:+gv('mf-pmon') }, DEF.positions);
+  } else if (type === 'journal') {
+    const dt = gv('mf-jdt'); if (!dt) { toast('Isi tanggal dulu!', 'warn'); return; }
+    upsert('journal', { id:id||uid(), date:dt, mood:+gv('mf-jmood'),
+      energizer:gv('mf-jener'), drainer:gv('mf-jdrain') }, DEF.journal);
+  }
+  closeM();
+  renderAll();
+  autoSave();
+  toast('✓ Data tersimpan', 'ok');
+}
+
+// ═══════════════════════════════════
+// CRUD HELPERS
+// ═══════════════════════════════════
+function upsert(key, entry, def) {
+  const arr = ld(key, def);
+  const i   = arr.findIndex(x => x.id === entry.id);
+  if (i >= 0) arr[i] = entry; else arr.push(entry);
+  sv(key, arr);
+}
+async function delEntry(type, id) {
+  const ok = await showConfirm('Hapus data ini?', 'Ya, hapus');
+  if (!ok) return;
+  if      (type === 'candidate') sv('candidates', ld('candidates', DEF.candidates).filter(x => x.id !== id));
+  else if (type === 'hire')      sv('hires',      ld('hires',      DEF.hires).filter(x => x.id !== id));
+  else if (type === 'project')   sv('projects',   ld('projects',   DEF.projects).filter(x => x.id !== id));
+  else if (type === 'reflection')sv('reflections',ld('reflections',DEF.reflections).filter(x => x.id !== id));
+  else if (type === 'todo') {
+    sv('todos', ld('todos', DEF.todos).filter(x => x.id !== id));
+  } else if (type === 'tool' || type === 'hrskill') {
+    const sd = ld('selfdev', DEF.selfdev);
+    const key = type === 'tool' ? 'tools' : 'hr';
+    sd[key] = normSkills(sd[key]).filter(s => s.id !== id);
+    sv('selfdev', sd);
+  } else if (type === 'learning') {
+    const sd = ld('selfdev', DEF.selfdev);
+    sd.learning = (sd.learning||[]).filter(l => l.id !== id);
+    sv('selfdev', sd);
+  } else if (type === 'position') {
+    sv('positions', ld('positions', DEF.positions).filter(x => x.id !== id));
+  } else if (type === 'journal') {
+    sv('journal', ld('journal', DEF.journal).filter(x => x.id !== id));
+  }
+  renderAll();
+  autoSave();
+  toast('Data berhasil dihapus', 'info');
+}
+
+// ═══════════════════════════════════
+// UTILS
+// ═══════════════════════════════════
+const uid = () => Math.random().toString(36).slice(2,9);
+function fd(s) {
+  if (!s) return '—';
+  const d = new Date(s + 'T00:00:00');
+  return isNaN(d) ? s : d.toLocaleDateString('id-ID', { day:'numeric', month:'short', year:'2-digit' });
+}
+
+// ═══════════════════════════════════
+// GOOGLE SHEETS — FULLY AUTOMATIC
+// Auto-load dari Sheets saat buka, auto-save setiap ada perubahan
+// ═══════════════════════════════════
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbwxpL6_Tng74pA4Mq58r7AN0y6UVnkMHycXNnqIh2wcWHlLHT-fgg5W_Sj8YIcFEQE8/exec';
+
+function setSyncStatus(state, extra) {
+  const el = document.getElementById('sync-status');
+  if (!el) return;
+  if (state === 'loading') {
+    el.innerHTML = '<span style="color:var(--ac600)">⟳ Memuat data…</span>';
+  } else if (state === 'ok') {
+    const now = new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
+    el.innerHTML = '<span style="color:var(--ok)">✓ Tersimpan ' + now + '</span>';
+    setTimeout(() => { if (el) el.innerHTML = ''; }, 3000);
+  } else if (state === 'err') {
+    el.innerHTML = '<span style="color:var(--er)" title="' + (extra||'') + '">⚠ Gagal sync</span>';
+  } else {
+    el.innerHTML = '';
+  }
+}
+
+function payloadFromLocal() {
+  return {
+    candidates: ld('candidates', DEF.candidates),
+    hires:      ld('hires',      DEF.hires),
+    projects:   ld('projects',   DEF.projects),
+    selfdev:    ld('selfdev',    DEF.selfdev),
+    todos:      ld('todos',      DEF.todos),
+    reflections:ld('reflections',DEF.reflections),
+    journal:    ld('journal',    DEF.journal),
+    positions:  ld('positions',  DEF.positions)
+  };
+}
+
+// Load data dari Sheets (JSONP), lalu render ulang
+function autoLoad() {
+  setSyncStatus('loading');
+  const cbName = 'gs_' + Date.now();
+  const timeout = setTimeout(() => {
+    delete window[cbName];
+    const sc = document.querySelector('script[data-cb="' + cbName + '"]');
+    if (sc) sc.remove();
+    setSyncStatus('err', 'Timeout — cek koneksi internet');
+  }, 15000);
+
+  window[cbName] = function(data) {
+    clearTimeout(timeout);
+    try {
+      if (data.candidates)  sv('candidates',  data.candidates);
+      if (data.hires)       sv('hires',       data.hires);
+      if (data.projects)    sv('projects',    data.projects);
+      if (data.selfdev)     sv('selfdev',     data.selfdev);
+      if (data.todos)       sv('todos',       data.todos);
+      if (data.reflections) sv('reflections', data.reflections);
+      if (data.journal)     sv('journal',     data.journal);
+      if (data.positions)   sv('positions',   data.positions);
+      renderAll();
+      setSyncStatus('');
+    } catch(e) { setSyncStatus('err', e.message); }
+    delete window[cbName];
+    const sc = document.querySelector('script[data-cb="' + cbName + '"]');
+    if (sc) sc.remove();
+  };
+
+  const sc = document.createElement('script');
+  sc.setAttribute('data-cb', cbName);
+  sc.src = GAS_URL + '?callback=' + cbName;
+  sc.onerror = () => {
+    clearTimeout(timeout); delete window[cbName]; sc.remove();
+    setSyncStatus('err', 'Gagal memuat dari Sheets');
+  };
+  document.head.appendChild(sc);
+}
+
+// Simpan semua data ke Sheets (fire-and-forget, no-cors)
+async function autoSave() {
+  const payload = payloadFromLocal();
+  try {
+    await fetch(GAS_URL, { method:'POST', mode:'no-cors', body:JSON.stringify(payload) });
+    setSyncStatus('ok');
+  } catch(e) {
+    setSyncStatus('err', e.message);
+  }
+}
+
+// ═══════════════════════════════════
+// INIT
+// ═══════════════════════════════════
+function initApp() {
+  const sel = document.getElementById('m-sel');
+  if (sel) sel.innerHTML = `<option value="0" ${ST.month===0?'selected':''}>Semua bulan</option>` +
+    MF.map((m,i) => `<option value="${i+1}" ${i+1 === ST.month ? 'selected' : ''}>${m}</option>`).join('');
+  const dEl = document.getElementById('today-date');
+  if (dEl) dEl.textContent = NOW.toLocaleDateString('id-ID', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+  renderAll();      // render lokal dulu (cepat)
+  autoLoad();       // lalu tarik data terbaru dari Sheets di background
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  if (localStorage.getItem('aisy_auth') === '1') {
+    document.getElementById('auth').style.display = 'none';
+    document.getElementById('app').style.display  = 'block';
+    initApp();
+  } else {
+    document.getElementById('auth').style.display = 'flex';
+  }
+  document.getElementById('modal').addEventListener('click', function(e) {
+    if (e.target === this) closeM();
+  });
+  document.getElementById('cmodal').addEventListener('click', function(e) {
+    if (e.target === this) resolveC(false);
+  });
+  document.getElementById('pmodal').addEventListener('click', function(e) {
+    if (e.target === this) resolveP(false);
+  });
+});
+</script>
+</body>
+</html>
